@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">TagMusicPlayer</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">設定</string>
+
+    <string name="show_relate_tag"><u>関連タグを表示する▼</u></string>
+    <string name="hide_relate_tag"><u>関連タグを隠す▲</u></string>
+</resources>

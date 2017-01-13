@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.sada.tagmusicplayer.MainActivity"
+    tools:showIn="@layout/app_bar_main">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dummyText"
+        android:text=""
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/switch1"
+        android:textOn="Tag"
+        android:textOff="Title"
+        android:checked="true"
+        android:layout_marginTop="20px" />
+
+    <Button
+        android:layout_width="90px"
+        android:layout_height="90px"
+        android:background="@drawable/search_button"
+        android:id="@+id/searchButton"
+        android:onClick="onSearchClicked"
+        android:layout_marginTop="20px"
+        android:layout_marginRight="20px"
+        android:layout_alignParentRight="true" />
+
+    <Button
+        android:visibility="gone"
+        android:layout_width="100px"
+        android:layout_height="100px"
+        android:background="@drawable/clear_button"
+        android:id="@+id/clearButton"
+        android:onClick="onClearClicked"
+        android:layout_marginTop="20px"
+        android:layout_marginRight="20px"
+        android:layout_toLeftOf="@id/searchButton" />
+
+    <AutoCompleteTextView
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:layout_toRightOf="@id/switch1"
+        android:layout_toLeftOf="@id/clearButton" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_below="@id/editText"
+        android:visibility="gone"
+        android:id="@+id/relateTagView" >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editText"
+            android:id="@+id/relateTagList">
+        </LinearLayout>
+
+    </ScrollView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10px"
+        android:layout_below="@id/relateTagView"
+        android:id="@+id/switchRelateTagText"
+        android:text="@string/show_relate_tag"
+        android:textColor="#00AAFF"
+        android:clickable="true"
+        android:onClick="onRelateTagChangeLinkClicked"
+        android:visibility="gone" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/currentTrack"
+        android:text="0 / 0"
+        android:layout_marginRight="10px"
+        android:layout_below="@id/switchRelateTagText"
+        android:layout_alignParentRight="true" />
+
+    <View android:id="@+id/separator"
+        android:layout_width="wrap_content"
+        android:background="#AAAAAA"
+        android:layout_height="2dp"
+        android:layout_below="@id/currentTrack" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/helloWorld"
+        android:textSize="10sp"
+        android:visibility="gone"
+        android:layout_below="@id/separator" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView"
+        android:layout_below="@id/helloWorld" >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout">
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottomField"
+        android:layout_alignParentBottom="true"
+        android:background="#77FFFFFF" >
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20px"
+            android:layout_marginLeft="20px"
+            android:columnCount="2"
+            android:rowCount="2">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="0"
+                android:text="00:00"
+                android:id="@+id/playTime" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="1"
+                android:text="00:00"
+                android:id="@+id/totalTime" />
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="100px"
+                android:layout_column="1"
+                android:layout_row="0"
+                android:layout_rowSpan="2"
+                android:layout_gravity="center"
+                android:id="@+id/seekBar" />
+
+        </GridLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10px" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/whiteSpace1"
+                android:layout_weight="1" />
+
+            <ToggleButton
+                android:layout_width="200px"
+                android:layout_height="200px"
+                android:id="@+id/shuffleButton"
+                android:textOff=""
+                android:textOn=""
+                android:background="@drawable/shuffle_button"
+                android:onClick="onShuffleClicked" />
+
+            <Button
+                android:layout_width="200px"
+                android:layout_height="200px"
+                android:id="@+id/prevButton"
+                android:background="@drawable/av_previous"
+                android:onClick="onPrevClicked" />
+
+            <ToggleButton
+                android:layout_width="200px"
+                android:layout_height="200px"
+                android:id="@+id/playButton"
+                android:textOff=""
+                android:textOn=""
+                android:background="@drawable/play_button"
+                android:onClick="onPlayClicked" />
+
+            <Button
+                android:layout_width="200px"
+                android:layout_height="200px"
+                android:id="@+id/nextButton"
+                android:background="@drawable/av_next"
+                android:onClick="onNextClicked" />
+
+            <Button
+                android:layout_width="200px"
+                android:layout_height="200px"
+                android:id="@+id/loopButton"
+                android:background="@drawable/av_loop_on"
+                android:onClick="onLoopClicked" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/whiteSpace2"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
