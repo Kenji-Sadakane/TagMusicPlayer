@@ -2,13 +2,6 @@ package com.example.sada.tagmusicplayer;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.cmc.music.metadata.MusicMetadata;
-import org.cmc.music.metadata.MusicMetadataSet;
-import org.cmc.music.myid3.MyID3;
-import org.farng.mp3.MP3File;
-import org.farng.mp3.TagException;
-import org.farng.mp3.id3.AbstractID3v2;
-import org.farng.mp3.id3.ID3v1;
 
 import java.io.File;
 import java.io.FileInputStream;
