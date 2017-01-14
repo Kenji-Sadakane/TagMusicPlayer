@@ -1,4 +1,4 @@
-package com.example.sada.tagmusicplayer;
+package com.keepingrack.tagmusicplayer;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -12,8 +12,8 @@ import android.widget.ScrollView;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.sada.tagmusicplayer.MainActivity.musicItems;
-import static com.example.sada.tagmusicplayer.MainActivity.tagKinds;
+import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
+import static com.keepingrack.tagmusicplayer.MainActivity.tagKinds;
 
 public class TagInfoDialog {
 

@@ -1,4 +1,4 @@
-package com.example.sada.tagmusicplayer;
+package com.keepingrack.tagmusicplayer;
 
 import android.graphics.Color;
 import android.view.View;
@@ -7,18 +7,18 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.example.sada.tagmusicplayer.bean.RelateTag;
+import com.keepingrack.tagmusicplayer.bean.RelateTag;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.example.sada.tagmusicplayer.MainActivity.displayMusicNames;
-import static com.example.sada.tagmusicplayer.MainActivity.musicItems;
-import static com.example.sada.tagmusicplayer.MainActivity.relateTags;
-import static com.example.sada.tagmusicplayer.MainActivity.tagKinds;
-import static com.example.sada.tagmusicplayer.SearchSwitch.SEARCH_TYPE;
+import static com.keepingrack.tagmusicplayer.MainActivity.displayMusicNames;
+import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
+import static com.keepingrack.tagmusicplayer.MainActivity.relateTags;
+import static com.keepingrack.tagmusicplayer.MainActivity.tagKinds;
+import static com.keepingrack.tagmusicplayer.SearchSwitch.SEARCH_TYPE;
 
 public class RelateTagField {
 

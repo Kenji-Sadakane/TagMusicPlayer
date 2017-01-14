@@ -1,4 +1,4 @@
-package com.example.sada.tagmusicplayer;
+package com.keepingrack.tagmusicplayer;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
@@ -18,10 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.example.sada.tagmusicplayer.MainActivity.displayMusicNames;
-import static com.example.sada.tagmusicplayer.MainActivity.musicItems;
-import static com.example.sada.tagmusicplayer.MainActivity.PLAYING_MUSIC;
-import static com.example.sada.tagmusicplayer.MainActivity.SELECT_MUSIC;
+import static com.keepingrack.tagmusicplayer.MainActivity.displayMusicNames;
+import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
+import static com.keepingrack.tagmusicplayer.MainActivity.PLAYING_MUSIC;
+import static com.keepingrack.tagmusicplayer.MainActivity.SELECT_MUSIC;
 
 public class MusicField {
 

@@ -1,4 +1,4 @@
-package com.example.sada.tagmusicplayer;
+package com.keepingrack.tagmusicplayer;
 
 import android.Manifest;
 import android.app.Activity;
@@ -18,7 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.sada.tagmusicplayer.bean.RelateTag;
+import com.keepingrack.tagmusicplayer.bean.RelateTag;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

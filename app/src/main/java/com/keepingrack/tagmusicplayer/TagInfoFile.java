@@ -1,4 +1,4 @@
-package com.example.sada.tagmusicplayer;
+package com.keepingrack.tagmusicplayer;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -13,9 +13,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.example.sada.tagmusicplayer.MainActivity.TAG_INFO_PATH;
-import static com.example.sada.tagmusicplayer.MainActivity.musicItems;
-import static com.example.sada.tagmusicplayer.MainActivity.tagKinds;
+import static com.keepingrack.tagmusicplayer.MainActivity.TAG_INFO_PATH;
+import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
+import static com.keepingrack.tagmusicplayer.MainActivity.tagKinds;
 
 public class TagInfoFile {
 

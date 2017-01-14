@@ -1,4 +1,6 @@
-package com.example.sada.tagmusicplayer;
+package com.keepingrack.tagmusicplayer;
+
+import com.keepingrack.tagmusicplayer.MainActivity;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -6,7 +8,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import java.io.File;
 import java.io.FileInputStream;
 
-import static com.example.sada.tagmusicplayer.MainActivity.musicItems;
+import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
 
 public class MusicFile {
 

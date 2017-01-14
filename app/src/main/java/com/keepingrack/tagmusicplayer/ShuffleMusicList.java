@@ -1,4 +1,4 @@
-package com.example.sada.tagmusicplayer;
+package com.keepingrack.tagmusicplayer;
 
 import android.widget.ToggleButton;
 
@@ -8,9 +8,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static com.example.sada.tagmusicplayer.MainActivity.displayMusicNames;
-import static com.example.sada.tagmusicplayer.MainActivity.PLAYING_MUSIC;
-import static com.example.sada.tagmusicplayer.MainActivity.musicItems;
+import static com.keepingrack.tagmusicplayer.MainActivity.displayMusicNames;
+import static com.keepingrack.tagmusicplayer.MainActivity.PLAYING_MUSIC;
+import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
 
 public class ShuffleMusicList {
 

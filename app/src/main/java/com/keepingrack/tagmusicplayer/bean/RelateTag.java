@@ -1,4 +1,4 @@
-package com.example.sada.tagmusicplayer.bean;
+package com.keepingrack.tagmusicplayer.bean;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

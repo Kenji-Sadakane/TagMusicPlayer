@@ -1,14 +1,14 @@
-package com.example.sada.tagmusicplayer;
+package com.keepingrack.tagmusicplayer;
 
 import android.media.MediaPlayer;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import static com.example.sada.tagmusicplayer.MainActivity.displayMusicNames;
-import static com.example.sada.tagmusicplayer.MainActivity.musicItems;
-import static com.example.sada.tagmusicplayer.MainActivity.SELECT_MUSIC;
-import static com.example.sada.tagmusicplayer.MainActivity.PLAYING_MUSIC;
-import static com.example.sada.tagmusicplayer.MainActivity.mp;
+import static com.keepingrack.tagmusicplayer.MainActivity.displayMusicNames;
+import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
+import static com.keepingrack.tagmusicplayer.MainActivity.SELECT_MUSIC;
+import static com.keepingrack.tagmusicplayer.MainActivity.PLAYING_MUSIC;
+import static com.keepingrack.tagmusicplayer.MainActivity.mp;
 
 public class MusicPlayer {
 

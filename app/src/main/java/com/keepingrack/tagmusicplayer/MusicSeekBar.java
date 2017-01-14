@@ -1,4 +1,4 @@
-package com.example.sada.tagmusicplayer;
+package com.keepingrack.tagmusicplayer;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
@@ -10,8 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import static com.example.sada.tagmusicplayer.MainActivity.mp;
-import static com.example.sada.tagmusicplayer.MainActivity.PLAYING_MUSIC;
+import static com.keepingrack.tagmusicplayer.MainActivity.mp;
+import static com.keepingrack.tagmusicplayer.MainActivity.PLAYING_MUSIC;
 
 public class MusicSeekBar {
 
