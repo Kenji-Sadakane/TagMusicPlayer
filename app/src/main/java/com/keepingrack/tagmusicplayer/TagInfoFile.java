@@ -23,7 +23,6 @@ public class TagInfoFile {
     public static final String LINE_FEED_CODE = "\r\n";
     public static final String NO_TAG_WORD = "タグなし";
 
-    public static Map<String, List<String>> musicTags = new LinkedHashMap<>();
 
     // タグ情報取得
     public void readTagInfo() throws Exception {
@@ -51,7 +50,6 @@ public class TagInfoFile {
             if (musicItems.get(key) != null) {
                 musicItems.get(key).setTags(tags);
             }
-            musicTags.put(key, tags);
         }
 
         //終了処理
