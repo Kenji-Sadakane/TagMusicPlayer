@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -313,9 +314,11 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
             if (id == R.id.action_settings) {
                 return true;
             } else if (id == R.id.action_update) {
+                // 更新ボタン押下
                 displayContents();
                 return true;
             } else if (id == R.id.action_exit) {
+                // 終了ボタン押下
                 finishApp();
                 return true;
             }
