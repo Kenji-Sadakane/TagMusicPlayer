@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -51,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     private MusicFile musicFile = new MusicFile(this);
     public MusicPlayer musicPlayer = new MusicPlayer(this);
     public MusicPlayerButton musicPlayerButton = new MusicPlayerButton(this);
+    public MusicSearch musicSearch = new MusicSearch(this);
     public SearchSwitch searchSwitch = new SearchSwitch(this);
     public ShuffleMusicList shuffleMusicList = new ShuffleMusicList(this);
     public MusicSeekBar musicSeekBar = new MusicSeekBar(this);
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
 
         try {
             // タグ、楽曲表示
-            displayContents();
+            displayContents(false);
             //
             // listener
             setListener();
@@ -96,11 +96,14 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         }
     }
 
-    private void displayContents() throws Exception {
-        // 楽曲リスト取得
-        musicFile.readMusicFiles(BASE_DIR);
-        // タグ情報取得
-        tagInfoFile.readTagInfo();
+    private void displayContents(boolean doSearchMusic) throws Exception {
+        if (doSearchMusic) {
+            // 楽曲ファイル捜索
+            musicFile.readMusicFiles(BASE_DIR);
+        } else {
+            // DBより楽曲、タグ情報取得
+            musicSearch.selectMusicAndTags();
+        }
         // 楽曲リスト(画面部品)作成
         musicField.createContents();
         // キーワードに応じて表示内容切替
@@ -315,7 +318,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                 return true;
             } else if (id == R.id.action_update) {
                 // 更新ボタン押下
-                displayContents();
+                displayContents(true);
                 return true;
             } else if (id == R.id.action_exit) {
                 // 終了ボタン押下
