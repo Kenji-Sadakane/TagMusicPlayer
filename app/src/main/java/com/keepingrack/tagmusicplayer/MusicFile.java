@@ -7,7 +7,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
@@ -93,6 +92,5 @@ public class MusicFile {
                 musicItems.get(record.getKey()).setTags(stringToList(record.getTags(), SEPARATE));
             }
         }
-        activity.musicTagsLogic.update();
     }
 }

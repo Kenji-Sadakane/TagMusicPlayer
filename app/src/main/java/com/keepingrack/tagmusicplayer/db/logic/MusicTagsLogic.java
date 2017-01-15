@@ -70,26 +70,21 @@ public class MusicTagsLogic {
         return records;
     }
 
-    // 仮実装
-//    public void insert() {
-//        before();
-//        for (Map.Entry<String, MusicItem> musicItemMap : musicItems.entrySet()) {
-//            String key = musicItemMap.getKey();
-//            String filePath = musicItemMap.getValue().getFile().getAbsolutePath();
-//            StringBuffer tags = new StringBuffer();
-//            for (String tag : musicItemMap.getValue().getTags()) {
-//                tags.append(tag);
-//                tags.append("\t");
-//            }
-//            musicTagsHelper.insert(key, filePath, tags.toString());
-//        }
-//        after();
-//    }
+    public void deleteAll() {
+        before();
+        musicTagsHelper.deleteAllRecords();
+        after();
+    }
 
-    public void update() {
+    public void insertAll() {
+        before();
         for (Map.Entry<String, MusicItem> musicItemMap : musicItems.entrySet()) {
-            update(musicItemMap.getKey());
+            String key = musicItemMap.getKey();
+            String filePath = musicItemMap.getValue().getFile().getAbsolutePath();
+            String tags = listToString(musicItemMap.getValue().getTags(), SEPARATE);
+            musicTagsHelper.insertRecord(key, filePath, tags);
         }
+        after();
     }
 
     public void update(String key) {

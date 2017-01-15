@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     private static int CURRENT_PERMISSION;
 
     private static final String BASE_DIR = "/storage/sdcard1/PRIVATE/SHARP/CM/MUSIC";
-//    public static final String TAG_INFO_PATH = "/storage/sdcard1/PRIVATE/SHARP/CM/MUSIC/tagInfo.tsv";
 
     public static Map<String, MusicItem> musicItems = new LinkedHashMap<>();
     public static List<String> tagKinds = new ArrayList<>();
@@ -100,6 +99,9 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         if (doSearchMusic) {
             // 楽曲ファイル捜索
             musicFile.readMusicFiles(BASE_DIR);
+            // DB更新
+            musicTagsLogic.deleteAll();
+            musicTagsLogic.insertAll();
         } else {
             // DBより楽曲、タグ情報取得
             musicTagsLogic.selectMusicAndTags();

@@ -12,6 +12,9 @@ public class Utility {
     }
 
     public static String listToString(List<String> list, String separate) {
+        if (list == null || list.isEmpty()) {
+            return "";
+        }
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < list.size(); i++) {
             sb.append(list.get(i));
