@@ -4,15 +4,12 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import static com.keepingrack.tagmusicplayer.util.Utility.getDateYMD;
-
 public class MusicTagsHelper {
 
     public static final String TABLE_NAME = "musicTags";
     public static final String COL_KEY = "key";
     public static final String COL_FILE_PATH = "filePath";
     public static final String COL_TAGS = "tags";
-    public static final String COL_UPDATE_TIME = "updateTime";
     public static String SEPARATE = "\t";
 
     private SQLiteDatabase db;
@@ -38,7 +35,6 @@ public class MusicTagsHelper {
         values.put(COL_KEY, key);
         values.put(COL_FILE_PATH, filePath);
         values.put(COL_TAGS, tags);
-        values.put(COL_UPDATE_TIME, getDateYMD());
         db.insertOrThrow(TABLE_NAME, null, values);
     }
 
@@ -46,7 +42,6 @@ public class MusicTagsHelper {
         ContentValues values = new ContentValues();
         values.put(COL_FILE_PATH, filePath);
         values.put(COL_TAGS, tags);
-        values.put(COL_UPDATE_TIME, getDateYMD());
         String whereClause = COL_KEY + " = '" + key + "'";
         db.update(TABLE_NAME, values, whereClause, null);
     }

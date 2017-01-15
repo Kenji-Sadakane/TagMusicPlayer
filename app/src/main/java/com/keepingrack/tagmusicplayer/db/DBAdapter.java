@@ -1,18 +1,13 @@
 package com.keepingrack.tagmusicplayer.db;
 
-import java.util.Date;
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import static com.keepingrack.tagmusicplayer.db.helper.MusicTagsHelper.COL_FILE_PATH;
 import static com.keepingrack.tagmusicplayer.db.helper.MusicTagsHelper.COL_KEY;
 import static com.keepingrack.tagmusicplayer.db.helper.MusicTagsHelper.COL_TAGS;
-import static com.keepingrack.tagmusicplayer.db.helper.MusicTagsHelper.COL_UPDATE_TIME;
 import static com.keepingrack.tagmusicplayer.db.helper.MusicTagsHelper.TABLE_NAME;
-
 
 public class DBAdapter {
     static final String DATABASE_NAME = "tagMusicPlayer.db";
@@ -38,8 +33,7 @@ public class DBAdapter {
             db.execSQL( "CREATE TABLE " + TABLE_NAME + " ("
                     + COL_KEY + " TEXT NOT NULL,"
                     + COL_FILE_PATH + " TEXT NOT NULL,"
-                    + COL_TAGS + " TEXT NOT NULL,"
-                    + COL_UPDATE_TIME + " TEXT NOT NULL);");
+                    + COL_TAGS + " TEXT NOT NULL);");
         }
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

@@ -11,5 +11,4 @@ public class MusicTagsRecord {
     private String key;
     private String filePath;
     private String tags;
-    private String updateTime;
 }

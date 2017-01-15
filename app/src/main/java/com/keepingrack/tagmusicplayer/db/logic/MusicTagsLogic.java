@@ -43,7 +43,7 @@ public class MusicTagsLogic {
         List<MusicTagsRecord> records = new ArrayList<>();
         cursor.moveToFirst();
         for (int i = 0; i < cursor.getCount(); i++) {
-            MusicTagsRecord record = new MusicTagsRecord(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
+            MusicTagsRecord record = new MusicTagsRecord(cursor.getString(0), cursor.getString(1), cursor.getString(2));
             records.add(record);
             cursor.moveToNext();
         }
