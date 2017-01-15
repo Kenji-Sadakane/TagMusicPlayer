@@ -12,6 +12,7 @@ import java.util.List;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
 import static com.keepingrack.tagmusicplayer.db.helper.MusicTagsHelper.SEPARATE;
+import static com.keepingrack.tagmusicplayer.util.Utility.*;
 
 public class MusicFile {
 
@@ -86,11 +87,12 @@ public class MusicFile {
 
     // DBからタグ情報を取得し反映
     private void reflectMusicTagsRecord() {
-        List<MusicTagsRecord> records = activity.musicSearch.selectMusicAndTags();
+        List<MusicTagsRecord> records = activity.musicTagsLogic.selectMusicAndTags();
         for (MusicTagsRecord record : records) {
             if (musicItems.containsKey(record.getKey())) {
-                musicItems.get(record.getKey()).setTags(Arrays.asList(record.getTags().split(SEPARATE)));
+                musicItems.get(record.getKey()).setTags(stringToList(record.getTags(), SEPARATE));
             }
         }
+        activity.musicTagsLogic.update();
     }
 }

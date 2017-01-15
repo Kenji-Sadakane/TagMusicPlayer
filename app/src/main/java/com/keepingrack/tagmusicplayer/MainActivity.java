@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.keepingrack.tagmusicplayer.bean.RelateTag;
+import com.keepingrack.tagmusicplayer.db.logic.MusicTagsLogic;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     private static int CURRENT_PERMISSION;
 
     private static final String BASE_DIR = "/storage/sdcard1/PRIVATE/SHARP/CM/MUSIC";
-    public static final String TAG_INFO_PATH = "/storage/sdcard1/PRIVATE/SHARP/CM/MUSIC/tagInfo.tsv";
+//    public static final String TAG_INFO_PATH = "/storage/sdcard1/PRIVATE/SHARP/CM/MUSIC/tagInfo.tsv";
 
     public static Map<String, MusicItem> musicItems = new LinkedHashMap<>();
     public static List<String> tagKinds = new ArrayList<>();
@@ -50,12 +51,11 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     private MusicFile musicFile = new MusicFile(this);
     public MusicPlayer musicPlayer = new MusicPlayer(this);
     public MusicPlayerButton musicPlayerButton = new MusicPlayerButton(this);
-    public MusicSearch musicSearch = new MusicSearch(this);
+    public MusicTagsLogic musicTagsLogic = new MusicTagsLogic(this);
     public SearchSwitch searchSwitch = new SearchSwitch(this);
     public ShuffleMusicList shuffleMusicList = new ShuffleMusicList(this);
     public MusicSeekBar musicSeekBar = new MusicSeekBar(this);
     public RelateTagField relateTagField = new RelateTagField(this);
-    public TagInfoFile tagInfoFile = new TagInfoFile();
     public TagInfoDialog tagInfoDialog = new TagInfoDialog(this);
 
     @Override
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
             musicFile.readMusicFiles(BASE_DIR);
         } else {
             // DBより楽曲、タグ情報取得
-            musicSearch.selectMusicAndTags();
+            musicTagsLogic.selectMusicAndTags();
         }
         // 楽曲リスト(画面部品)作成
         musicField.createContents();

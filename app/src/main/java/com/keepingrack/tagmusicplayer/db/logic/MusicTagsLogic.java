@@ -1,7 +1,9 @@
-package com.keepingrack.tagmusicplayer;
+package com.keepingrack.tagmusicplayer.db.logic;
 
 import android.database.Cursor;
 
+import com.keepingrack.tagmusicplayer.MainActivity;
+import com.keepingrack.tagmusicplayer.MusicItem;
 import com.keepingrack.tagmusicplayer.db.DBAdapter;
 import com.keepingrack.tagmusicplayer.db.entity.MusicTagsRecord;
 import com.keepingrack.tagmusicplayer.db.helper.MusicTagsHelper;
@@ -16,14 +18,16 @@ import java.util.Set;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
 import static com.keepingrack.tagmusicplayer.MainActivity.tagKinds;
+import static com.keepingrack.tagmusicplayer.util.Utility.*;
+import static com.keepingrack.tagmusicplayer.db.helper.MusicTagsHelper.SEPARATE;
 
-public class MusicSearch {
+public class MusicTagsLogic {
 
     private MainActivity activity;
     private DBAdapter dbAdapter;
     private MusicTagsHelper musicTagsHelper;
 
-    public MusicSearch(MainActivity _activity) {
+    public MusicTagsLogic(MainActivity _activity) {
         this.activity = _activity;
     }
 
@@ -81,4 +85,19 @@ public class MusicSearch {
 //        }
 //        after();
 //    }
+
+    public void update() {
+        for (Map.Entry<String, MusicItem> musicItemMap : musicItems.entrySet()) {
+            update(musicItemMap.getKey());
+        }
+    }
+
+    public void update(String key) {
+        before();
+        MusicItem musicItem = musicItems.get(key);
+        String filePath = musicItem.getFile().getAbsolutePath();
+        String tags = listToString(musicItem.getTags(), SEPARATE);
+        musicTagsHelper.updateByKey(key, filePath, tags);
+        after();
+    }
 }

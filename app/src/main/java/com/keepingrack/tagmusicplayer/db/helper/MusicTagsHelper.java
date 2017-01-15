@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.util.Date;
+import static com.keepingrack.tagmusicplayer.util.Utility.getDateYMD;
 
 public class MusicTagsHelper {
 
@@ -21,25 +21,33 @@ public class MusicTagsHelper {
         this.db = db;
     }
 
-    public boolean deleteAllRecords(){
-        return db.delete(TABLE_NAME, null, null) > 0;
-    }
-
-    public boolean deleteByKey(String key){
-        return db.delete(TABLE_NAME, COL_KEY + "=" + key, null) > 0;
-    }
+//    public boolean deleteAllRecords(){
+//        return db.delete(TABLE_NAME, null, null) > 0;
+//    }
+//
+//    public boolean deleteByKey(String key){
+//        return db.delete(TABLE_NAME, COL_KEY + "=" + key, null) > 0;
+//    }
 
     public Cursor getAllRecords() {
         return db.query(TABLE_NAME, null, null, null, null, null, null);
     }
 
-    public void insert(String key, String filePath, String tags) {
-        Date dateNow = new Date ();
+//    public void insert(String key, String filePath, String tags) {
+//        ContentValues values = new ContentValues();
+//        values.put(COL_KEY, key);
+//        values.put(COL_FILE_PATH, filePath);
+//        values.put(COL_TAGS, tags);
+//        values.put(COL_UPDATE_TIME, getDateYMD());
+//        db.insertOrThrow(TABLE_NAME, null, values);
+//    }
+
+    public void updateByKey(String key, String filePath, String tags) {
         ContentValues values = new ContentValues();
-        values.put(COL_KEY, key);
         values.put(COL_FILE_PATH, filePath);
         values.put(COL_TAGS, tags);
-        values.put(COL_UPDATE_TIME, dateNow.toLocaleString());
-        db.insertOrThrow(TABLE_NAME, null, values);
+        values.put(COL_UPDATE_TIME, getDateYMD());
+        String whereClause = COL_KEY + " = '" + key + "'";
+        db.update(TABLE_NAME, values, whereClause, null);
     }
 }
