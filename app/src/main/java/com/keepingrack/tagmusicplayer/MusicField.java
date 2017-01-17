@@ -2,12 +2,14 @@ package com.keepingrack.tagmusicplayer;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.text.Layout;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.keepingrack.tagmusicplayer.MainActivity.DISPLAY_WIDTH;
 import static com.keepingrack.tagmusicplayer.MainActivity.displayMusicNames;
 import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
 import static com.keepingrack.tagmusicplayer.MainActivity.PLAYING_MUSIC;
@@ -195,56 +198,9 @@ public class MusicField {
         if (SELECT_MUSIC.isEmpty()) {
             return;
         }
-        List<String> tags = musicItems.get(SELECT_MUSIC).getTags();
         LinearLayout row = musicItems.get(SELECT_MUSIC).getRow();
-        LinearLayout tagField = createTagField(row);
-        int tagLengthByField = 0;
-        if (tags != null && !tags.isEmpty()) {
-            for (String tag : tags) {
-                int tagLength = tag.getBytes("Shift_JIS").length;
-                if (tagField.getChildCount() > 0 && (tagLengthByField + tagLength) > 40) {
-                    tagField = createTagField(row);
-                    tagLengthByField = tagLength;
-                } else {
-                    tagLengthByField += tagLength;
-                }
-                TextView tagText = createTagTextView(tag);
-                tagField.addView(tagText);
-            }
-        }
-    }
-
-    // タグ(全て)を表示するLinearLayout生成
-    private LinearLayout createTagField(LinearLayout row) {
-        LinearLayout tagField = new LinearLayout(activity);
-        tagField.setOrientation(LinearLayout.HORIZONTAL);
-        LayoutParams tagFieldParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-        tagFieldParams.setMargins(15, 0, 15, 15); // 左, 上, 右, 下
-        row.addView(tagField, tagFieldParams);
-        return tagField;
-    }
-
-    // タグ(1個)のTextView生成
-    private TextView createTagTextView(String tag) {
-        TextView tagText = new TextView(activity);
-        tagText.setClickable(true);
-        tagText.setText(tag);
-        tagText.setPadding(5, 0, 5, 0); // 左, 上, 右, 下
-        tagText.setBackgroundResource(R.drawable.tag_item);
-        LinearLayout.LayoutParams tagTextParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        tagTextParams.setMargins(0, 0, 10, 0); // 左, 上, 右, 下
-        tagText.setLayoutParams(tagTextParams);
-        // タグクリック時
-        tagText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String tag = ((TextView) v).getText().toString();
-                ((Switch) activity.findViewById(R.id.switch1)).setChecked(true);
-                ((AutoCompleteTextView) activity.findViewById(R.id.editText)).setText(tag);
-                activity.keyWord.execSearch();
-            }
-        });
-        return tagText;
+        TagField tagField = new TagField(activity);
+        row.addView(tagField.createTagField(SELECT_MUSIC), tagField.createTagFieldParams());
     }
 
     // タグ情報非表示

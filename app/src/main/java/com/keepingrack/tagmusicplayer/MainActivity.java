@@ -2,8 +2,10 @@ package com.keepingrack.tagmusicplayer;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -17,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 
 import com.keepingrack.tagmusicplayer.bean.RelateTag;
 import com.keepingrack.tagmusicplayer.db.logic.MusicTagsLogic;
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
 
     private static final String BASE_DIR = "/storage/sdcard1/PRIVATE/SHARP/CM/MUSIC";
 
+    public static int DISPLAY_WIDTH;
     public static Map<String, MusicItem> musicItems = new LinkedHashMap<>();
     public static Set<String> tagKinds = new HashSet<>();
     public static List<String> displayMusicNames = new ArrayList<>();
@@ -98,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     }
 
     private void displayContents(boolean doSearchMusic) throws Exception {
+        measureDisplayWidth();
         if (doSearchMusic) {
             // 楽曲ファイル捜索
             musicFile.readMusicFiles(BASE_DIR);
@@ -302,6 +307,18 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         }
         super.onBackPressed();
         super.finish();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        measureDisplayWidth();
+    }
+
+    private void measureDisplayWidth() {
+        Point outSize = new Point();
+        WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
+        wm.getDefaultDisplay().getSize(outSize);
+        DISPLAY_WIDTH = outSize.x;
     }
 
     @Override
