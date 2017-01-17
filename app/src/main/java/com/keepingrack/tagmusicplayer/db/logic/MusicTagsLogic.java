@@ -10,7 +10,6 @@ import com.keepingrack.tagmusicplayer.db.helper.MusicTagsHelper;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -60,9 +59,9 @@ public class MusicTagsLogic {
             String filePath = record.getFilePath();
             File file = new File(filePath);
             String tags = record.getTags();
-            List<String> tagArray = Arrays.asList(tags.split("\t"));
+            List<String> tagArray = stringToList(tags, SEPARATE);
             set.addAll(tagArray);
-            musicItems.put(key, new MusicItem(file.getName(), file, tagArray, null));
+            musicItems.put(key, new MusicItem(file.getAbsolutePath(), file.getName(), tagArray, null));
         }
         tagKinds = new ArrayList<>(set);
 
@@ -80,7 +79,7 @@ public class MusicTagsLogic {
         before();
         for (Map.Entry<String, MusicItem> musicItemMap : musicItems.entrySet()) {
             String key = musicItemMap.getKey();
-            String filePath = musicItemMap.getValue().getFile().getAbsolutePath();
+            String filePath = musicItemMap.getValue().getAbsolutePath();
             String tags = listToString(musicItemMap.getValue().getTags(), SEPARATE);
             musicTagsHelper.insertRecord(key, filePath, tags);
         }
@@ -90,7 +89,7 @@ public class MusicTagsLogic {
     public void update(String key) {
         before();
         MusicItem musicItem = musicItems.get(key);
-        String filePath = musicItem.getFile().getAbsolutePath();
+        String filePath = musicItem.getAbsolutePath();
         String tags = listToString(musicItem.getTags(), SEPARATE);
         musicTagsHelper.updateByKey(key, filePath, tags);
         after();

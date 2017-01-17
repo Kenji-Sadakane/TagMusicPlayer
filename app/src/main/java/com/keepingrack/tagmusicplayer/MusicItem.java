@@ -2,7 +2,6 @@ package com.keepingrack.tagmusicplayer;
 
 import android.widget.LinearLayout;
 
-import java.io.File;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -14,9 +13,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class MusicItem {
 
-    private String title;
+    private String absolutePath;
 
-    private File file;
+    private String title;
 
     private List<String> tags;
 

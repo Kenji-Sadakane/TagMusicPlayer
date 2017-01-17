@@ -119,7 +119,7 @@ public class MusicPlayer {
     public void startMusicPlayer(String key) throws Exception {
         mp.setOnCompletionListener(null);
         mp.reset();
-        mp.setDataSource(musicItems.get(key).getFile().getAbsolutePath());
+        mp.setDataSource(musicItems.get(key).getAbsolutePath());
         mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {

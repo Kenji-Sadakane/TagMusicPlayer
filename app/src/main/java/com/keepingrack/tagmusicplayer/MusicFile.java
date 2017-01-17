@@ -38,7 +38,7 @@ public class MusicFile {
                     getMusicFiles(file.getAbsolutePath());
                 } else {
                     if (file.getName().endsWith(MUSIC_FILE_EXTENSION)) {
-                        musicItems.put(getFileKey(file), new MusicItem(getMusicTitle(file), file, null, null));
+                        musicItems.put(getFileKey(file), new MusicItem(file.getAbsolutePath(), file.getName(), null, null));
                     }
                 }
             }
