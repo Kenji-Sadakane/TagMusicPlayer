@@ -99,6 +99,8 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         if (doSearchMusic) {
             // 楽曲ファイル捜索
             musicFile.readMusicFiles(BASE_DIR);
+//            TagInfoFile tagInfoFile = new TagInfoFile();
+//            tagInfoFile.readTagInfo();
             // DB更新
             musicTagsLogic.deleteAll();
             musicTagsLogic.insertAll();

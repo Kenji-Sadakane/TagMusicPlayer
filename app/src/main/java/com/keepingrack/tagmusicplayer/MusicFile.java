@@ -19,8 +19,6 @@ public class MusicFile {
 
     private MainActivity activity;
 
-    StringBuffer sb = new StringBuffer();
-
     public MusicFile (MainActivity _activity) {
         this.activity = _activity;
     }

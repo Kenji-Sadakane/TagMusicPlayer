@@ -12,7 +12,6 @@
 //import java.util.List;
 //import java.util.Map;
 //
-//import static com.keepingrack.tagmusicplayer.MainActivity.TAG_INFO_PATH;
 //import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
 //import static com.keepingrack.tagmusicplayer.MainActivity.tagKinds;
 //
@@ -21,6 +20,7 @@
 //    public static final String SEPARATE = "\t";
 //    public static final String LINE_FEED_CODE = "\r\n";
 //    public static final String NO_TAG_WORD = "タグなし";
+//    public static final String TAG_INFO_PATH = "/storage/sdcard1/PRIVATE/SHARP/CM/MUSIC/tagInfo.tsv";
 //
 //
 //    // タグ情報取得
