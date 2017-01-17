@@ -53,17 +53,15 @@ public class MusicTagsLogic {
         before();
 
         List<MusicTagsRecord> records = cursorToRecords(musicTagsHelper.getAllRecords());
-        Set<String> set = new HashSet<>();
         for (MusicTagsRecord record : records) {
             String key = record.getKey();
             String filePath = record.getFilePath();
             File file = new File(filePath);
             String tags = record.getTags();
             List<String> tagArray = stringToList(tags, SEPARATE);
-            set.addAll(tagArray);
+            tagKinds.addAll(tagArray);
             musicItems.put(key, new MusicItem(file.getAbsolutePath(), file.getName(), tagArray, null));
         }
-        tagKinds = new ArrayList<>(set);
 
         after();
         return records;

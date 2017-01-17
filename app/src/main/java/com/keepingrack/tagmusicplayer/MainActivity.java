@@ -22,9 +22,11 @@ import com.keepingrack.tagmusicplayer.bean.RelateTag;
 import com.keepingrack.tagmusicplayer.db.logic.MusicTagsLogic;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements OnNavigationItemSelectedListener, Runnable {
 
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     private static final String BASE_DIR = "/storage/sdcard1/PRIVATE/SHARP/CM/MUSIC";
 
     public static Map<String, MusicItem> musicItems = new LinkedHashMap<>();
-    public static List<String> tagKinds = new ArrayList<>();
+    public static Set<String> tagKinds = new HashSet<>();
     public static List<String> displayMusicNames = new ArrayList<>();
     public static List<RelateTag> relateTags = new ArrayList<>();
     public static String SELECT_MUSIC = "";

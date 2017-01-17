@@ -61,7 +61,7 @@ public class RelateTagField {
                 break;
             case TAG:
                 String keyWord = ((EditText) activity.findViewById(R.id.editText)).getText().toString();
-                if (tagKinds.contains(keyWord)) {
+                if (keyWord != null && !keyWord.isEmpty() && tagKinds.contains(keyWord)) {
                     result = true;
                 }
                 break;
