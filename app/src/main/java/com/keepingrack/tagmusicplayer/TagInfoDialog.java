@@ -44,11 +44,8 @@ public class TagInfoDialog {
                                     if (!tagKinds.contains(tag)) { tagKinds.add(tag); }
                                 }
                             }
-//                            if (tags.isEmpty()) {
-//                                tags.add(activity.tagInfoFile.NO_TAG_WORD);
-//                            }
                             musicItems.get(key).setTags(tags);
-                            activity.tagInfoFile.writeTagInfo();
+                            activity.musicTagsLogic.update(key);
                             activity.musicField.unselectedMusic();
                             activity.musicField.selectMusic(key);
                         } catch (Exception ex) {

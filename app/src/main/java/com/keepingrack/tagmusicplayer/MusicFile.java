@@ -1,22 +1,23 @@
 package com.keepingrack.tagmusicplayer;
 
-import com.keepingrack.tagmusicplayer.MainActivity;
+import com.keepingrack.tagmusicplayer.db.entity.MusicTagsRecord;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.List;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
+import static com.keepingrack.tagmusicplayer.db.helper.MusicTagsHelper.SEPARATE;
+import static com.keepingrack.tagmusicplayer.util.Utility.*;
 
 public class MusicFile {
 
     public static final String MUSIC_FILE_EXTENSION = ".mp3";
 
     private MainActivity activity;
-
-    StringBuffer sb = new StringBuffer();
 
     public MusicFile (MainActivity _activity) {
         this.activity = _activity;
@@ -25,8 +26,10 @@ public class MusicFile {
     public void readMusicFiles(String dirPath) throws Exception {
         musicItems.clear();
         getMusicFiles(dirPath);
+        reflectMusicTagsRecord();
     }
 
+    // ストレージから楽曲ファイルを取得
     private void getMusicFiles(String dirPath) throws Exception {
         File[] files = new File(dirPath).listFiles();
         if(files != null) {
@@ -77,5 +80,15 @@ public class MusicFile {
 //
 //        }
         return musicTitle;
+    }
+
+    // DBからタグ情報を取得し反映
+    private void reflectMusicTagsRecord() {
+        List<MusicTagsRecord> records = activity.musicTagsLogic.selectMusicAndTags();
+        for (MusicTagsRecord record : records) {
+            if (musicItems.containsKey(record.getKey())) {
+                musicItems.get(record.getKey()).setTags(stringToList(record.getTags(), SEPARATE));
+            }
+        }
     }
 }
