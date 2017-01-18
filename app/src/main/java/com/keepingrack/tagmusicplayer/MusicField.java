@@ -2,16 +2,12 @@ package com.keepingrack.tagmusicplayer;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.text.Layout;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import java.io.PrintWriter;
@@ -20,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.keepingrack.tagmusicplayer.MainActivity.DISPLAY_WIDTH;
 import static com.keepingrack.tagmusicplayer.MainActivity.displayMusicNames;
 import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
 import static com.keepingrack.tagmusicplayer.MainActivity.PLAYING_MUSIC;
