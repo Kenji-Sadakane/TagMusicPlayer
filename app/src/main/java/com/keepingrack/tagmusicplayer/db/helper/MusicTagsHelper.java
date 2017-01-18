@@ -18,7 +18,7 @@ public class MusicTagsHelper {
         this.db = db;
     }
 
-    public boolean deleteAllRecords(){
+    public boolean deleteAllRecords() {
         return db.delete(TABLE_NAME, null, null) > 0;
     }
 //

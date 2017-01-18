@@ -7,6 +7,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
@@ -16,6 +17,7 @@ import static com.keepingrack.tagmusicplayer.util.Utility.*;
 public class MusicFile {
 
     public static final String MUSIC_FILE_EXTENSION = ".mp3";
+    public static final List<String> TAG_NOTHING_LIST = Arrays.asList("タグなし");
 
     private MainActivity activity;
 
@@ -38,7 +40,7 @@ public class MusicFile {
                     getMusicFiles(file.getAbsolutePath());
                 } else {
                     if (file.getName().endsWith(MUSIC_FILE_EXTENSION)) {
-                        musicItems.put(getFileKey(file), new MusicItem(file.getAbsolutePath(), file.getName(), null, null));
+                        musicItems.put(getFileKey(file), new MusicItem(file.getAbsolutePath(), file.getName(), TAG_NOTHING_LIST, null));
                     }
                 }
             }
@@ -84,7 +86,7 @@ public class MusicFile {
 
     // DBからタグ情報を取得し反映
     private void reflectMusicTagsRecord() {
-        List<MusicTagsRecord> records = activity.musicTagsLogic.selectMusicAndTags();
+        List<MusicTagsRecord> records = activity.musicTagsLogic.getAllRecords();
         for (MusicTagsRecord record : records) {
             if (musicItems.containsKey(record.getKey())) {
                 musicItems.get(record.getKey()).setTags(stringToList(record.getTags(), SEPARATE));

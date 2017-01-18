@@ -14,6 +14,7 @@ import java.util.List;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
 import static com.keepingrack.tagmusicplayer.MainActivity.tagKinds;
+import static com.keepingrack.tagmusicplayer.MusicFile.TAG_NOTHING_LIST;
 
 public class TagInfoDialog {
 
@@ -44,6 +45,7 @@ public class TagInfoDialog {
                                     if (!tagKinds.contains(tag)) { tagKinds.add(tag); }
                                 }
                             }
+                            if (tags.isEmpty()) { tags = TAG_NOTHING_LIST; }
                             musicItems.get(key).setTags(tags);
                             activity.musicTagsLogic.update(key);
                             activity.musicField.unselectedMusic();

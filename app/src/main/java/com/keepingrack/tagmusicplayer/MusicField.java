@@ -175,9 +175,7 @@ public class MusicField {
 
     // 楽曲選択処理
     public void selectMusic(String key) throws Exception {
-        if (!SELECT_MUSIC.isEmpty()) {
-            hideTagInfo();
-        }
+        hideTagInfo();
         SELECT_MUSIC = key;
         showTagInfo();
     }
@@ -190,7 +188,8 @@ public class MusicField {
 
     // タグ情報表示
     private void showTagInfo() throws Exception {
-        if (SELECT_MUSIC.isEmpty()) {
+        MusicItem musicItem = musicItems.get(SELECT_MUSIC);
+        if (musicItem == null) {
             return;
         }
         LinearLayout row = musicItems.get(SELECT_MUSIC).getRow();
@@ -200,10 +199,11 @@ public class MusicField {
 
     // タグ情報非表示
     private void hideTagInfo() {
-        if (SELECT_MUSIC.isEmpty()) {
+        MusicItem musicItem = musicItems.get(SELECT_MUSIC);
+        if (musicItem == null) {
             return;
         }
-        LinearLayout selectedRow = musicItems.get(SELECT_MUSIC).getRow();
+        LinearLayout selectedRow = musicItem.getRow();
         if (selectedRow != null) {
             int tagFieldCount = selectedRow.getChildCount() - 2;
             if (tagFieldCount > 0) {

@@ -49,7 +49,14 @@ public class MusicTagsLogic {
         return records;
     }
 
-    public List<MusicTagsRecord> selectMusicAndTags() {
+    public List<MusicTagsRecord> getAllRecords() {
+        before();
+        List<MusicTagsRecord> records = cursorToRecords(musicTagsHelper.getAllRecords());
+        after();
+        return records;
+    }
+
+    public List<MusicTagsRecord> selectAndReflectTags() {
         before();
 
         List<MusicTagsRecord> records = cursorToRecords(musicTagsHelper.getAllRecords());

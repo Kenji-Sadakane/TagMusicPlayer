@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
             musicTagsLogic.insertAll();
         } else {
             // DBより楽曲、タグ情報取得
-            musicTagsLogic.selectMusicAndTags();
+            musicTagsLogic.selectAndReflectTags();
         }
         // 楽曲リスト(画面部品)作成
         musicField.createContents();
