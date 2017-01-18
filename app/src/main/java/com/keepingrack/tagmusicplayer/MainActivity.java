@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     };
     private static int CURRENT_PERMISSION;
 
-    private static final String BASE_DIR = "/storage/sdcard1/PRIVATE/SHARP/CM/MUSIC";
+    public static final String BASE_DIR = "/storage/sdcard1/PRIVATE/SHARP/CM/MUSIC";
 
     public static int DISPLAY_WIDTH;
     public static Map<String, MusicItem> musicItems = new LinkedHashMap<>();
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         measureDisplayWidth();
         if (doSearchMusic) {
             // 楽曲ファイル捜索
-            musicFile.readMusicFiles(BASE_DIR);
+            musicFile.readMusicFilesAndDatabase();
 //            TagInfoFile tagInfoFile = new TagInfoFile();
 //            tagInfoFile.readTagInfo();
             // DB更新

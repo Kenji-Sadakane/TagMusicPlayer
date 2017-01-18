@@ -9,7 +9,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
+import static com.keepingrack.tagmusicplayer.MainActivity.BASE_DIR;
 import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
 import static com.keepingrack.tagmusicplayer.db.helper.MusicTagsHelper.SEPARATE;
 import static com.keepingrack.tagmusicplayer.util.Utility.*;
@@ -18,6 +20,7 @@ public class MusicFile {
 
     public static final String MUSIC_FILE_EXTENSION = ".mp3";
     public static final List<String> TAG_NOTHING_LIST = Arrays.asList("タグなし");
+    private Map<String, MusicTagsRecord> musicTagsRecordMap;
 
     private MainActivity activity;
 
@@ -25,10 +28,10 @@ public class MusicFile {
         this.activity = _activity;
     }
 
-    public void readMusicFiles(String dirPath) throws Exception {
+    public void readMusicFilesAndDatabase() throws Exception {
         musicItems.clear();
-        getMusicFiles(dirPath);
-        reflectMusicTagsRecord();
+        musicTagsRecordMap = activity.musicTagsLogic.selectAllRecords();
+        getMusicFiles(BASE_DIR);
     }
 
     // ストレージから楽曲ファイルを取得
@@ -40,7 +43,10 @@ public class MusicFile {
                     getMusicFiles(file.getAbsolutePath());
                 } else {
                     if (file.getName().endsWith(MUSIC_FILE_EXTENSION)) {
-                        musicItems.put(getFileKey(file), new MusicItem(file.getAbsolutePath(), file.getName(), TAG_NOTHING_LIST, null));
+                        String key = getFileKey(file);
+                        MusicTagsRecord musicTagsRecord = musicTagsRecordMap.get(key);
+                        List<String> tags = musicTagsRecord != null ? stringToList(musicTagsRecord.getTags(), SEPARATE) : TAG_NOTHING_LIST;
+                        musicItems.put(key, new MusicItem(file.getAbsolutePath(), file.getName(), tags, null));
                     }
                 }
             }
@@ -82,15 +88,5 @@ public class MusicFile {
 //
 //        }
         return musicTitle;
-    }
-
-    // DBからタグ情報を取得し反映
-    private void reflectMusicTagsRecord() {
-        List<MusicTagsRecord> records = activity.musicTagsLogic.getAllRecords();
-        for (MusicTagsRecord record : records) {
-            if (musicItems.containsKey(record.getKey())) {
-                musicItems.get(record.getKey()).setTags(stringToList(record.getTags(), SEPARATE));
-            }
-        }
     }
 }

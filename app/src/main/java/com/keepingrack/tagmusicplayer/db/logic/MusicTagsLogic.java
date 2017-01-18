@@ -10,10 +10,9 @@ import com.keepingrack.tagmusicplayer.db.helper.MusicTagsHelper;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
 import static com.keepingrack.tagmusicplayer.MainActivity.tagKinds;
@@ -49,14 +48,25 @@ public class MusicTagsLogic {
         return records;
     }
 
-    public List<MusicTagsRecord> getAllRecords() {
-        before();
-        List<MusicTagsRecord> records = cursorToRecords(musicTagsHelper.getAllRecords());
-        after();
-        return records;
+    private Map<String, MusicTagsRecord> cursorToRecordMap(Cursor cursor) {
+        Map<String, MusicTagsRecord> recordMap = new HashMap<>();
+        cursor.moveToFirst();
+        for (int i = 0; i < cursor.getCount(); i++) {
+            MusicTagsRecord record = new MusicTagsRecord(cursor.getString(0), cursor.getString(1), cursor.getString(2));
+            recordMap.put(cursor.getString(0), record);
+            cursor.moveToNext();
+        }
+        return recordMap;
     }
 
-    public List<MusicTagsRecord> selectAndReflectTags() {
+    public Map<String, MusicTagsRecord> selectAllRecords() {
+        before();
+        Map<String, MusicTagsRecord> recordMap = cursorToRecordMap(musicTagsHelper.getAllRecords());
+        after();
+        return recordMap;
+    }
+
+    public void selectAndReflectTags() {
         before();
 
         List<MusicTagsRecord> records = cursorToRecords(musicTagsHelper.getAllRecords());
@@ -71,7 +81,6 @@ public class MusicTagsLogic {
         }
 
         after();
-        return records;
     }
 
     public void deleteAll() {
