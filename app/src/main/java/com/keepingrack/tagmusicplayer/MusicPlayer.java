@@ -38,26 +38,40 @@ public class MusicPlayer {
         mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                try {
-                    switch (getActionOnCompletion()) {
-                        case STOP:
-                            activity.stopMusic();
-                            break;
-                        case GO_NEXT:
-                            Integer nextTrackNo = getNextTrackNo();
-                            if (nextTrackNo == null) nextTrackNo = 0;
-                            activity.playMusic(displayMusicNames.get(nextTrackNo));
-                            break;
-                        case RESTART:
-                            startMusicPlayer(PLAYING_MUSIC);
-                            activity.musicField.scrollMusicView();
-                            break;
-                    }
-                } catch (Exception ex) {
-                    activity.musicField.outErrorMessage(ex);
-                }
+                onCompletionProcess();
             }
         });
+        mp.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mp, int what, int extra) {
+                if (activity.musicPlayerButton.isLoopStatusONE()) {
+                    activity.musicPlayerButton.clickLoopButton();
+                }
+                onCompletionProcess();
+                return true;
+            }
+        });
+    }
+
+    public void onCompletionProcess() {
+        try {
+            switch (getActionOnCompletion()) {
+                case STOP:
+                    activity.stopMusic();
+                    break;
+                case GO_NEXT:
+                    Integer nextTrackNo = getNextTrackNo();
+                    if (nextTrackNo == null) nextTrackNo = 0;
+                    activity.playMusic(displayMusicNames.get(nextTrackNo));
+                    break;
+                case RESTART:
+                    startMusicPlayer(PLAYING_MUSIC);
+                    activity.musicField.scrollMusicView();
+                    break;
+            }
+        } catch (Exception ex) {
+            activity.musicField.outErrorMessage(ex);
+        }
     }
 
     // 再生/一時停止ボタン押下時の挙動判定

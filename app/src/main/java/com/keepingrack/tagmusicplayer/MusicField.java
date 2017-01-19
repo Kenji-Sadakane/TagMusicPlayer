@@ -315,9 +315,15 @@ public class MusicField {
         });
     }
 
-    public void outErrorMessage(String str) {
+    public void outErrorMessage(final String str) {
         TextView text = (TextView) activity.findViewById(R.id.helloWorld);
-        text.setText(str);
-        text.setVisibility(View.VISIBLE);
+        text.post(new Runnable() {
+            @Override
+            public void run() {
+                TextView text = (TextView) activity.findViewById(R.id.helloWorld);
+                text.setText(str);
+                text.setVisibility(View.VISIBLE);
+            }
+        });
     }
 }
