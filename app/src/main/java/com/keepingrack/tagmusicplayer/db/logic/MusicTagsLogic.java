@@ -1,6 +1,7 @@
 package com.keepingrack.tagmusicplayer.db.logic;
 
 import android.database.Cursor;
+import android.widget.LinearLayout;
 
 import com.keepingrack.tagmusicplayer.MainActivity;
 import com.keepingrack.tagmusicplayer.MusicItem;
@@ -10,6 +11,7 @@ import com.keepingrack.tagmusicplayer.db.helper.MusicTagsHelper;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,7 +79,7 @@ public class MusicTagsLogic {
             String tags = record.getTags();
             List<String> tagArray = stringToList(tags, SEPARATE);
             tagKinds.addAll(tagArray);
-            musicItems.put(key, new MusicItem(file.getAbsolutePath(), file.getName(), tagArray, null));
+            musicItems.put(key, new MusicItem(file.getAbsolutePath(), file.getName(), tagArray, new LinearLayout(activity)));
         }
 
         after();

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
@@ -22,10 +23,10 @@ import com.keepingrack.tagmusicplayer.db.logic.MusicTagsLogic;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MainActivity extends AppCompatActivity implements OnNavigationItemSelectedListener, Runnable {
 
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     public static final String BASE_DIR = "/storage/sdcard1/PRIVATE/SHARP/CM/MUSIC";
 
     public static int DISPLAY_WIDTH;
-    public static Map<String, MusicItem> musicItems = new LinkedHashMap<>();
+    public static Map<String, MusicItem> musicItems = new ConcurrentHashMap<>();
     public static Set<String> tagKinds = new HashSet<>();
     public static List<String> displayMusicNames = new ArrayList<>();
     public static List<RelateTag> relateTags = new ArrayList<>();
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     public MusicSeekBar musicSeekBar = new MusicSeekBar(this);
     public RelateTagField relateTagField = new RelateTagField(this);
     public TagInfoDialog tagInfoDialog = new TagInfoDialog(this);
+    public Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +87,24 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
 
         try {
             // タグ、楽曲表示
-            displayContents(false);
+//            displayContents(false);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        musicTagsLogic.selectAndReflectTags();
+                        musicField.createContents();
+                        musicField.changeMusicList();
+                        musicField.unselectedMusic();
+                        if (!PLAYING_MUSIC.isEmpty()) {
+                            stopMusic();
+                        }
+                        musicPlayer.showTrackNo();
+                    } catch (Exception ex) {
+                        musicField.outErrorMessage(ex);
+                    }
+                }
+            }).start();
             //
             // listener
             setListener();
