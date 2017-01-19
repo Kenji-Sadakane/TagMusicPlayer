@@ -21,12 +21,12 @@ import android.view.WindowManager;
 import com.keepingrack.tagmusicplayer.bean.RelateTag;
 import com.keepingrack.tagmusicplayer.db.logic.MusicTagsLogic;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 public class MainActivity extends AppCompatActivity implements OnNavigationItemSelectedListener, Runnable {
 
@@ -41,9 +41,10 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
 
     public static int DISPLAY_WIDTH;
     public static Map<String, MusicItem> musicItems = new ConcurrentHashMap<>();
-    public static Set<String> tagKinds = new HashSet<>();
-    public static List<String> displayMusicNames = new ArrayList<>();
-    public static List<RelateTag> relateTags = new ArrayList<>();
+    public static Set<String> tagKinds = new CopyOnWriteArraySet<>();
+    public static List<String> musicKeys = new CopyOnWriteArrayList<>();
+    public static List<String> displayMusicNames = new CopyOnWriteArrayList<>();
+    public static List<RelateTag> relateTags = new CopyOnWriteArrayList<>();
     public static String SELECT_MUSIC = "";
     public static String PLAYING_MUSIC = "";
     public static MediaPlayer mp = new MediaPlayer();

@@ -23,6 +23,7 @@ import static com.keepingrack.tagmusicplayer.MainActivity.displayMusicNames;
 import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
 import static com.keepingrack.tagmusicplayer.MainActivity.PLAYING_MUSIC;
 import static com.keepingrack.tagmusicplayer.MainActivity.SELECT_MUSIC;
+import static com.keepingrack.tagmusicplayer.MainActivity.musicKeys;
 
 public class MusicField {
 
@@ -45,8 +46,8 @@ public class MusicField {
             @Override
             public void onScrollChanged() {
                 int scrollY = scrollView.getScrollY();
-                for (Map.Entry<String, MusicItem> musicItemMap : musicItems.entrySet()) {
-                    LinearLayout musicRow = musicItemMap.getValue().getRow();
+                for (String key : musicKeys) {
+                    LinearLayout musicRow = musicItems.get(key).getRow();
                     if (musicRow.getVisibility() != View.GONE) {
                         int rowY = (int) musicRow.getY();
                         if (scrollY - 2000 < rowY && rowY < scrollY + 2000) {
@@ -86,9 +87,8 @@ public class MusicField {
     public void createContents() throws Exception {
         clearContents();
         LinearLayout layout = (LinearLayout) activity.findViewById(R.id.linearLayout);
-        for (Map.Entry<String, MusicItem> musicItemMap : musicItems.entrySet()) {
-            String key = musicItemMap.getKey();
-            MusicItem musicItem = musicItemMap.getValue();
+        for (String key : musicKeys) {
+            MusicItem musicItem = musicItems.get(key);
             // 楽曲フィールド作成
             LinearLayout row = createMusicRow();
             LayoutParams rowParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT); // width, height
@@ -313,18 +313,17 @@ public class MusicField {
     // 表示楽曲リスト変更
     public void changeMusicList() {
         displayMusicNames.clear();
-        for (Map.Entry<String, MusicItem> musicItemMap : musicItems.entrySet()) {
-            String key = musicItemMap.getKey();
-            MusicItem musicItem = musicItemMap.getValue();
+        for (String key : musicKeys) {
+            LinearLayout row = musicItems.get(key).getRow();
             if (activity.keyWord.checkKeyWordMatch(key) && activity.relateTagField.chkRelateTagState(key)) {
                 if (displayMusicNames.size() > 20) {
-                    changeMusicVisibility(musicItem.getRow(), View.INVISIBLE);
+                    changeMusicVisibility(row, View.INVISIBLE);
                 } else {
-                    changeMusicVisibility(musicItem.getRow(), View.VISIBLE);
+                    changeMusicVisibility(row, View.VISIBLE);
                 }
                 displayMusicNames.add(key);
             } else {
-                changeMusicVisibility(musicItem.getRow(), View.GONE);
+                changeMusicVisibility(row, View.GONE);
             }
         }
         activity.shuffleMusicList.exec();

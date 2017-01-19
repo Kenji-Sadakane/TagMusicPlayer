@@ -11,12 +11,12 @@ import com.keepingrack.tagmusicplayer.db.helper.MusicTagsHelper;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
+import static com.keepingrack.tagmusicplayer.MainActivity.musicKeys;
 import static com.keepingrack.tagmusicplayer.MainActivity.tagKinds;
 import static com.keepingrack.tagmusicplayer.util.Utility.*;
 import static com.keepingrack.tagmusicplayer.db.helper.MusicTagsHelper.SEPARATE;
@@ -79,6 +79,7 @@ public class MusicTagsLogic {
             String tags = record.getTags();
             List<String> tagArray = stringToList(tags, SEPARATE);
             tagKinds.addAll(tagArray);
+            musicKeys.add(key);
             musicItems.put(key, new MusicItem(file.getAbsolutePath(), file.getName(), tagArray, new LinearLayout(activity)));
         }
 
