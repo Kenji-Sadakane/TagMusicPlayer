@@ -2,7 +2,6 @@ package com.keepingrack.tagmusicplayer;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.os.Looper;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -17,7 +16,6 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.displayMusicNames;
 import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
@@ -35,8 +33,20 @@ public class MusicField {
 
     // リスナー
     public void setListener() {
+        setOnPanelTouchListener();
         setOnScrollChangeListener();
         setOnTouchListener();
+    }
+
+    // スクロールビュータッチ時処理
+    private void setOnPanelTouchListener() {
+        ((View) activity.findViewById(R.id.grayPanel)).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // イベントの伝搬を阻止
+                return true;
+            }
+        });
     }
 
     // スクロール時処理

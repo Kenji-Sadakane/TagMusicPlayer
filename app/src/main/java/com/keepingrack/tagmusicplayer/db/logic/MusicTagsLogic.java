@@ -72,6 +72,9 @@ public class MusicTagsLogic {
         before();
 
         List<MusicTagsRecord> records = cursorToRecords(musicTagsHelper.getAllRecords());
+        tagKinds.clear();
+        musicKeys.clear();
+        musicItems.clear();
         for (MusicTagsRecord record : records) {
             String key = record.getKey();
             String filePath = record.getFilePath();

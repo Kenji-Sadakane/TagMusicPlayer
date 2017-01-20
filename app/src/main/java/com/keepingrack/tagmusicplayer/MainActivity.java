@@ -1,5 +1,6 @@
 package com.keepingrack.tagmusicplayer;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
@@ -21,6 +22,7 @@ import android.view.WindowManager;
 import com.keepingrack.tagmusicplayer.bean.RelateTag;
 import com.keepingrack.tagmusicplayer.db.logic.MusicTagsLogic;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     public static Set<String> tagKinds = new CopyOnWriteArraySet<>();
     public static List<String> musicKeys = new CopyOnWriteArrayList<>();
     public static List<String> displayMusicNames = new CopyOnWriteArrayList<>();
-    public static List<RelateTag> relateTags = new CopyOnWriteArrayList<>();
+    public static List<RelateTag> relateTags = new ArrayList<>();
     public static String SELECT_MUSIC = "";
     public static String PLAYING_MUSIC = "";
     public static MediaPlayer mp = new MediaPlayer();
@@ -89,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         try {
             // タグ、楽曲表示
 //            displayContents(false);
+            final ProgressDialog progressDialog = startLoading();
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -101,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                             stopMusic();
                         }
                         musicPlayer.showTrackNo();
+                        endLoading(progressDialog);
                     } catch (Exception ex) {
                         musicField.outErrorMessage(ex);
                     }
@@ -115,6 +119,36 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         } catch (Exception ex) {
             musicField.outErrorMessage(ex);
         }
+    }
+
+    private ProgressDialog startLoading() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                ((View) findViewById(R.id.grayPanel)).setVisibility(View.GONE);
+            }
+        });
+        ProgressDialog progressDialog = showProgressDialog();
+        return progressDialog;
+    }
+
+    private ProgressDialog showProgressDialog() {
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        return progressDialog;
+    }
+
+    private void endLoading(final ProgressDialog progressDialog) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                ((View) findViewById(R.id.grayPanel)).setVisibility(View.GONE);
+                progressDialog.dismiss();
+            }
+        });
     }
 
     private void displayContents(boolean doSearchMusic) throws Exception {
