@@ -99,11 +99,11 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                         musicTagsLogic.selectAndReflectTags();
                         musicField.createContents();
                         musicField.changeMusicList();
-                        musicField.unselectedMusic();
-                        if (!PLAYING_MUSIC.isEmpty()) {
-                            stopMusic();
-                        }
-                        musicPlayer.showTrackNo();
+//                        musicField.unselectedMusic();
+//                        if (!PLAYING_MUSIC.isEmpty()) {
+//                            stopMusic();
+//                        }
+//                        musicPlayer.showTrackNo();
                         endLoading(progressDialog);
                     } catch (Exception ex) {
                         musicField.outErrorMessage(ex);
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         handler.post(new Runnable() {
             @Override
             public void run() {
-                ((View) findViewById(R.id.grayPanel)).setVisibility(View.GONE);
+                ((View) findViewById(R.id.grayPanel)).setVisibility(View.VISIBLE);
             }
         });
         ProgressDialog progressDialog = showProgressDialog();

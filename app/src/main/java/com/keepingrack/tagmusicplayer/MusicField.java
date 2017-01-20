@@ -177,6 +177,16 @@ public class MusicField {
         });
     }
 
+    public void screenLock(final int millsecond) {
+        ((View) activity.findViewById(R.id.grayPanel)).setVisibility(View.VISIBLE);
+        activity.handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ((View) activity.findViewById(R.id.grayPanel)).setVisibility(View.GONE);
+            }
+        }, millsecond);
+    }
+
     // 1曲表示用フィールド作成
     private LinearLayout createMusicRow() {
         LinearLayout row = new LinearLayout(activity);
@@ -188,6 +198,7 @@ public class MusicField {
             @Override
             public void onClick(View v) {
                 try {
+                    screenLock(500);
                     hideKeyBoard();
                     activity.musicSeekBar.visible();
                     String key = getMusicKey((LinearLayout) v);
@@ -217,6 +228,7 @@ public class MusicField {
 
     // 楽曲選択処理
     public void selectMusic(String key) throws Exception {
+        if (key.equals(SELECT_MUSIC)) { return; }
         hideTagInfo();
         SELECT_MUSIC = key;
         showTagInfo();
@@ -235,17 +247,20 @@ public class MusicField {
             return;
         }
         LinearLayout row = musicItems.get(SELECT_MUSIC).getRow();
-        TagField tagField = new TagField(activity);
-        addTagView(row, tagField.createTagField(SELECT_MUSIC), tagField.createTagFieldParams());
+        if (row != null && row.getChildCount() < 3) {
+            TagField tagField = new TagField(activity);
+            addTagView(row, tagField.createTagField(SELECT_MUSIC), tagField.createTagFieldParams());
+        }
     }
 
     private void addTagView(final LinearLayout row, final RelativeLayout tagFieldLayout, final LinearLayout.LayoutParams tagFieldParams) {
-        activity.handler.post(new Runnable() {
-            @Override
-            public void run() {
-                row.addView(tagFieldLayout, tagFieldParams);
-            }
-        });
+//        activity.handler.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                row.addView(tagFieldLayout, tagFieldParams);
+//            }
+//        });
+        row.addView(tagFieldLayout, tagFieldParams);
     }
 
     // タグ情報非表示
@@ -261,13 +276,15 @@ public class MusicField {
     }
 
     private void removeTagView(final LinearLayout row) {
-        activity.handler.post(new Runnable() {
-            @Override
-            public void run() {
-                // 楽曲キー、タイトル以外を削除
-                row.removeViewAt(2);
-            }
-        });
+//        activity.handler.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                // 楽曲キー、タイトル以外を削除
+//                row.removeViewAt(2);
+//            }
+//        });
+        // 楽曲キー、タイトル以外を削除
+        row.removeViewAt(2);
     }
 
     // 再生楽曲の背景色を戻す
