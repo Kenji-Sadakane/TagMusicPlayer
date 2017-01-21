@@ -97,10 +97,10 @@ public class MusicTagsLogic {
 
     public void insertAll() {
         before();
-        for (Map.Entry<String, MusicItem> musicItemMap : musicItems.entrySet()) {
-            String key = musicItemMap.getKey();
-            String filePath = musicItemMap.getValue().getAbsolutePath();
-            String tags = listToString(musicItemMap.getValue().getTags(), SEPARATE);
+        for (String key :musicKeys) {
+            MusicItem musicItem = musicItems.get(key);
+            String filePath = musicItem.getAbsolutePath();
+            String tags = listToString(musicItem.getTags(), SEPARATE);
             musicTagsHelper.insertRecord(key, filePath, tags);
         }
         after();

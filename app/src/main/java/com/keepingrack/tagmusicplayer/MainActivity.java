@@ -22,7 +22,6 @@ import android.view.WindowManager;
 import com.keepingrack.tagmusicplayer.bean.RelateTag;
 import com.keepingrack.tagmusicplayer.db.logic.MusicTagsLogic;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -46,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     public static Set<String> tagKinds = new CopyOnWriteArraySet<>();
     public static List<String> musicKeys = new CopyOnWriteArrayList<>();
     public static List<String> displayMusicNames = new CopyOnWriteArrayList<>();
-    public static List<RelateTag> relateTags = new ArrayList<>();
+    public static List<RelateTag> relateTags = new CopyOnWriteArrayList<>();
     public static String SELECT_MUSIC = "";
     public static String PLAYING_MUSIC = "";
     public static MediaPlayer mp = new MediaPlayer();
@@ -151,33 +150,63 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         });
     }
 
-    private void displayContents(boolean doSearchMusic) throws Exception {
-        measureDisplayWidth();
-        if (doSearchMusic) {
-            // 楽曲ファイル捜索
-            musicFile.readMusicFilesAndDatabase();
-//            TagInfoFile tagInfoFile = new TagInfoFile();
-//            tagInfoFile.readTagInfo();
-            // DB更新
-            musicTagsLogic.deleteAll();
-            musicTagsLogic.insertAll();
-        } else {
-            // DBより楽曲、タグ情報取得
-            musicTagsLogic.selectAndReflectTags();
+    private void update() {
+        try {
+            if (!PLAYING_MUSIC.isEmpty()) {
+                stopMusic();
+            }
+            final ProgressDialog progressDialog = startLoading();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        // 楽曲ファイル捜索
+                        musicFile.readMusicFilesAndDatabase();
+                        // DB更新
+                        musicTagsLogic.deleteAll();
+                        musicTagsLogic.insertAll();
+                        // 楽曲リスト(画面部品)作成
+                        musicField.createContents();
+                        // キーワードに応じて表示内容切替
+                        musicField.changeMusicList();
+                        endLoading(progressDialog);
+                    } catch (Exception ex) {
+                        musicField.outErrorMessage(ex);
+                    }
+                }
+            }).start();
+        } catch (Exception ex) {
+            musicField.outErrorMessage(ex);
         }
-        // 楽曲リスト(画面部品)作成
-        musicField.createContents();
-        // キーワードに応じて表示内容切替
-        musicField.changeMusicList();
-        // 楽曲非選択化
-        musicField.unselectedMusic();
-        // 楽曲再生停止
-        if (!PLAYING_MUSIC.isEmpty()) {
-            stopMusic();
-        }
-        // トラック番号表示
-        musicPlayer.showTrackNo();
     }
+
+//    private void displayContents(boolean doSearchMusic) throws Exception {
+//        measureDisplayWidth();
+//        if (doSearchMusic) {
+//            // 楽曲ファイル捜索
+//            musicFile.readMusicFilesAndDatabase();
+////            TagInfoFile tagInfoFile = new TagInfoFile();
+////            tagInfoFile.readTagInfo();
+//            // DB更新
+//            musicTagsLogic.deleteAll();
+//            musicTagsLogic.insertAll();
+//        } else {
+//            // DBより楽曲、タグ情報取得
+//            musicTagsLogic.selectAndReflectTags();
+//        }
+//        // 楽曲リスト(画面部品)作成
+//        musicField.createContents();
+//        // キーワードに応じて表示内容切替
+//        musicField.changeMusicList();
+//        // 楽曲非選択化
+//        musicField.unselectedMusic();
+//        // 楽曲再生停止
+//        if (!PLAYING_MUSIC.isEmpty()) {
+//            stopMusic();
+//        }
+//        // トラック番号表示
+//        musicPlayer.showTrackNo();
+//    }
 
     private void setListener() {
         // テキストボックス
@@ -391,7 +420,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                 return true;
             } else if (id == R.id.action_update) {
                 // 更新ボタン押下
-                displayContents(true);
+                update();
                 return true;
             } else if (id == R.id.action_exit) {
                 // 終了ボタン押下

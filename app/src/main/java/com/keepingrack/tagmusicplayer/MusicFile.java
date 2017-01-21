@@ -13,6 +13,7 @@ import java.util.Map;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.BASE_DIR;
 import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
+import static com.keepingrack.tagmusicplayer.MainActivity.musicKeys;
 import static com.keepingrack.tagmusicplayer.MainActivity.tagKinds;
 import static com.keepingrack.tagmusicplayer.db.helper.MusicTagsHelper.SEPARATE;
 import static com.keepingrack.tagmusicplayer.util.Utility.*;
@@ -30,6 +31,8 @@ public class MusicFile {
     }
 
     public void readMusicFilesAndDatabase() throws Exception {
+        tagKinds.clear();
+        musicKeys.clear();
         musicItems.clear();
         musicTagsRecordMap = activity.musicTagsLogic.selectAllRecords();
         getMusicFiles(BASE_DIR);
@@ -48,6 +51,7 @@ public class MusicFile {
                         MusicTagsRecord musicTagsRecord = musicTagsRecordMap.get(key);
                         List<String> tags = musicTagsRecord != null ? stringToList(musicTagsRecord.getTags(), SEPARATE) : TAG_NOTHING_LIST;
                         tagKinds.addAll(tags);
+                        musicKeys.add(key);
                         musicItems.put(key, new MusicItem(file.getAbsolutePath(), file.getName(), tags, null));
                     }
                 }

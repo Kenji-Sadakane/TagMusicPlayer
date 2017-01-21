@@ -146,7 +146,10 @@ public class RelateTagField {
 
     // 関連タグリストをソート
     private void sortRelateTags() {
-        Collections.sort(relateTags, new Comparator<RelateTag>() {
+        if (relateTags.isEmpty()) { return; }
+        List<RelateTag> tmpList = new ArrayList<>();
+        tmpList.addAll(relateTags);
+        Collections.sort(tmpList, new Comparator<RelateTag>() {
             @Override
             public int compare(RelateTag a, RelateTag b) {
                 // count(曲数)の降順
@@ -159,6 +162,8 @@ public class RelateTagField {
                 }
             }
         });
+        relateTags.clear();
+        relateTags.addAll(tmpList);
     }
 
     // 関連タグリストから抽出
