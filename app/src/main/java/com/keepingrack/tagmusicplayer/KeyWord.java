@@ -1,7 +1,6 @@
 package com.keepingrack.tagmusicplayer;
 
 import android.animation.Animator;
-import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,11 +9,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.SELECT_MUSIC;
 import static com.keepingrack.tagmusicplayer.MainActivity.displayMusicNames;

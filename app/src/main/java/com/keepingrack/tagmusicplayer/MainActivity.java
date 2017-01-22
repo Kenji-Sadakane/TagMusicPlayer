@@ -1,10 +1,12 @@
 package com.keepingrack.tagmusicplayer;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
@@ -16,16 +18,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.widget.EditText;
 
 import com.keepingrack.tagmusicplayer.bean.RelateTag;
 import com.keepingrack.tagmusicplayer.db.logic.MusicTagsLogic;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 public class MainActivity extends AppCompatActivity implements OnNavigationItemSelectedListener, Runnable {
 
@@ -39,10 +42,11 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     public static final String BASE_DIR = "/storage/sdcard1/PRIVATE/SHARP/CM/MUSIC";
 
     public static int DISPLAY_WIDTH;
-    public static Map<String, MusicItem> musicItems = new LinkedHashMap<>();
-    public static Set<String> tagKinds = new HashSet<>();
-    public static List<String> displayMusicNames = new ArrayList<>();
-    public static List<RelateTag> relateTags = new ArrayList<>();
+    public static Map<String, MusicItem> musicItems = new ConcurrentHashMap<>();
+    public static Set<String> tagKinds = new CopyOnWriteArraySet<>();
+    public static List<String> musicKeys = new CopyOnWriteArrayList<>();
+    public static List<String> displayMusicNames = new CopyOnWriteArrayList<>();
+    public static List<RelateTag> relateTags = new CopyOnWriteArrayList<>();
     public static String SELECT_MUSIC = "";
     public static String PLAYING_MUSIC = "";
     public static MediaPlayer mp = new MediaPlayer();
@@ -58,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     public MusicSeekBar musicSeekBar = new MusicSeekBar(this);
     public RelateTagField relateTagField = new RelateTagField(this);
     public TagInfoDialog tagInfoDialog = new TagInfoDialog(this);
+    public Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +90,21 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
 
         try {
             // タグ、楽曲表示
-            displayContents(false);
+//            displayContents(false);
+            final ProgressDialog progressDialog = startLoading();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        musicTagsLogic.selectAndReflectTags();
+                        musicField.createContents();
+                        musicField.changeMusicList();
+                        endLoading(progressDialog);
+                    } catch (Exception ex) {
+                        musicField.outErrorMessage(ex);
+                    }
+                }
+            }).start();
             //
             // listener
             setListener();
@@ -97,33 +116,95 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         }
     }
 
-    private void displayContents(boolean doSearchMusic) throws Exception {
-        measureDisplayWidth();
-        if (doSearchMusic) {
-            // 楽曲ファイル捜索
-            musicFile.readMusicFilesAndDatabase();
-//            TagInfoFile tagInfoFile = new TagInfoFile();
-//            tagInfoFile.readTagInfo();
-            // DB更新
-            musicTagsLogic.deleteAll();
-            musicTagsLogic.insertAll();
-        } else {
-            // DBより楽曲、タグ情報取得
-            musicTagsLogic.selectAndReflectTags();
-        }
-        // 楽曲リスト(画面部品)作成
-        musicField.createContents();
-        // キーワードに応じて表示内容切替
-        musicField.changeMusicList();
-        // 楽曲非選択化
-        musicField.unselectedMusic();
-        // 楽曲再生停止
-        if (!PLAYING_MUSIC.isEmpty()) {
-            stopMusic();
-        }
-        // トラック番号表示
-        musicPlayer.showTrackNo();
+    private ProgressDialog startLoading() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                ((View) findViewById(R.id.grayPanel)).setVisibility(View.VISIBLE);
+            }
+        });
+        ProgressDialog progressDialog = showProgressDialog();
+        return progressDialog;
     }
+
+    private ProgressDialog showProgressDialog() {
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        return progressDialog;
+    }
+
+    private void endLoading(final ProgressDialog progressDialog) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                ((View) findViewById(R.id.grayPanel)).setVisibility(View.GONE);
+                progressDialog.dismiss();
+            }
+        });
+    }
+
+    private void update() {
+        try {
+            if (!PLAYING_MUSIC.isEmpty()) {
+                stopMusic();
+            }
+            final ProgressDialog progressDialog = startLoading();
+            ((EditText) findViewById(R.id.editText)).setText("");
+            relateTagField.initializeTagField();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        // 楽曲ファイル捜索
+                        musicFile.readMusicFilesAndDatabase();
+                        // DB更新
+                        musicTagsLogic.deleteAll();
+                        musicTagsLogic.insertAll();
+                        // 楽曲リスト(画面部品)作成
+                        musicField.createContents();
+                        musicPlayer.showTrackNo();
+                    } catch (Exception ex) {
+                        musicField.outErrorMessage(ex);
+                    } finally {
+                        endLoading(progressDialog);
+                    }
+                }
+            }).start();
+        } catch (Exception ex) {
+            musicField.outErrorMessage(ex);
+        }
+    }
+
+//    private void displayContents(boolean doSearchMusic) throws Exception {
+//        measureDisplayWidth();
+//        if (doSearchMusic) {
+//            // 楽曲ファイル捜索
+//            musicFile.readMusicFilesAndDatabase();
+////            TagInfoFile tagInfoFile = new TagInfoFile();
+////            tagInfoFile.readTagInfo();
+//            // DB更新
+//            musicTagsLogic.deleteAll();
+//            musicTagsLogic.insertAll();
+//        } else {
+//            // DBより楽曲、タグ情報取得
+//            musicTagsLogic.selectAndReflectTags();
+//        }
+//        // 楽曲リスト(画面部品)作成
+//        musicField.createContents();
+//        // キーワードに応じて表示内容切替
+//        musicField.changeMusicList();
+//        // 楽曲非選択化
+//        musicField.unselectedMusic();
+//        // 楽曲再生停止
+//        if (!PLAYING_MUSIC.isEmpty()) {
+//            stopMusic();
+//        }
+//        // トラック番号表示
+//        musicPlayer.showTrackNo();
+//    }
 
     private void setListener() {
         // テキストボックス
@@ -337,7 +418,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                 return true;
             } else if (id == R.id.action_update) {
                 // 更新ボタン押下
-                displayContents(true);
+                update();
                 return true;
             } else if (id == R.id.action_exit) {
                 // 終了ボタン押下

@@ -98,6 +98,9 @@ public class RelateTagField {
     public void setRelateTagFieldHeight() {
         ((ScrollView) activity.findViewById(R.id.relateTagView)).getLayoutParams().height = calcRelateTagFieldHeight();
     }
+    public void setRelateTagFieldHeight(int height) {
+        ((ScrollView) activity.findViewById(R.id.relateTagView)).getLayoutParams().height = height;
+    }
 
     // 関連タグフィールドの表示幅を算出
     public int calcRelateTagFieldHeight() {
@@ -146,7 +149,10 @@ public class RelateTagField {
 
     // 関連タグリストをソート
     private void sortRelateTags() {
-        Collections.sort(relateTags, new Comparator<RelateTag>() {
+        if (relateTags.isEmpty()) { return; }
+        List<RelateTag> tmpList = new ArrayList<>();
+        tmpList.addAll(relateTags);
+        Collections.sort(tmpList, new Comparator<RelateTag>() {
             @Override
             public int compare(RelateTag a, RelateTag b) {
                 // count(曲数)の降順
@@ -159,6 +165,8 @@ public class RelateTagField {
                 }
             }
         });
+        relateTags.clear();
+        relateTags.addAll(tmpList);
     }
 
     // 関連タグリストから抽出
@@ -288,9 +296,15 @@ public class RelateTagField {
 
     public void hideRelateTagField() {
         ScrollView relateTagField = (ScrollView) activity.findViewById(R.id.relateTagView);
-        setRelateTagFieldHeight();
+        setRelateTagFieldHeight(0);
         relateTagField.setVisibility(View.GONE);
         ((TextView) activity.findViewById(R.id.switchRelateTagText)).setText(R.string.show_relate_tag);
         isRelateTagShow = false;
+    }
+
+    public void initializeTagField() {
+        removeRelateTagField();
+        hideRelateTagField();
+        activity.findViewById(R.id.switchRelateTagText).setVisibility(View.GONE);
     }
 }

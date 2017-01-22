@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ import static com.keepingrack.tagmusicplayer.MainActivity.displayMusicNames;
 import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
 import static com.keepingrack.tagmusicplayer.MainActivity.PLAYING_MUSIC;
 import static com.keepingrack.tagmusicplayer.MainActivity.SELECT_MUSIC;
+import static com.keepingrack.tagmusicplayer.MainActivity.musicKeys;
 
 public class MusicField {
 
@@ -31,8 +33,20 @@ public class MusicField {
 
     // リスナー
     public void setListener() {
+        setOnPanelTouchListener();
         setOnScrollChangeListener();
         setOnTouchListener();
+    }
+
+    // スクロールビュータッチ時処理
+    private void setOnPanelTouchListener() {
+        ((View) activity.findViewById(R.id.grayPanel)).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // イベントの伝搬を阻止
+                return true;
+            }
+        });
     }
 
     // スクロール時処理
@@ -42,8 +56,8 @@ public class MusicField {
             @Override
             public void onScrollChanged() {
                 int scrollY = scrollView.getScrollY();
-                for (Map.Entry<String, MusicItem> musicItemMap : musicItems.entrySet()) {
-                    LinearLayout musicRow = musicItemMap.getValue().getRow();
+                for (String key : musicKeys) {
+                    LinearLayout musicRow = musicItems.get(key).getRow();
                     if (musicRow.getVisibility() != View.GONE) {
                         int rowY = (int) musicRow.getY();
                         if (scrollY - 2000 < rowY && rowY < scrollY + 2000) {
@@ -83,9 +97,8 @@ public class MusicField {
     public void createContents() throws Exception {
         clearContents();
         LinearLayout layout = (LinearLayout) activity.findViewById(R.id.linearLayout);
-        for (Map.Entry<String, MusicItem> musicItemMap : musicItems.entrySet()) {
-            String key = musicItemMap.getKey();
-            MusicItem musicItem = musicItemMap.getValue();
+        for (String key : musicKeys) {
+            MusicItem musicItem = musicItems.get(key);
             // 楽曲フィールド作成
             LinearLayout row = createMusicRow();
             LayoutParams rowParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT); // width, height
@@ -94,7 +107,7 @@ public class MusicField {
             if (layout.getChildCount() > 20) {
                 row.setVisibility(View.INVISIBLE);
             }
-            layout.addView(row, rowParams);
+            addMusicRow(row, rowParams);
             // 共通変数設定
             if (!displayMusicNames.contains(key)) { displayMusicNames.add(key); }
             musicItem.setRow(row);
@@ -103,7 +116,17 @@ public class MusicField {
         // 余白追加
         TextView whiteSpace = new TextView(activity);
         whiteSpace.setHeight(350);
-        layout.addView(whiteSpace);
+        addWhiteSpaceView(whiteSpace);
+    }
+
+    private void addMusicRow(final LinearLayout row, final LayoutParams rowParams) {
+        final LinearLayout layout = (LinearLayout) activity.findViewById(R.id.linearLayout);
+        activity.handler.post(new Runnable() {
+            @Override
+            public void run() {
+                layout.addView(row, rowParams);
+            }
+        });
     }
 
     // キー表示用TextView(非表示)作成
@@ -122,17 +145,46 @@ public class MusicField {
         return musicText;
     }
 
+    private void addWhiteSpaceView(final TextView whiteSpace) {
+        final LinearLayout layout = (LinearLayout) activity.findViewById(R.id.linearLayout);
+        activity.handler.post(new Runnable() {
+            @Override
+            public void run() {
+                layout.addView(whiteSpace);
+            }
+        });
+    }
+
     // スクロールビュー内コンテンツをクリア
     private void clearContents() {
-        LinearLayout layout = (LinearLayout) activity.findViewById(R.id.linearLayout);
-        if (layout.getChildCount() > 0) {
-            layout.removeAllViews();
-        }
+        removeAllMusicRow();
         displayMusicNames.clear();
         for (Map.Entry<String, MusicItem> musicItemMap : musicItems.entrySet()) {
             MusicItem musicItem = musicItemMap.getValue();
-            musicItem.setRow(null);
+            musicItem.setRow(null); // この処理いる？
         }
+    }
+
+    private void removeAllMusicRow() {
+        final LinearLayout layout = (LinearLayout) activity.findViewById(R.id.linearLayout);
+        activity.handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (layout.getChildCount() > 0) {
+                    layout.removeAllViews();
+                }
+            }
+        });
+    }
+
+    public void screenLock(final int millsecond) {
+        ((View) activity.findViewById(R.id.grayPanel)).setVisibility(View.VISIBLE);
+        activity.handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ((View) activity.findViewById(R.id.grayPanel)).setVisibility(View.GONE);
+            }
+        }, millsecond);
     }
 
     // 1曲表示用フィールド作成
@@ -146,6 +198,7 @@ public class MusicField {
             @Override
             public void onClick(View v) {
                 try {
+                    screenLock(500);
                     hideKeyBoard();
                     activity.musicSeekBar.visible();
                     String key = getMusicKey((LinearLayout) v);
@@ -175,6 +228,7 @@ public class MusicField {
 
     // 楽曲選択処理
     public void selectMusic(String key) throws Exception {
+        if (key.equals(SELECT_MUSIC)) { return; }
         hideTagInfo();
         SELECT_MUSIC = key;
         showTagInfo();
@@ -193,8 +247,20 @@ public class MusicField {
             return;
         }
         LinearLayout row = musicItems.get(SELECT_MUSIC).getRow();
-        TagField tagField = new TagField(activity);
-        row.addView(tagField.createTagField(SELECT_MUSIC), tagField.createTagFieldParams());
+        if (row != null && row.getChildCount() < 3) {
+            TagField tagField = new TagField(activity);
+            addTagView(row, tagField.createTagField(SELECT_MUSIC), tagField.createTagFieldParams());
+        }
+    }
+
+    private void addTagView(final LinearLayout row, final RelativeLayout tagFieldLayout, final LinearLayout.LayoutParams tagFieldParams) {
+//        activity.handler.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                row.addView(tagFieldLayout, tagFieldParams);
+//            }
+//        });
+        row.addView(tagFieldLayout, tagFieldParams);
     }
 
     // タグ情報非表示
@@ -204,32 +270,56 @@ public class MusicField {
             return;
         }
         LinearLayout selectedRow = musicItem.getRow();
-        if (selectedRow != null) {
-            int tagFieldCount = selectedRow.getChildCount() - 2;
-            if (tagFieldCount > 0) {
-                for (int i = 0; i < tagFieldCount; i++) {
-                    // 楽曲キー、タイトル以外を削除
-                    selectedRow.removeViewAt(2);
-                }
-            }
+        if (selectedRow != null && selectedRow.getChildCount() > 2) {
+            removeTagView(selectedRow);
         }
+    }
+
+    private void removeTagView(final LinearLayout row) {
+//        activity.handler.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                // 楽曲キー、タイトル以外を削除
+//                row.removeViewAt(2);
+//            }
+//        });
+        // 楽曲キー、タイトル以外を削除
+        row.removeViewAt(2);
     }
 
     // 再生楽曲の背景色を戻す
     public void resetMusicRowBackGround() {
-        if (!PLAYING_MUSIC.isEmpty()) {
-            musicItems.get(PLAYING_MUSIC).getRow().setBackgroundResource(R.drawable.normal_row);
+        if (!PLAYING_MUSIC.isEmpty() && musicItems.get(PLAYING_MUSIC) != null) {
+            final LinearLayout row = musicItems.get(PLAYING_MUSIC).getRow();
+            activity.handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (row != null) {
+                        row.setBackgroundResource(R.drawable.normal_row);
+                    }
+                }
+            });
         }
     }
 
     // 再生楽曲の背景色を変える
     public void setMusicRowBackGround() {
-        musicItems.get(PLAYING_MUSIC).getRow().setBackgroundResource(R.drawable.selected_row);
+        if (!PLAYING_MUSIC.isEmpty() && musicItems.get(PLAYING_MUSIC) != null) {
+            final LinearLayout row = musicItems.get(PLAYING_MUSIC).getRow();
+            activity.handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (row != null) {
+                        row.setBackgroundResource(R.drawable.selected_row);
+                    }
+                }
+            });
+        }
     }
 
     // 楽曲の表示切り替え
     public void changeMusicVisibility(final LinearLayout layout, final int visibility) {
-        layout.post(new Runnable() {
+        activity.handler.post(new Runnable() {
             @Override
             public void run() {
                 layout.setVisibility(visibility);
@@ -250,18 +340,17 @@ public class MusicField {
     // 表示楽曲リスト変更
     public void changeMusicList() {
         displayMusicNames.clear();
-        for (Map.Entry<String, MusicItem> musicItemMap : musicItems.entrySet()) {
-            String key = musicItemMap.getKey();
-            MusicItem musicItem = musicItemMap.getValue();
+        for (String key : musicKeys) {
+            LinearLayout row = musicItems.get(key).getRow();
             if (activity.keyWord.checkKeyWordMatch(key) && activity.relateTagField.chkRelateTagState(key)) {
                 if (displayMusicNames.size() > 20) {
-                    changeMusicVisibility(musicItem.getRow(), View.INVISIBLE);
+                    changeMusicVisibility(row, View.INVISIBLE);
                 } else {
-                    changeMusicVisibility(musicItem.getRow(), View.VISIBLE);
+                    changeMusicVisibility(row, View.VISIBLE);
                 }
                 displayMusicNames.add(key);
             } else {
-                changeMusicVisibility(musicItem.getRow(), View.GONE);
+                changeMusicVisibility(row, View.GONE);
             }
         }
         activity.shuffleMusicList.exec();
@@ -300,8 +389,7 @@ public class MusicField {
 
     // エラーメッセージ表示
     public void outErrorMessage(final Exception ex) {
-        TextView text = (TextView) activity.findViewById(R.id.helloWorld);
-        text.post(new Runnable() {
+        activity.handler.post(new Runnable() {
             @Override
             public void run() {
                 TextView text = (TextView) activity.findViewById(R.id.helloWorld);
@@ -316,12 +404,22 @@ public class MusicField {
     }
 
     public void outErrorMessage(final String str) {
-        TextView text = (TextView) activity.findViewById(R.id.helloWorld);
-        text.post(new Runnable() {
+        activity.handler.post(new Runnable() {
             @Override
             public void run() {
                 TextView text = (TextView) activity.findViewById(R.id.helloWorld);
                 text.setText(str);
+                text.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    public void addErrorMessage(final String str) {
+        activity.handler.post(new Runnable() {
+            @Override
+            public void run() {
+                TextView text = (TextView) activity.findViewById(R.id.helloWorld);
+                text.setText(text.getText() + str);
                 text.setVisibility(View.VISIBLE);
             }
         });

@@ -1,6 +1,7 @@
 package com.keepingrack.tagmusicplayer.db.logic;
 
 import android.database.Cursor;
+import android.widget.LinearLayout;
 
 import com.keepingrack.tagmusicplayer.MainActivity;
 import com.keepingrack.tagmusicplayer.MusicItem;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
+import static com.keepingrack.tagmusicplayer.MainActivity.musicKeys;
 import static com.keepingrack.tagmusicplayer.MainActivity.tagKinds;
 import static com.keepingrack.tagmusicplayer.util.Utility.*;
 import static com.keepingrack.tagmusicplayer.db.helper.MusicTagsHelper.SEPARATE;
@@ -70,6 +72,9 @@ public class MusicTagsLogic {
         before();
 
         List<MusicTagsRecord> records = cursorToRecords(musicTagsHelper.getAllRecords());
+        tagKinds.clear();
+        musicKeys.clear();
+        musicItems.clear();
         for (MusicTagsRecord record : records) {
             String key = record.getKey();
             String filePath = record.getFilePath();
@@ -77,7 +82,8 @@ public class MusicTagsLogic {
             String tags = record.getTags();
             List<String> tagArray = stringToList(tags, SEPARATE);
             tagKinds.addAll(tagArray);
-            musicItems.put(key, new MusicItem(file.getAbsolutePath(), file.getName(), tagArray, null));
+            musicKeys.add(key);
+            musicItems.put(key, new MusicItem(file.getAbsolutePath(), file.getName(), tagArray, new LinearLayout(activity)));
         }
 
         after();
@@ -91,10 +97,10 @@ public class MusicTagsLogic {
 
     public void insertAll() {
         before();
-        for (Map.Entry<String, MusicItem> musicItemMap : musicItems.entrySet()) {
-            String key = musicItemMap.getKey();
-            String filePath = musicItemMap.getValue().getAbsolutePath();
-            String tags = listToString(musicItemMap.getValue().getTags(), SEPARATE);
+        for (String key :musicKeys) {
+            MusicItem musicItem = musicItems.get(key);
+            String filePath = musicItem.getAbsolutePath();
+            String tags = listToString(musicItem.getTags(), SEPARATE);
             musicTagsHelper.insertRecord(key, filePath, tags);
         }
         after();

@@ -11,6 +11,7 @@ import java.util.Map;
 import static com.keepingrack.tagmusicplayer.MainActivity.displayMusicNames;
 import static com.keepingrack.tagmusicplayer.MainActivity.PLAYING_MUSIC;
 import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
+import static com.keepingrack.tagmusicplayer.MainActivity.musicKeys;
 
 public class ShuffleMusicList {
 
@@ -39,9 +40,9 @@ public class ShuffleMusicList {
 
     public void musicOrderDefault() {
         List<String> tmpList = new ArrayList<>();
-        for (Map.Entry<String, MusicItem> musicItemMap : musicItems.entrySet()) {
-            if (displayMusicNames.contains(musicItemMap.getKey())) {
-                tmpList.add(musicItemMap.getKey());
+        for (String key : musicKeys) {
+            if (displayMusicNames.contains(key)) {
+                tmpList.add(key);
             }
         }
         displayMusicNames = tmpList;

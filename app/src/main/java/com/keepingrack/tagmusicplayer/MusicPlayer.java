@@ -220,7 +220,7 @@ public class MusicPlayer {
     }
 
     public void showTrackNo(final TextView currentTrackText, final int currentTrackNo) {
-        currentTrackText.post(new Runnable() {
+        activity.handler.post(new Runnable() {
             @Override
             public void run() {
                 currentTrackText.setText(currentTrackNo + " / " + displayMusicNames.size());
