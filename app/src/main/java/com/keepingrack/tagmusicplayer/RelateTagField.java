@@ -98,6 +98,9 @@ public class RelateTagField {
     public void setRelateTagFieldHeight() {
         ((ScrollView) activity.findViewById(R.id.relateTagView)).getLayoutParams().height = calcRelateTagFieldHeight();
     }
+    public void setRelateTagFieldHeight(int height) {
+        ((ScrollView) activity.findViewById(R.id.relateTagView)).getLayoutParams().height = height;
+    }
 
     // 関連タグフィールドの表示幅を算出
     public int calcRelateTagFieldHeight() {
@@ -293,9 +296,15 @@ public class RelateTagField {
 
     public void hideRelateTagField() {
         ScrollView relateTagField = (ScrollView) activity.findViewById(R.id.relateTagView);
-        setRelateTagFieldHeight();
+        setRelateTagFieldHeight(0);
         relateTagField.setVisibility(View.GONE);
         ((TextView) activity.findViewById(R.id.switchRelateTagText)).setText(R.string.show_relate_tag);
         isRelateTagShow = false;
+    }
+
+    public void initializeTagField() {
+        removeRelateTagField();
+        hideRelateTagField();
+        activity.findViewById(R.id.switchRelateTagText).setVisibility(View.GONE);
     }
 }

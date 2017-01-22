@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.widget.EditText;
 
 import com.keepingrack.tagmusicplayer.bean.RelateTag;
 import com.keepingrack.tagmusicplayer.db.logic.MusicTagsLogic;
@@ -98,11 +99,6 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                         musicTagsLogic.selectAndReflectTags();
                         musicField.createContents();
                         musicField.changeMusicList();
-//                        musicField.unselectedMusic();
-//                        if (!PLAYING_MUSIC.isEmpty()) {
-//                            stopMusic();
-//                        }
-//                        musicPlayer.showTrackNo();
                         endLoading(progressDialog);
                     } catch (Exception ex) {
                         musicField.outErrorMessage(ex);
@@ -156,6 +152,8 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                 stopMusic();
             }
             final ProgressDialog progressDialog = startLoading();
+            ((EditText) findViewById(R.id.editText)).setText("");
+            relateTagField.initializeTagField();
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -167,11 +165,11 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                         musicTagsLogic.insertAll();
                         // 楽曲リスト(画面部品)作成
                         musicField.createContents();
-                        // キーワードに応じて表示内容切替
-                        musicField.changeMusicList();
-                        endLoading(progressDialog);
+                        musicPlayer.showTrackNo();
                     } catch (Exception ex) {
                         musicField.outErrorMessage(ex);
+                    } finally {
+                        endLoading(progressDialog);
                     }
                 }
             }).start();
