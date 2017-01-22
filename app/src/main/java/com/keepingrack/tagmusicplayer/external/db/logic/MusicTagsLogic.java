@@ -1,13 +1,13 @@
-package com.keepingrack.tagmusicplayer.db.logic;
+package com.keepingrack.tagmusicplayer.external.db.logic;
 
 import android.database.Cursor;
 import android.widget.LinearLayout;
 
 import com.keepingrack.tagmusicplayer.MainActivity;
 import com.keepingrack.tagmusicplayer.MusicItem;
-import com.keepingrack.tagmusicplayer.db.DBAdapter;
-import com.keepingrack.tagmusicplayer.db.entity.MusicTagsRecord;
-import com.keepingrack.tagmusicplayer.db.helper.MusicTagsHelper;
+import com.keepingrack.tagmusicplayer.external.db.DBAdapter;
+import com.keepingrack.tagmusicplayer.external.db.entity.MusicTagsRecord;
+import com.keepingrack.tagmusicplayer.external.db.helper.MusicTagsHelper;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
 import static com.keepingrack.tagmusicplayer.MainActivity.musicKeys;
 import static com.keepingrack.tagmusicplayer.MainActivity.tagKinds;
 import static com.keepingrack.tagmusicplayer.util.Utility.*;
-import static com.keepingrack.tagmusicplayer.db.helper.MusicTagsHelper.SEPARATE;
+import static com.keepingrack.tagmusicplayer.external.db.helper.MusicTagsHelper.SEPARATE;
 
 public class MusicTagsLogic {
 

@@ -1,13 +1,13 @@
-package com.keepingrack.tagmusicplayer.db;
+package com.keepingrack.tagmusicplayer.external.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import static com.keepingrack.tagmusicplayer.db.helper.MusicTagsHelper.COL_FILE_PATH;
-import static com.keepingrack.tagmusicplayer.db.helper.MusicTagsHelper.COL_KEY;
-import static com.keepingrack.tagmusicplayer.db.helper.MusicTagsHelper.COL_TAGS;
-import static com.keepingrack.tagmusicplayer.db.helper.MusicTagsHelper.TABLE_NAME;
+import static com.keepingrack.tagmusicplayer.external.db.helper.MusicTagsHelper.COL_FILE_PATH;
+import static com.keepingrack.tagmusicplayer.external.db.helper.MusicTagsHelper.COL_KEY;
+import static com.keepingrack.tagmusicplayer.external.db.helper.MusicTagsHelper.COL_TAGS;
+import static com.keepingrack.tagmusicplayer.external.db.helper.MusicTagsHelper.TABLE_NAME;
 
 public class DBAdapter {
     static final String DATABASE_NAME = "tagMusicPlayer.db";

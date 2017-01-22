@@ -1,4 +1,4 @@
-package com.keepingrack.tagmusicplayer.db.entity;
+package com.keepingrack.tagmusicplayer.external.db.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

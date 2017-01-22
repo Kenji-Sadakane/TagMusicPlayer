@@ -1,4 +1,4 @@
-package com.keepingrack.tagmusicplayer.db.helper;
+package com.keepingrack.tagmusicplayer.external.db.helper;
 
 import android.content.ContentValues;
 import android.database.Cursor;

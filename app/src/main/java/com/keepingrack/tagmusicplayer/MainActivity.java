@@ -21,7 +21,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.keepingrack.tagmusicplayer.bean.RelateTag;
-import com.keepingrack.tagmusicplayer.db.logic.MusicTagsLogic;
+import com.keepingrack.tagmusicplayer.external.db.logic.MusicTagsLogic;
 
 import java.util.List;
 import java.util.Map;

@@ -1,6 +1,6 @@
 package com.keepingrack.tagmusicplayer;
 
-import com.keepingrack.tagmusicplayer.db.entity.MusicTagsRecord;
+import com.keepingrack.tagmusicplayer.external.db.entity.MusicTagsRecord;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -15,7 +15,7 @@ import static com.keepingrack.tagmusicplayer.MainActivity.BASE_DIR;
 import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
 import static com.keepingrack.tagmusicplayer.MainActivity.musicKeys;
 import static com.keepingrack.tagmusicplayer.MainActivity.tagKinds;
-import static com.keepingrack.tagmusicplayer.db.helper.MusicTagsHelper.SEPARATE;
+import static com.keepingrack.tagmusicplayer.external.db.helper.MusicTagsHelper.SEPARATE;
 import static com.keepingrack.tagmusicplayer.util.Utility.*;
 
 public class MusicFile {
