@@ -1,4 +1,4 @@
-package com.keepingrack.tagmusicplayer;
+package com.keepingrack.tagmusicplayer.layout;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -8,6 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+
+import com.keepingrack.tagmusicplayer.MainActivity;
+import com.keepingrack.tagmusicplayer.R;
 
 import java.util.ArrayList;
 import java.util.List;

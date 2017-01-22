@@ -1,4 +1,4 @@
-package com.keepingrack.tagmusicplayer;
+package com.keepingrack.tagmusicplayer.layout;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
@@ -9,6 +9,9 @@ import android.view.animation.Animation.AnimationListener;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import com.keepingrack.tagmusicplayer.MainActivity;
+import com.keepingrack.tagmusicplayer.R;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.mp;
 import static com.keepingrack.tagmusicplayer.MainActivity.PLAYING_MUSIC;

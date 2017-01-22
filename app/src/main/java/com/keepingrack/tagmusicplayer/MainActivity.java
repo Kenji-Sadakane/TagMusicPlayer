@@ -23,6 +23,13 @@ import android.widget.EditText;
 import com.keepingrack.tagmusicplayer.bean.RelateTag;
 import com.keepingrack.tagmusicplayer.external.db.logic.MusicTagsLogic;
 import com.keepingrack.tagmusicplayer.external.file.MusicFile;
+import com.keepingrack.tagmusicplayer.layout.KeyWord;
+import com.keepingrack.tagmusicplayer.layout.MusicField;
+import com.keepingrack.tagmusicplayer.layout.MusicPlayerButton;
+import com.keepingrack.tagmusicplayer.layout.MusicSeekBar;
+import com.keepingrack.tagmusicplayer.layout.RelateTagField;
+import com.keepingrack.tagmusicplayer.layout.SearchSwitch;
+import com.keepingrack.tagmusicplayer.layout.TagInfoDialog;
 
 import java.util.List;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.keepingrack.tagmusicplayer;
+package com.keepingrack.tagmusicplayer.layout;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
@@ -10,6 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
+import com.keepingrack.tagmusicplayer.MainActivity;
+import com.keepingrack.tagmusicplayer.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +20,7 @@ import static com.keepingrack.tagmusicplayer.MainActivity.SELECT_MUSIC;
 import static com.keepingrack.tagmusicplayer.MainActivity.displayMusicNames;
 import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
 import static com.keepingrack.tagmusicplayer.MainActivity.tagKinds;
-import static com.keepingrack.tagmusicplayer.SearchSwitch.SEARCH_TYPE;
+import static com.keepingrack.tagmusicplayer.layout.SearchSwitch.SEARCH_TYPE;
 
 public class KeyWord {
 

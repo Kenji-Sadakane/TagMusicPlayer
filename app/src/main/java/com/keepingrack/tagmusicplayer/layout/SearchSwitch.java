@@ -1,7 +1,10 @@
-package com.keepingrack.tagmusicplayer;
+package com.keepingrack.tagmusicplayer.layout;
 
 import android.widget.CompoundButton;
 import android.widget.Switch;
+
+import com.keepingrack.tagmusicplayer.MainActivity;
+import com.keepingrack.tagmusicplayer.R;
 
 public class SearchSwitch {
 

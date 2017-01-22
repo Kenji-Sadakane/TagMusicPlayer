@@ -1,7 +1,10 @@
-package com.keepingrack.tagmusicplayer;
+package com.keepingrack.tagmusicplayer.layout;
 
 import android.widget.Button;
 import android.widget.ToggleButton;
+
+import com.keepingrack.tagmusicplayer.MainActivity;
+import com.keepingrack.tagmusicplayer.R;
 
 public class MusicPlayerButton {
 

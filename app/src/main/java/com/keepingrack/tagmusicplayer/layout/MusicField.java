@@ -1,4 +1,4 @@
-package com.keepingrack.tagmusicplayer;
+package com.keepingrack.tagmusicplayer.layout;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
@@ -10,6 +10,10 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import com.keepingrack.tagmusicplayer.MainActivity;
+import com.keepingrack.tagmusicplayer.MusicItem;
+import com.keepingrack.tagmusicplayer.R;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
