@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                         musicField.changeMusicList();
                         endLoading(progressDialog);
                     } catch (Exception ex) {
-                        musicField.outErrorMessage(ex);
+                        musicField.msgField.outErrorMessage(ex);
                     }
                 }
             }).start();
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
             Thread currentThread = new Thread(this);
             currentThread.start();
         } catch (Exception ex) {
-            musicField.outErrorMessage(ex);
+            musicField.msgField.outErrorMessage(ex);
         }
     }
 
@@ -176,14 +176,14 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                         musicField.createContents();
                         musicPlayer.showTrackNo();
                     } catch (Exception ex) {
-                        musicField.outErrorMessage(ex);
+                        musicField.msgField.outErrorMessage(ex);
                     } finally {
                         endLoading(progressDialog);
                     }
                 }
             }).start();
         } catch (Exception ex) {
-            musicField.outErrorMessage(ex);
+            musicField.msgField.outErrorMessage(ex);
         }
     }
 
@@ -275,22 +275,22 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                     break;
             }
         } catch (Exception ex) {
-            musicField.outErrorMessage(ex);
+            musicField.msgField.outErrorMessage(ex);
         }
     }
 
     public void playMusic(String key) throws Exception {
-        musicField.resetMusicRowBackGround();
+        musicField.musicRow.resetMusicRowBackGround();
         musicPlayer.startMusicPlayer(key);
         musicPlayer.showTrackNo();
-        musicField.selectMusic(key);
+        musicField.musicRow.selectMusic(key);
         musicField.scrollMusicView();
-        musicField.setMusicRowBackGround();
+        musicField.musicRow.setMusicRowBackGround();
         musicPlayerButton.playButtonCheck(true);
     }
 
     public void stopMusic() throws Exception {
-        musicField.resetMusicRowBackGround();
+        musicField.musicRow.resetMusicRowBackGround();
         musicPlayerButton.playButtonCheck(false);
         musicPlayer.stopMusicPlayer();
         musicPlayer.showTrackNo();
@@ -328,7 +328,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                     break;
             }
         } catch (Exception ex) {
-            musicField.outErrorMessage(ex);
+            musicField.msgField.outErrorMessage(ex);
         }
     }
 
@@ -345,7 +345,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                     playMusic(displayMusicNames.get(nextTrackNo));
             }
         } catch (Exception ex) {
-            musicField.outErrorMessage(ex);
+            musicField.msgField.outErrorMessage(ex);
         }
     }
 
@@ -435,7 +435,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                 return true;
             }
         } catch (Exception ex) {
-            musicField.outErrorMessage(ex);
+            musicField.msgField.outErrorMessage(ex);
         }
 
         return super.onOptionsItemSelected(item);

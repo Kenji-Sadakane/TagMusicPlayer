@@ -70,7 +70,7 @@ public class MusicPlayer {
                     break;
             }
         } catch (Exception ex) {
-            activity.musicField.outErrorMessage(ex);
+            activity.musicField.msgField.outErrorMessage(ex);
         }
     }
 

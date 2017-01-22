@@ -51,10 +51,10 @@ public class TagInfoDialog {
                             if (tags.isEmpty()) { tags = TAG_NOTHING_LIST; }
                             musicItems.get(key).setTags(tags);
                             activity.musicTagsLogic.update(key);
-                            activity.musicField.unselectedMusic();
-                            activity.musicField.selectMusic(key);
+                            activity.musicField.musicRow.unselectedMusic();
+                            activity.musicField.musicRow.selectMusic(key);
                         } catch (Exception ex) {
-                            activity.musicField.outErrorMessage(ex);
+                            activity.musicField.msgField.outErrorMessage(ex);
                         }
                     }
                 });

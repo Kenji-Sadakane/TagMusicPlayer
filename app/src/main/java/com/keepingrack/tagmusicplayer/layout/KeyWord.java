@@ -82,12 +82,12 @@ public class KeyWord {
                         activity.musicField.changeMusicList();
                         activity.relateTagField.updateRelateTags();
                         if (!displayMusicNames.contains(SELECT_MUSIC)) {
-                            activity.musicField.unselectedMusic();
+                            activity.musicField.musicRow.unselectedMusic();
                         }
                         ObjectAnimator anm = activity.musicField.getShowAnimation();
                         anm.start();
                     } catch (Exception ex) {
-                        activity.musicField.outErrorMessage(ex);
+                        activity.musicField.msgField.outErrorMessage(ex);
                     }
                 }
                 @Override
@@ -99,7 +99,7 @@ public class KeyWord {
             });
             anm.start();
         } catch (Exception ex) {
-            activity.musicField.outErrorMessage(ex);
+            activity.musicField.msgField.outErrorMessage(ex);
         }
     }
 
