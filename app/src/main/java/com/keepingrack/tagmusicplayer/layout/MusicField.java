@@ -12,7 +12,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.keepingrack.tagmusicplayer.MainActivity;
-import com.keepingrack.tagmusicplayer.MusicItem;
+import com.keepingrack.tagmusicplayer.bean.MusicItem;
 import com.keepingrack.tagmusicplayer.R;
 
 import java.io.PrintWriter;

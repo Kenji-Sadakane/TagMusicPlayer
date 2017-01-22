@@ -4,7 +4,7 @@ import android.database.Cursor;
 import android.widget.LinearLayout;
 
 import com.keepingrack.tagmusicplayer.MainActivity;
-import com.keepingrack.tagmusicplayer.MusicItem;
+import com.keepingrack.tagmusicplayer.bean.MusicItem;
 import com.keepingrack.tagmusicplayer.external.db.DBAdapter;
 import com.keepingrack.tagmusicplayer.external.db.entity.MusicTagsRecord;
 import com.keepingrack.tagmusicplayer.external.db.helper.MusicTagsHelper;
