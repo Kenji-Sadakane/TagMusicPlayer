@@ -1,5 +1,7 @@
-package com.keepingrack.tagmusicplayer;
+package com.keepingrack.tagmusicplayer.external.file;
 
+import com.keepingrack.tagmusicplayer.MainActivity;
+import com.keepingrack.tagmusicplayer.MusicItem;
 import com.keepingrack.tagmusicplayer.external.db.entity.MusicTagsRecord;
 
 import org.apache.commons.codec.binary.Hex;

@@ -14,7 +14,7 @@ import java.util.List;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
 import static com.keepingrack.tagmusicplayer.MainActivity.tagKinds;
-import static com.keepingrack.tagmusicplayer.MusicFile.TAG_NOTHING_LIST;
+import static com.keepingrack.tagmusicplayer.external.file.MusicFile.TAG_NOTHING_LIST;
 
 public class TagInfoDialog {
 
