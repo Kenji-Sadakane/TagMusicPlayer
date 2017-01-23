@@ -224,7 +224,7 @@ public class RelateTagField {
                         unselectedTags.remove(tag);
                         break;
                 }
-                activity.musicField.changeMusicList();
+                activity.musicLinearLayout.changeMusicList();
             }
         });
         return tagText;

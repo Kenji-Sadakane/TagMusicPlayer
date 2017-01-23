@@ -24,6 +24,7 @@ import com.keepingrack.tagmusicplayer.bean.MusicItem;
 import com.keepingrack.tagmusicplayer.bean.RelateTag;
 import com.keepingrack.tagmusicplayer.external.db.logic.MusicTagsLogic;
 import com.keepingrack.tagmusicplayer.external.file.MusicFile;
+import com.keepingrack.tagmusicplayer.layout.GrayPanel;
 import com.keepingrack.tagmusicplayer.layout.KeyWord;
 import com.keepingrack.tagmusicplayer.layout.MusicField;
 import com.keepingrack.tagmusicplayer.layout.MusicPlayerButton;
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     public static MainActivity activity;
 
     public KeyWord keyWord = new KeyWord(this);
+    public GrayPanel grayPanel;
     public MusicField musicField = new MusicField(this);
     private MusicFile musicFile = new MusicFile(this);
     public MusicLinearLayout musicLinearLayout;
@@ -105,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
             // タグ、楽曲表示
             final ProgressDialog progressDialog = startLoading();
             activity = this;
+            grayPanel = (GrayPanel) findViewById(R.id.grayPanel);
             musicLinearLayout = (MusicLinearLayout) findViewById(R.id.linearLayout);
             musicScrollView = (MusicScrollView) findViewById(R.id.scrollView);
 
@@ -228,8 +231,6 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         keyWord.setListener();
         // シークバー
         musicSeekBar.setOnSeekBarChangeListener();
-        // スクロール時
-        musicField.setListener();
         // TAG/WORD 切り替え
         searchSwitch.setOnCheckedChangeListener();
     }

@@ -48,7 +48,7 @@ public class MusicRow extends LinearLayout {
             @Override
             public void onClick(View v) {
                 try {
-                    activity.musicField.screenLock(500);
+                    activity.grayPanel.screenLock(500);
                     activity.musicField.hideKeyBoard();
                     activity.musicSeekBar.visible();
                     activity.musicLinearLayout.selectMusicAndDeselectOldMusic(getMusicKey());
