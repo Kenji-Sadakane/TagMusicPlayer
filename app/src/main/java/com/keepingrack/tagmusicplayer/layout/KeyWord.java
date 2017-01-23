@@ -2,47 +2,63 @@ package com.keepingrack.tagmusicplayer.layout;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
-import com.keepingrack.tagmusicplayer.MainActivity;
 import com.keepingrack.tagmusicplayer.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.keepingrack.tagmusicplayer.MainActivity.activity;
 import static com.keepingrack.tagmusicplayer.MainActivity.displayMusicNames;
 import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
 import static com.keepingrack.tagmusicplayer.MainActivity.tagKinds;
 import static com.keepingrack.tagmusicplayer.layout.topField.SearchSwitch.SEARCH_TYPE;
 import static com.keepingrack.tagmusicplayer.layout.musicField.MusicLinearLayout.SELECT_MUSIC;
 
-public class KeyWord {
+public class KeyWord extends AutoCompleteTextView {
 
     public static final String NO_TAG_WORD ="タグなし";
     public boolean focusOn = false;
 
-    private MainActivity activity;
+    public KeyWord(Context context, AttributeSet attr) {
+        super(context, attr);
 
-    public KeyWord(MainActivity _activity) {
-        this.activity = _activity;
+        // リスナー
+        this.setOnFocusChangeListener(getOnFocusChangeListener());
+        this.addTextChangedListener(getTextChangeListener());
+        this.setOnItemClickListener(getAutoCompleteSelectedListener());
     }
 
-    // リスナー
-    public void setListener() {
-        setTextChangeListener();
-        setOnFocusChangeListener();
-        setAutoCompleteSelectedListener();
+    // フォーカス変更時リスナー
+    public View.OnFocusChangeListener getOnFocusChangeListener() {
+        return new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    // 受け取った時
+                    activity.musicSeekBar.invisible(0);
+//                    ((Button) activity.findViewById(R.id.clearButton)).setVisibility(View.VISIBLE);
+                    focusOn = true;
+                } else {
+//                    ((Button) activity.findViewById(R.id.clearButton)).setVisibility(View.GONE);
+                    focusOn = false;
+                }
+            }
+        };
     }
 
     // キーワード変更時リスナー
-    private void setTextChangeListener() {
-        ((EditText) activity.findViewById(R.id.editText)).addTextChangedListener(new TextWatcher() {
+    private TextWatcher getTextChangeListener() {
+        return new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
@@ -51,18 +67,50 @@ public class KeyWord {
             public void afterTextChanged(Editable s) {
                 showAutoComplete();
             }
-        });
+        };
+    }
+    // オートコンプリート表示
+    private void showAutoComplete() {
+        switch (SEARCH_TYPE) {
+            case TITLE:
+                break;
+            case TAG:
+                displayAutoComplete(createAutoCompleteList());
+                break;
+        }
+    }
+    private List<String> createAutoCompleteList() {
+        String keyWord = this.getText().toString();
+        List<String> autoCompleteList = new ArrayList<>();
+        for (String tag : tagKinds) {
+            if (tag.toLowerCase().startsWith(keyWord.toLowerCase())) {
+                autoCompleteList.add(tag);
+            }
+        }
+        return autoCompleteList;
+    }
+    private void displayAutoComplete(List<String> autoCompleteList) {
+        if (0 < autoCompleteList.size()) {
+            final AutoCompleteTextView autoCompleteTextView = this;
+            autoCompleteTextView.setThreshold(2);
+            final ArrayAdapter<String> adapter = new ArrayAdapter<>(activity, R.layout.auto_complete_item, autoCompleteList);
+            autoCompleteTextView.post(new Runnable() {
+                @Override
+                public void run() {
+                    autoCompleteTextView.setAdapter(adapter);
+                }
+            });
+        }
     }
 
     // autoComplete候補選択時リスナー
-    private void setAutoCompleteSelectedListener() {
-        AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) activity.findViewById(R.id.editText);
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    private AdapterView.OnItemClickListener getAutoCompleteSelectedListener() {
+        return new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            execSearch();
+                execSearch();
             }
-        });
+        };
     }
 
     // 検索処理実施
@@ -101,23 +149,6 @@ public class KeyWord {
         } catch (Exception ex) {
             activity.msgView.outErrorMessage(ex);
         }
-    }
-
-    private void setOnFocusChangeListener() {
-        ((EditText) activity.findViewById(R.id.editText)).setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                    // 受け取った時
-                    activity.musicSeekBar.invisible(0);
-//                    ((Button) activity.findViewById(R.id.clearButton)).setVisibility(View.VISIBLE);
-                    focusOn = true;
-                } else {
-//                    ((Button) activity.findViewById(R.id.clearButton)).setVisibility(View.GONE);
-                    focusOn = false;
-                }
-            }
-        });
     }
 
     // 楽曲とキーワードを比較し表示是非を判定
@@ -160,33 +191,5 @@ public class KeyWord {
             }
         }
         return chkResult;
-    }
-
-    // オートコンプリート表示
-    public void showAutoComplete() {
-        switch (SEARCH_TYPE) {
-            case TITLE:
-                break;
-            case TAG:
-                String keyWord = ((EditText) activity.findViewById(R.id.editText)).getText().toString();
-                List<String> autoCompleteList = new ArrayList<>();
-                for (String tag : tagKinds) {
-                    if (tag.toLowerCase().startsWith(keyWord.toLowerCase())) {
-                        autoCompleteList.add(tag);
-                    }
-                }
-                if (0 < autoCompleteList.size()) {
-                    final AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) activity.findViewById(R.id.editText);
-                    autoCompleteTextView.setThreshold(2);
-                    final ArrayAdapter<String> adapter = new ArrayAdapter<>(activity, R.layout.auto_complete_item, autoCompleteList);
-                    autoCompleteTextView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            autoCompleteTextView.setAdapter(adapter);
-                        }
-                    });
-                }
-                break;
-        }
     }
 }

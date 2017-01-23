@@ -47,7 +47,7 @@
         android:layout_marginRight="20px"
         android:layout_toLeftOf="@id/searchButton" />
 
-    <AutoCompleteTextView
+    <com.keepingrack.tagmusicplayer.layout.KeyWord
         android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

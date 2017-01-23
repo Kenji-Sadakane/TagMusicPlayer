@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     public static MediaPlayer mp = new MediaPlayer();
     public static MainActivity activity;
 
-    public KeyWord keyWord = new KeyWord(this);
+    public KeyWord keyWord;
     public GrayPanel grayPanel;
     public MsgView msgView;
     private MusicFile musicFile = new MusicFile(this);
@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
             // タグ、楽曲表示
             final ProgressDialog progressDialog = startLoading();
             activity = this;
+            keyWord = (KeyWord) findViewById(R.id.editText);
             grayPanel = (GrayPanel) findViewById(R.id.grayPanel);
             msgView = (MsgView) findViewById(R.id.msgView);
             musicLinearLayout = (MusicLinearLayout) findViewById(R.id.linearLayout);
@@ -234,8 +235,6 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
 //    }
 
     private void setListener() {
-        // テキストボックス
-        keyWord.setListener();
         // シークバー
         musicSeekBar.setOnSeekBarChangeListener();
     }
