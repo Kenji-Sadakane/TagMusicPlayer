@@ -2,21 +2,20 @@ package com.keepingrack.tagmusicplayer.layout.bottomField;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.content.Context;
+import android.util.AttributeSet;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.keepingrack.tagmusicplayer.MainActivity;
 import com.keepingrack.tagmusicplayer.R;
 
+import static com.keepingrack.tagmusicplayer.MainActivity.activity;
 import static com.keepingrack.tagmusicplayer.MainActivity.mp;
 import static com.keepingrack.tagmusicplayer.MainActivity.PLAYING_MUSIC;
 
-public class MusicSeekBar {
+public class MusicSeekBar extends SeekBar {
 
     public static final String DEFAULT_TIME = "00:00";
     public static String PLAY_TIME_TEXT = "00:00";
@@ -24,21 +23,16 @@ public class MusicSeekBar {
     public boolean visible = true;
     public int hiddenTime = 0;
 
-    private MainActivity activity;
+    public MusicSeekBar(Context context, AttributeSet attr) {
+        super(context, attr);
 
-    public MusicSeekBar(MainActivity _activity) {
-        this.activity = _activity;
-//        setListener();
+        // リスナー
+        this.setOnSeekBarChangeListener(getOnSeekBarChangeListener());
     }
 
-    // リスナー
-//    private void setListener() {
-//        setOnSeekBarChangeListener();
-//    }
-
     // シークバー変更時処理
-    public void setOnSeekBarChangeListener() {
-        ((SeekBar) activity.findViewById(R.id.seekBar)).setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+    private SeekBar.OnSeekBarChangeListener getOnSeekBarChangeListener() {
+        return new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {}
             @Override
@@ -57,7 +51,7 @@ public class MusicSeekBar {
                     }
                 }
             }
-        });
+        };
     }
 
     public String convertDisplayTimeText(int time) {
@@ -75,7 +69,7 @@ public class MusicSeekBar {
     }
 
     public void setPlayTime(int time) {
-        final SeekBar seekBar = (SeekBar) activity.findViewById(R.id.seekBar);
+        final SeekBar seekBar = this;
         final TextView playTimeText = (TextView) activity.findViewById(R.id.playTime);
         PLAY_TIME = time;
         PLAY_TIME_TEXT = convertDisplayTimeText(time);
@@ -97,7 +91,7 @@ public class MusicSeekBar {
     }
 
     public void setTotalTime(int time) {
-        SeekBar seekBar = (SeekBar) activity.findViewById(R.id.seekBar);
+        SeekBar seekBar = this;
         TextView totalTimeText = (TextView) activity.findViewById(R.id.totalTime);
         if (time != 0) {
             totalTimeText.setText(convertDisplayTimeText(time));

@@ -26,7 +26,7 @@ import com.keepingrack.tagmusicplayer.external.db.logic.MusicTagsLogic;
 import com.keepingrack.tagmusicplayer.external.file.MusicFile;
 import com.keepingrack.tagmusicplayer.layout.GrayPanel;
 import com.keepingrack.tagmusicplayer.layout.topField.KeyWordEditText;
-import com.keepingrack.tagmusicplayer.layout.bottomField.MusicPlayerButton;
+import com.keepingrack.tagmusicplayer.layout.bottomField.LoopButton;
 import com.keepingrack.tagmusicplayer.layout.bottomField.MusicSeekBar;
 import com.keepingrack.tagmusicplayer.layout.RelateTagField;
 import com.keepingrack.tagmusicplayer.layout.topField.SearchSwitch;
@@ -69,12 +69,12 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     private MusicFile musicFile = new MusicFile(this);
     public MusicLinearLayout musicLinearLayout;
     public MusicPlayer musicPlayer = new MusicPlayer(this);
-    public MusicPlayerButton musicPlayerButton = new MusicPlayerButton(this);
+    public LoopButton loopButton;
     public MusicScrollView musicScrollView;
     public MusicTagsLogic musicTagsLogic = new MusicTagsLogic(this);
     public SearchSwitch searchSwitch;
     public ShuffleMusicList shuffleMusicList = new ShuffleMusicList(this);
-    public MusicSeekBar musicSeekBar = new MusicSeekBar(this);
+    public MusicSeekBar musicSeekBar;
     public RelateTagField relateTagField = new RelateTagField(this);
     public TagInfoDialog tagInfoDialog = new TagInfoDialog(this);
     public Handler handler = new Handler();
@@ -109,8 +109,10 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
             activity = this;
             keyWordEditText = (KeyWordEditText) findViewById(R.id.keyWordEditText);
             grayPanel = (GrayPanel) findViewById(R.id.grayPanel);
+            loopButton = (LoopButton) findViewById(R.id.loopButton);
             msgView = (MsgView) findViewById(R.id.msgView);
             musicLinearLayout = (MusicLinearLayout) findViewById(R.id.linearLayout);
+            musicSeekBar = (MusicSeekBar) findViewById(R.id.seekBar);
             musicScrollView = (MusicScrollView) findViewById(R.id.scrollView);
             searchSwitch = (SearchSwitch) findViewById(R.id.searchSwitch);
 
@@ -128,9 +130,6 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                     }
                 }
             }).start();
-            //
-            // listener
-            setListener();
             //
             Thread currentThread = new Thread(this);
             currentThread.start();
@@ -205,39 +204,6 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         ((TextView) activity.findViewById(R.id.dummyText)).requestFocus();
     }
 
-//    private void displayContents(boolean doSearchMusic) throws Exception {
-//        measureDisplayWidth();
-//        if (doSearchMusic) {
-//            // 楽曲ファイル捜索
-//            musicFile.readMusicFilesAndDatabase();
-////            TagInfoFile tagInfoFile = new TagInfoFile();
-////            tagInfoFile.readTagInfo();
-//            // DB更新
-//            musicTagsLogic.deleteAll();
-//            musicTagsLogic.insertAll();
-//        } else {
-//            // DBより楽曲、タグ情報取得
-//            musicTagsLogic.selectAndReflectTags();
-//        }
-//        // 楽曲リスト(画面部品)作成
-//        musicField.createContents();
-//        // キーワードに応じて表示内容切替
-//        musicField.changeMusicList();
-//        // 楽曲非選択化
-//        musicField.unselectedMusic();
-//        // 楽曲再生停止
-//        if (!PLAYING_MUSIC.isEmpty()) {
-//            stopMusic();
-//        }
-//        // トラック番号表示
-//        musicPlayer.showTrackNo();
-//    }
-
-    private void setListener() {
-        // シークバー
-        musicSeekBar.setOnSeekBarChangeListener();
-    }
-
     @Override
     public void run() {
         try {
@@ -263,34 +229,6 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         relateTagField.onRelateTagChangeLinkClicked();
     }
 
-    // shuffle 切り替え時
-    public void onShuffleClicked(View v) {
-        shuffleMusicList.exec();
-    }
-
-    // play ボタン押下時
-    public void onPlayClicked(View v) {
-        try {
-            switch (musicPlayer.getActionOnPlayClicked()) {
-                case PAUSE:
-                    mp.pause();
-                    break;
-                case RESUME:
-                    mp.start();
-                    break;
-                case START:
-                    playMusic(musicPlayer.getPlayMusicKeyOnPlayClicked());
-                    shuffleMusicList.exec();
-                    break;
-                case NOTHING:
-                    stopMusic();
-                    break;
-            }
-        } catch (Exception ex) {
-            msgView.outErrorMessage(ex);
-        }
-    }
-
     public void playMusic(String key) throws Exception {
         musicLinearLayout.resetMusicRowBackGround();
         musicPlayer.startMusicPlayer(key);
@@ -298,12 +236,12 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         musicLinearLayout.selectMusicAndDeselectOldMusic(key);
         musicScrollView.scrollMusicView();
         musicLinearLayout.setMusicRowBackGround();
-        musicPlayerButton.playButtonCheck(true);
+        loopButton.playButtonCheck(true);
     }
 
     public void stopMusic() throws Exception {
         musicLinearLayout.resetMusicRowBackGround();
-        musicPlayerButton.playButtonCheck(false);
+        loopButton.playButtonCheck(false);
         musicPlayer.stopMusicPlayer();
         musicPlayer.showTrackNo();
         musicSeekBar.setTotalTime(0);
@@ -319,50 +257,6 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     // 検索ボタン押下時
     public void onSearchClicked(View v) {
         keyWordEditText.execSearch();
-    }
-
-    // 前ボタン押下時
-    public void onPrevClicked(View v) {
-        try {
-            switch (musicPlayer.getActionOnPrevClicked()) {
-                case RESTART:
-                    mp.seekTo(0);
-                    musicScrollView.scrollMusicView();
-                    break;
-                case STOP:
-                    stopMusic();
-                    break;
-                case GO_PREV:
-                    Integer prevTrackNo = musicPlayer.getPrevTrackNo();
-                    if (prevTrackNo == null) prevTrackNo = 0;
-                    stopMusic();
-                    playMusic(displayMusicNames.get(prevTrackNo));
-                    break;
-            }
-        } catch (Exception ex) {
-            msgView.outErrorMessage(ex);
-        }
-    }
-
-    // 次ボタン押下時
-    public void onNextClicked(View v) {
-        try {
-            switch (musicPlayer.getActionOnNextClicked()) {
-                case STOP:
-                    stopMusic();
-                    break;
-                case GO_NEXT:
-                    Integer nextTrackNo = musicPlayer.getNextTrackNo();
-                    if (nextTrackNo == null) nextTrackNo = 0;
-                    playMusic(displayMusicNames.get(nextTrackNo));
-            }
-        } catch (Exception ex) {
-            msgView.outErrorMessage(ex);
-        }
-    }
-
-    public void onLoopClicked(View v) {
-        musicPlayerButton.clickLoopButton();
     }
 
 //    public static void verifyStoragePermissions(Activity activity) {

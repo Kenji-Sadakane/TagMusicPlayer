@@ -1,12 +1,17 @@
 package com.keepingrack.tagmusicplayer.layout.bottomField;
 
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ToggleButton;
 
 import com.keepingrack.tagmusicplayer.MainActivity;
 import com.keepingrack.tagmusicplayer.R;
 
-public class MusicPlayerButton {
+import static com.keepingrack.tagmusicplayer.MainActivity.activity;
+
+public class LoopButton extends Button {
 
     /**
      * ループボタンの状態
@@ -18,33 +23,39 @@ public class MusicPlayerButton {
 
     public LOOP_STATUS currentLoopStatus = LOOP_STATUS.ON;
 
-    private MainActivity activity;
+    public LoopButton(Context context, AttributeSet attr) {
+        super(context, attr);
 
-    public MusicPlayerButton(MainActivity _activity) {
-        this.activity = _activity;
+        // リスナー
+        this.setOnClickListener(getOnClickListener());
+    }
+
+    private OnClickListener getOnClickListener() {
+        return new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoopButton loopButton = (LoopButton) v;
+                switch (currentLoopStatus) {
+                    case ON:
+                        currentLoopStatus = LOOP_STATUS.ONE;
+                        loopButton.setBackgroundResource(R.drawable.av_loop_1);
+                        break;
+                    case ONE:
+                        currentLoopStatus = LOOP_STATUS.OFF;
+                        loopButton.setBackgroundResource(R.drawable.av_loop_off);
+                        break;
+                    default:
+                        currentLoopStatus = LOOP_STATUS.ON;
+                        loopButton.setBackgroundResource(R.drawable.av_loop_on);
+                }
+            }
+        };
     }
 
     // 再生ボタンのチェック状態を変える
     public void playButtonCheck(boolean state) {
         ToggleButton playButton = (ToggleButton) activity.findViewById(R.id.playButton);
         playButton.setChecked(state);
-    }
-
-    public void clickLoopButton() {
-        Button loopButton = (Button) activity.findViewById(R.id.loopButton);
-        switch (currentLoopStatus) {
-            case ON:
-                currentLoopStatus = LOOP_STATUS.ONE;
-                loopButton.setBackgroundResource(R.drawable.av_loop_1);
-                break;
-            case ONE:
-                currentLoopStatus = LOOP_STATUS.OFF;
-                loopButton.setBackgroundResource(R.drawable.av_loop_off);
-                break;
-            default:
-                currentLoopStatus = LOOP_STATUS.ON;
-                loopButton.setBackgroundResource(R.drawable.av_loop_on);
-        }
     }
 
     public boolean isLoopStatusOFF() {

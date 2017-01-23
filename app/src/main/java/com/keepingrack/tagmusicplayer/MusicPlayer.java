@@ -44,8 +44,8 @@ public class MusicPlayer {
         mp.setOnErrorListener(new MediaPlayer.OnErrorListener() {
             @Override
             public boolean onError(MediaPlayer mp, int what, int extra) {
-                if (activity.musicPlayerButton.isLoopStatusONE()) {
-                    activity.musicPlayerButton.clickLoopButton();
+                if (activity.loopButton.isLoopStatusONE()) {
+                    activity.loopButton.performClick();
                 }
                 onCompletionProcess();
                 return true;
@@ -154,13 +154,13 @@ public class MusicPlayer {
 
     public ACTION getActionOnCompletion() {
         ACTION action;
-        if (activity.musicPlayerButton.isLoopStatusONE()) {
+        if (activity.loopButton.isLoopStatusONE()) {
             action = ACTION.RESTART;
         } else {
             if (displayMusicNames.isEmpty()) {
                 action = ACTION.STOP;
             } else {
-                if (getNextTrackNo() == null && activity.musicPlayerButton.isLoopStatusOFF()) {
+                if (getNextTrackNo() == null && activity.loopButton.isLoopStatusOFF()) {
                     action = ACTION.STOP;
                 } else {
                     action = ACTION.GO_NEXT;

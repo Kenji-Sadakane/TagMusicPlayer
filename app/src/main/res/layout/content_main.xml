@@ -155,7 +155,7 @@
                 android:text="00:00"
                 android:id="@+id/totalTime" />
 
-            <SeekBar
+            <com.keepingrack.tagmusicplayer.layout.bottomField.MusicSeekBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="100px"
@@ -180,44 +180,39 @@
                 android:id="@+id/whiteSpace1"
                 android:layout_weight="1" />
 
-            <ToggleButton
+            <com.keepingrack.tagmusicplayer.layout.bottomField.ShuffleButton
                 android:layout_width="200px"
                 android:layout_height="200px"
                 android:id="@+id/shuffleButton"
                 android:textOff=""
                 android:textOn=""
-                android:background="@drawable/shuffle_button"
-                android:onClick="onShuffleClicked" />
+                android:background="@drawable/shuffle_button" />
 
-            <Button
+            <com.keepingrack.tagmusicplayer.layout.bottomField.PrevButton
                 android:layout_width="200px"
                 android:layout_height="200px"
                 android:id="@+id/prevButton"
-                android:background="@drawable/av_previous"
-                android:onClick="onPrevClicked" />
+                android:background="@drawable/av_previous" />
 
-            <ToggleButton
+            <com.keepingrack.tagmusicplayer.layout.bottomField.PlayButton
                 android:layout_width="200px"
                 android:layout_height="200px"
                 android:id="@+id/playButton"
                 android:textOff=""
                 android:textOn=""
-                android:background="@drawable/play_button"
-                android:onClick="onPlayClicked" />
+                android:background="@drawable/play_button" />
 
-            <Button
+            <com.keepingrack.tagmusicplayer.layout.bottomField.NextButton
                 android:layout_width="200px"
                 android:layout_height="200px"
                 android:id="@+id/nextButton"
-                android:background="@drawable/av_next"
-                android:onClick="onNextClicked" />
+                android:background="@drawable/av_next" />
 
-            <Button
+            <com.keepingrack.tagmusicplayer.layout.bottomField.LoopButton
                 android:layout_width="200px"
                 android:layout_height="200px"
                 android:id="@+id/loopButton"
-                android:background="@drawable/av_loop_on"
-                android:onClick="onLoopClicked" />
+                android:background="@drawable/av_loop_on" />
 
             <TextView
                 android:layout_width="wrap_content"
