@@ -28,7 +28,7 @@ public class SearchSwitch extends Switch {
                 } else {
                     SEARCH_TYPE = TYPE.TITLE;
                 }
-                activity.keyWord.execSearch();
+                activity.keyWordEditText.execSearch();
             }
         };
     }

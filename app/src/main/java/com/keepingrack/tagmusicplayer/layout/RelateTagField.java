@@ -62,7 +62,7 @@ public class RelateTagField {
             case TITLE:
                 break;
             case TAG:
-                String keyWord = ((EditText) activity.findViewById(R.id.editText)).getText().toString();
+                String keyWord = activity.keyWordEditText.getText().toString();
                 if (keyWord != null && !keyWord.isEmpty() && tagKinds.contains(keyWord)) {
                     result = true;
                 }
@@ -119,7 +119,7 @@ public class RelateTagField {
 
     // 表示楽曲から関連タグを取得しリストに追加
     private void addRelateTagByDisplayMusic() {
-        String keyWord = ((EditText) activity.findViewById(R.id.editText)).getText().toString();
+        String keyWord = activity.keyWordEditText.getText().toString();
         for (String key : displayMusicNames) {
             for (String tag : musicItems.get(key).getTags()) {
                 if (tag.equals(keyWord)) {

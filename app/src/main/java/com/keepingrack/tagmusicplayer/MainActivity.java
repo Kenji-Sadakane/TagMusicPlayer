@@ -26,7 +26,7 @@ import com.keepingrack.tagmusicplayer.bean.RelateTag;
 import com.keepingrack.tagmusicplayer.external.db.logic.MusicTagsLogic;
 import com.keepingrack.tagmusicplayer.external.file.MusicFile;
 import com.keepingrack.tagmusicplayer.layout.GrayPanel;
-import com.keepingrack.tagmusicplayer.layout.KeyWord;
+import com.keepingrack.tagmusicplayer.layout.topField.KeyWordEditText;
 import com.keepingrack.tagmusicplayer.layout.MusicPlayerButton;
 import com.keepingrack.tagmusicplayer.layout.MusicSeekBar;
 import com.keepingrack.tagmusicplayer.layout.RelateTagField;
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     public static MediaPlayer mp = new MediaPlayer();
     public static MainActivity activity;
 
-    public KeyWord keyWord;
+    public KeyWordEditText keyWordEditText;
     public GrayPanel grayPanel;
     public MsgView msgView;
     private MusicFile musicFile = new MusicFile(this);
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
             // タグ、楽曲表示
             final ProgressDialog progressDialog = startLoading();
             activity = this;
-            keyWord = (KeyWord) findViewById(R.id.editText);
+            keyWordEditText = (KeyWordEditText) findViewById(R.id.keyWordEditText);
             grayPanel = (GrayPanel) findViewById(R.id.grayPanel);
             msgView = (MsgView) findViewById(R.id.msgView);
             musicLinearLayout = (MusicLinearLayout) findViewById(R.id.linearLayout);
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                 stopMusic();
             }
             final ProgressDialog progressDialog = startLoading();
-            ((EditText) findViewById(R.id.editText)).setText("");
+            keyWordEditText.setText("");
             relateTagField.initializeTagField();
             new Thread(new Runnable() {
                 @Override
@@ -246,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                 // 再生時間更新
                 if (!PLAYING_MUSIC.isEmpty()) { musicSeekBar.setPlayTime(); }
                 // シークバー＆ボタン表示
-                if (!musicSeekBar.visible && !keyWord.focusOn) {
+                if (!musicSeekBar.visible && !keyWordEditText.focusOn) {
                     musicSeekBar.hiddenTime++;
                     if (musicSeekBar.hiddenTime > 2) {
                          musicSeekBar.visible();
@@ -319,7 +319,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
 
     // 検索ボタン押下時
     public void onSearchClicked(View v) {
-        keyWord.execSearch();
+        keyWordEditText.execSearch();
     }
 
     // 前ボタン押下時

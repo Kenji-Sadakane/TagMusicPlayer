@@ -1,4 +1,4 @@
-package com.keepingrack.tagmusicplayer.layout;
+package com.keepingrack.tagmusicplayer.layout.topField;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
@@ -24,12 +24,12 @@ import static com.keepingrack.tagmusicplayer.MainActivity.tagKinds;
 import static com.keepingrack.tagmusicplayer.layout.topField.SearchSwitch.SEARCH_TYPE;
 import static com.keepingrack.tagmusicplayer.layout.musicField.MusicLinearLayout.SELECT_MUSIC;
 
-public class KeyWord extends AutoCompleteTextView {
+public class KeyWordEditText extends AutoCompleteTextView {
 
     public static final String NO_TAG_WORD ="タグなし";
     public boolean focusOn = false;
 
-    public KeyWord(Context context, AttributeSet attr) {
+    public KeyWordEditText(Context context, AttributeSet attr) {
         super(context, attr);
 
         // リスナー
@@ -154,7 +154,7 @@ public class KeyWord extends AutoCompleteTextView {
     // 楽曲とキーワードを比較し表示是非を判定
     public boolean checkKeyWordMatch(String key) {
         boolean chkResult = false;
-        String keyWord = ((EditText) activity.findViewById(R.id.editText)).getText().toString();
+        String keyWord = this.getText().toString();
         if (keyWord == null || keyWord.length() == 0) {
             chkResult = true;
         } else {

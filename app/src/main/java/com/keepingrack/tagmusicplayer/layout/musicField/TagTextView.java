@@ -41,8 +41,8 @@ public class TagTextView extends TextView {
             @Override
             public void onClick(View v) {
                 activity.searchSwitch.setChecked(true);
-                ((AutoCompleteTextView) activity.findViewById(R.id.editText)).setText(tag);
-                activity.keyWord.execSearch();
+                activity.keyWordEditText.setText(tag);
+                activity.keyWordEditText.execSearch();
             }
         };
     }
