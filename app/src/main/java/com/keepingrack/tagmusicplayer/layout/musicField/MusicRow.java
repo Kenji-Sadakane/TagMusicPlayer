@@ -5,7 +5,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.keepingrack.tagmusicplayer.R;
-import com.keepingrack.tagmusicplayer.layout.TagField;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.activity;
 import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
@@ -75,8 +74,9 @@ public class MusicRow extends LinearLayout {
     // タグ情報表示
     public void showTagInfo() {
         if (this.getChildCount() < 3) {
-            TagField tagField = new TagField(activity);
-            this.addView(tagField.createTagField(getMusicKey()), tagField.createTagFieldParams());
+//            TagField tagField = new TagField(activity);
+//            this.addView(tagField.createTagField(getMusicKey()), tagField.createTagFieldParams());
+            this.addView(new TagFieldLayout(getMusicKey()));
         }
     }
 
