@@ -30,9 +30,9 @@ import com.keepingrack.tagmusicplayer.layout.KeyWord;
 import com.keepingrack.tagmusicplayer.layout.MusicPlayerButton;
 import com.keepingrack.tagmusicplayer.layout.MusicSeekBar;
 import com.keepingrack.tagmusicplayer.layout.RelateTagField;
-import com.keepingrack.tagmusicplayer.layout.SearchSwitch;
+import com.keepingrack.tagmusicplayer.layout.topField.SearchSwitch;
 import com.keepingrack.tagmusicplayer.layout.TagInfoDialog;
-import com.keepingrack.tagmusicplayer.layout.MsgView;
+import com.keepingrack.tagmusicplayer.layout.topField.MsgView;
 import com.keepingrack.tagmusicplayer.layout.musicField.MusicLinearLayout;
 import com.keepingrack.tagmusicplayer.layout.musicField.MusicScrollView;
 
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     public MusicPlayerButton musicPlayerButton = new MusicPlayerButton(this);
     public MusicScrollView musicScrollView;
     public MusicTagsLogic musicTagsLogic = new MusicTagsLogic(this);
-    public SearchSwitch searchSwitch = new SearchSwitch(this);
+    public SearchSwitch searchSwitch;
     public ShuffleMusicList shuffleMusicList = new ShuffleMusicList(this);
     public MusicSeekBar musicSeekBar = new MusicSeekBar(this);
     public RelateTagField relateTagField = new RelateTagField(this);
@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
             msgView = (MsgView) findViewById(R.id.msgView);
             musicLinearLayout = (MusicLinearLayout) findViewById(R.id.linearLayout);
             musicScrollView = (MusicScrollView) findViewById(R.id.scrollView);
+            searchSwitch = (SearchSwitch) findViewById(R.id.searchSwitch);
 
             new Thread(new Runnable() {
                 @Override
@@ -237,8 +238,6 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         keyWord.setListener();
         // シークバー
         musicSeekBar.setOnSeekBarChangeListener();
-        // TAG/WORD 切り替え
-        searchSwitch.setOnCheckedChangeListener();
     }
 
     @Override

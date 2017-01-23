@@ -1,4 +1,4 @@
-package com.keepingrack.tagmusicplayer.layout;
+package com.keepingrack.tagmusicplayer.layout.topField;
 
 import android.content.Context;
 import android.util.AttributeSet;

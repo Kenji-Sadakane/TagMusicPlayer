@@ -17,10 +17,10 @@
         android:focusable="true"
         android:focusableInTouchMode="true" />
 
-    <Switch
+    <com.keepingrack.tagmusicplayer.layout.topField.SearchSwitch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/switch1"
+        android:id="@+id/searchSwitch"
         android:textOn="Tag"
         android:textOff="Title"
         android:checked="true"
@@ -52,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editText"
-        android:layout_toRightOf="@id/switch1"
+        android:layout_toRightOf="@id/searchSwitch"
         android:layout_toLeftOf="@id/clearButton" />
 
     <ScrollView
@@ -100,7 +100,7 @@
         android:layout_height="2dp"
         android:layout_below="@id/currentTrack" />
 
-    <com.keepingrack.tagmusicplayer.layout.MsgView
+    <com.keepingrack.tagmusicplayer.layout.topField.MsgView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/msgView"

@@ -19,7 +19,7 @@ import java.util.List;
 import static com.keepingrack.tagmusicplayer.MainActivity.displayMusicNames;
 import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
 import static com.keepingrack.tagmusicplayer.MainActivity.tagKinds;
-import static com.keepingrack.tagmusicplayer.layout.SearchSwitch.SEARCH_TYPE;
+import static com.keepingrack.tagmusicplayer.layout.topField.SearchSwitch.SEARCH_TYPE;
 import static com.keepingrack.tagmusicplayer.layout.musicField.MusicLinearLayout.SELECT_MUSIC;
 
 public class KeyWord {

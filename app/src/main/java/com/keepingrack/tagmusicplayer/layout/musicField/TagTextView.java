@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.keepingrack.tagmusicplayer.R;
@@ -41,7 +40,7 @@ public class TagTextView extends TextView {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((Switch) activity.findViewById(R.id.switch1)).setChecked(true);
+                activity.searchSwitch.setChecked(true);
                 ((AutoCompleteTextView) activity.findViewById(R.id.editText)).setText(tag);
                 activity.keyWord.execSearch();
             }
