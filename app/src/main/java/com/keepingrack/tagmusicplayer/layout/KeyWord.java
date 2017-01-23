@@ -16,11 +16,11 @@ import com.keepingrack.tagmusicplayer.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.keepingrack.tagmusicplayer.MainActivity.SELECT_MUSIC;
 import static com.keepingrack.tagmusicplayer.MainActivity.displayMusicNames;
 import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
 import static com.keepingrack.tagmusicplayer.MainActivity.tagKinds;
 import static com.keepingrack.tagmusicplayer.layout.SearchSwitch.SEARCH_TYPE;
+import static com.keepingrack.tagmusicplayer.layout.musicField.MusicLinearLayout.SELECT_MUSIC;
 
 public class KeyWord {
 
@@ -68,7 +68,7 @@ public class KeyWord {
     // 検索処理実施
     public void execSearch() {
         try {
-            ObjectAnimator anm = activity.musicField.getHideAnimation();
+            ObjectAnimator anm = activity.musicLinearLayout.getHideAnimation();
             anm.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animation) {
@@ -79,12 +79,12 @@ public class KeyWord {
                         activity.musicField.hideKeyBoard();
                         activity.relateTagField.removeRelateTagField();
                         activity.relateTagField.hideRelateTagField();
-                        activity.musicField.changeMusicList();
+                        activity.musicLinearLayout.changeMusicList();
                         activity.relateTagField.updateRelateTags();
                         if (!displayMusicNames.contains(SELECT_MUSIC)) {
-                            activity.musicField.musicRow.unselectedMusic();
+                            activity.musicLinearLayout.deselectMusic(SELECT_MUSIC);
                         }
-                        ObjectAnimator anm = activity.musicField.getShowAnimation();
+                        ObjectAnimator anm = activity.musicLinearLayout.getShowAnimation();
                         anm.start();
                     } catch (Exception ex) {
                         activity.musicField.msgField.outErrorMessage(ex);

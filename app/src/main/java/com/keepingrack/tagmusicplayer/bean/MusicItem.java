@@ -2,6 +2,8 @@ package com.keepingrack.tagmusicplayer.bean;
 
 import android.widget.LinearLayout;
 
+import com.keepingrack.tagmusicplayer.layout.musicField.MusicRow;
+
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -19,5 +21,5 @@ public class MusicItem {
 
     private List<String> tags;
 
-    private LinearLayout row;
+    private MusicRow row;
 }

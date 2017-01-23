@@ -6,9 +6,9 @@ import android.widget.ToggleButton;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.displayMusicNames;
 import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
-import static com.keepingrack.tagmusicplayer.MainActivity.SELECT_MUSIC;
 import static com.keepingrack.tagmusicplayer.MainActivity.PLAYING_MUSIC;
 import static com.keepingrack.tagmusicplayer.MainActivity.mp;
+import static com.keepingrack.tagmusicplayer.layout.musicField.MusicLinearLayout.SELECT_MUSIC;
 
 public class MusicPlayer {
 
@@ -66,7 +66,7 @@ public class MusicPlayer {
                     break;
                 case RESTART:
                     startMusicPlayer(PLAYING_MUSIC);
-                    activity.musicField.scrollMusicView();
+                    activity.musicScrollView.scrollMusicView();
                     break;
             }
         } catch (Exception ex) {

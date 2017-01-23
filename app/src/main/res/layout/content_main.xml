@@ -108,21 +108,20 @@
         android:visibility="gone"
         android:layout_below="@id/separator" />
 
-    <ScrollView
+    <com.keepingrack.tagmusicplayer.layout.musicField.MusicScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/scrollView"
         android:layout_below="@id/helloWorld" >
 
-        <LinearLayout
+        <com.keepingrack.tagmusicplayer.layout.musicField.MusicLinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:splitMotionEvents="false"
             android:id="@+id/linearLayout">
-        </LinearLayout>
+        </com.keepingrack.tagmusicplayer.layout.musicField.MusicLinearLayout>
 
-    </ScrollView>
+    </com.keepingrack.tagmusicplayer.layout.musicField.MusicScrollView>
 
     <LinearLayout
         android:orientation="vertical"

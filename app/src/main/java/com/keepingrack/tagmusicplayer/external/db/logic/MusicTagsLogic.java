@@ -8,6 +8,7 @@ import com.keepingrack.tagmusicplayer.bean.MusicItem;
 import com.keepingrack.tagmusicplayer.external.db.DBAdapter;
 import com.keepingrack.tagmusicplayer.external.db.entity.MusicTagsRecord;
 import com.keepingrack.tagmusicplayer.external.db.helper.MusicTagsHelper;
+import com.keepingrack.tagmusicplayer.layout.musicField.MusicRow;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -83,7 +84,7 @@ public class MusicTagsLogic {
             List<String> tagArray = stringToList(tags, SEPARATE);
             tagKinds.addAll(tagArray);
             musicKeys.add(key);
-            musicItems.put(key, new MusicItem(file.getAbsolutePath(), file.getName(), tagArray, new LinearLayout(activity)));
+            musicItems.put(key, new MusicItem(file.getAbsolutePath(), file.getName(), tagArray, new MusicRow("")));
         }
 
         after();

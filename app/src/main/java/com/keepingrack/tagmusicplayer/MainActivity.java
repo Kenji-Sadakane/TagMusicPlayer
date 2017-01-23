@@ -31,6 +31,8 @@ import com.keepingrack.tagmusicplayer.layout.MusicSeekBar;
 import com.keepingrack.tagmusicplayer.layout.RelateTagField;
 import com.keepingrack.tagmusicplayer.layout.SearchSwitch;
 import com.keepingrack.tagmusicplayer.layout.TagInfoDialog;
+import com.keepingrack.tagmusicplayer.layout.musicField.MusicLinearLayout;
+import com.keepingrack.tagmusicplayer.layout.musicField.MusicScrollView;
 
 import java.util.List;
 import java.util.Map;
@@ -56,15 +58,17 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     public static List<String> musicKeys = new CopyOnWriteArrayList<>();
     public static List<String> displayMusicNames = new CopyOnWriteArrayList<>();
     public static List<RelateTag> relateTags = new CopyOnWriteArrayList<>();
-    public static String SELECT_MUSIC = "";
     public static String PLAYING_MUSIC = "";
     public static MediaPlayer mp = new MediaPlayer();
+    public static MainActivity activity;
 
     public KeyWord keyWord = new KeyWord(this);
     public MusicField musicField = new MusicField(this);
     private MusicFile musicFile = new MusicFile(this);
+    public MusicLinearLayout musicLinearLayout;
     public MusicPlayer musicPlayer = new MusicPlayer(this);
     public MusicPlayerButton musicPlayerButton = new MusicPlayerButton(this);
+    public MusicScrollView musicScrollView;
     public MusicTagsLogic musicTagsLogic = new MusicTagsLogic(this);
     public SearchSwitch searchSwitch = new SearchSwitch(this);
     public ShuffleMusicList shuffleMusicList = new ShuffleMusicList(this);
@@ -99,18 +103,22 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
 
         try {
             // タグ、楽曲表示
-//            displayContents(false);
             final ProgressDialog progressDialog = startLoading();
+            activity = this;
+            musicLinearLayout = (MusicLinearLayout) findViewById(R.id.linearLayout);
+            musicScrollView = (MusicScrollView) findViewById(R.id.scrollView);
+
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         musicTagsLogic.selectAndReflectTags();
-                        musicField.createContents();
-                        musicField.changeMusicList();
-                        endLoading(progressDialog);
+                        musicLinearLayout.createContents();
+                        musicLinearLayout.changeMusicList();
                     } catch (Exception ex) {
                         musicField.msgField.outErrorMessage(ex);
+                    } finally {
+                        endLoading(progressDialog);
                     }
                 }
             }).start();
@@ -173,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                         musicTagsLogic.deleteAll();
                         musicTagsLogic.insertAll();
                         // 楽曲リスト(画面部品)作成
-                        musicField.createContents();
+                        musicLinearLayout.createContents();
                         musicPlayer.showTrackNo();
                     } catch (Exception ex) {
                         musicField.msgField.outErrorMessage(ex);
@@ -280,17 +288,17 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     }
 
     public void playMusic(String key) throws Exception {
-        musicField.musicRow.resetMusicRowBackGround();
+        musicLinearLayout.resetMusicRowBackGround();
         musicPlayer.startMusicPlayer(key);
         musicPlayer.showTrackNo();
-        musicField.musicRow.selectMusic(key);
-        musicField.scrollMusicView();
-        musicField.musicRow.setMusicRowBackGround();
+        musicLinearLayout.selectMusicAndDeselectOldMusic(key);
+        musicScrollView.scrollMusicView();
+        musicLinearLayout.setMusicRowBackGround();
         musicPlayerButton.playButtonCheck(true);
     }
 
     public void stopMusic() throws Exception {
-        musicField.musicRow.resetMusicRowBackGround();
+        musicLinearLayout.resetMusicRowBackGround();
         musicPlayerButton.playButtonCheck(false);
         musicPlayer.stopMusicPlayer();
         musicPlayer.showTrackNo();
@@ -315,7 +323,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
             switch (musicPlayer.getActionOnPrevClicked()) {
                 case RESTART:
                     mp.seekTo(0);
-                    musicField.scrollMusicView();
+                    musicScrollView.scrollMusicView();
                     break;
                 case STOP:
                     stopMusic();

@@ -51,8 +51,7 @@ public class TagInfoDialog {
                             if (tags.isEmpty()) { tags = TAG_NOTHING_LIST; }
                             musicItems.get(key).setTags(tags);
                             activity.musicTagsLogic.update(key);
-                            activity.musicField.musicRow.unselectedMusic();
-                            activity.musicField.musicRow.selectMusic(key);
+                            activity.musicLinearLayout.selectMusic(key);
                         } catch (Exception ex) {
                             activity.musicField.msgField.outErrorMessage(ex);
                         }
