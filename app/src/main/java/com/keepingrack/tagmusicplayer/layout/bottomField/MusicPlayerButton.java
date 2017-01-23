@@ -1,4 +1,4 @@
-package com.keepingrack.tagmusicplayer.layout;
+package com.keepingrack.tagmusicplayer.layout.bottomField;
 
 import android.widget.Button;
 import android.widget.ToggleButton;

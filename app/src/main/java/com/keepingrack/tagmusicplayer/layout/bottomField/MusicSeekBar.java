@@ -1,4 +1,4 @@
-package com.keepingrack.tagmusicplayer.layout;
+package com.keepingrack.tagmusicplayer.layout.bottomField;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;

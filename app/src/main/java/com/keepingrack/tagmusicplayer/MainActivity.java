@@ -18,7 +18,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.keepingrack.tagmusicplayer.bean.MusicItem;
@@ -27,8 +26,8 @@ import com.keepingrack.tagmusicplayer.external.db.logic.MusicTagsLogic;
 import com.keepingrack.tagmusicplayer.external.file.MusicFile;
 import com.keepingrack.tagmusicplayer.layout.GrayPanel;
 import com.keepingrack.tagmusicplayer.layout.topField.KeyWordEditText;
-import com.keepingrack.tagmusicplayer.layout.MusicPlayerButton;
-import com.keepingrack.tagmusicplayer.layout.MusicSeekBar;
+import com.keepingrack.tagmusicplayer.layout.bottomField.MusicPlayerButton;
+import com.keepingrack.tagmusicplayer.layout.bottomField.MusicSeekBar;
 import com.keepingrack.tagmusicplayer.layout.RelateTagField;
 import com.keepingrack.tagmusicplayer.layout.topField.SearchSwitch;
 import com.keepingrack.tagmusicplayer.layout.TagInfoDialog;
