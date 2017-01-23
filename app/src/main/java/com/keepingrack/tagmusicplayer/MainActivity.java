@@ -32,6 +32,7 @@ import com.keepingrack.tagmusicplayer.layout.MusicSeekBar;
 import com.keepingrack.tagmusicplayer.layout.RelateTagField;
 import com.keepingrack.tagmusicplayer.layout.SearchSwitch;
 import com.keepingrack.tagmusicplayer.layout.TagInfoDialog;
+import com.keepingrack.tagmusicplayer.layout.MsgView;
 import com.keepingrack.tagmusicplayer.layout.musicField.MusicLinearLayout;
 import com.keepingrack.tagmusicplayer.layout.musicField.MusicScrollView;
 
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
 
     public KeyWord keyWord = new KeyWord(this);
     public GrayPanel grayPanel;
+    public MsgView msgView;
     public MusicField musicField = new MusicField(this);
     private MusicFile musicFile = new MusicFile(this);
     public MusicLinearLayout musicLinearLayout;
@@ -108,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
             final ProgressDialog progressDialog = startLoading();
             activity = this;
             grayPanel = (GrayPanel) findViewById(R.id.grayPanel);
+            msgView = (MsgView) findViewById(R.id.msgView);
             musicLinearLayout = (MusicLinearLayout) findViewById(R.id.linearLayout);
             musicScrollView = (MusicScrollView) findViewById(R.id.scrollView);
 
@@ -119,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                         musicLinearLayout.createContents();
                         musicLinearLayout.changeMusicList();
                     } catch (Exception ex) {
-                        musicField.msgField.outErrorMessage(ex);
+                        msgView.outErrorMessage(ex);
                     } finally {
                         endLoading(progressDialog);
                     }
@@ -132,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
             Thread currentThread = new Thread(this);
             currentThread.start();
         } catch (Exception ex) {
-            musicField.msgField.outErrorMessage(ex);
+            msgView.outErrorMessage(ex);
         }
     }
 
@@ -187,14 +190,14 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                         musicLinearLayout.createContents();
                         musicPlayer.showTrackNo();
                     } catch (Exception ex) {
-                        musicField.msgField.outErrorMessage(ex);
+                        msgView.outErrorMessage(ex);
                     } finally {
                         endLoading(progressDialog);
                     }
                 }
             }).start();
         } catch (Exception ex) {
-            musicField.msgField.outErrorMessage(ex);
+            msgView.outErrorMessage(ex);
         }
     }
 
@@ -284,7 +287,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                     break;
             }
         } catch (Exception ex) {
-            musicField.msgField.outErrorMessage(ex);
+            msgView.outErrorMessage(ex);
         }
     }
 
@@ -337,7 +340,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                     break;
             }
         } catch (Exception ex) {
-            musicField.msgField.outErrorMessage(ex);
+            msgView.outErrorMessage(ex);
         }
     }
 
@@ -354,7 +357,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                     playMusic(displayMusicNames.get(nextTrackNo));
             }
         } catch (Exception ex) {
-            musicField.msgField.outErrorMessage(ex);
+            msgView.outErrorMessage(ex);
         }
     }
 
@@ -444,7 +447,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                 return true;
             }
         } catch (Exception ex) {
-            musicField.msgField.outErrorMessage(ex);
+            msgView.outErrorMessage(ex);
         }
 
         return super.onOptionsItemSelected(item);

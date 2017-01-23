@@ -53,7 +53,7 @@ public class TagInfoDialog {
                             activity.musicTagsLogic.update(key);
                             activity.musicLinearLayout.selectMusic(key);
                         } catch (Exception ex) {
-                            activity.musicField.msgField.outErrorMessage(ex);
+                            activity.msgView.outErrorMessage(ex);
                         }
                     }
                 });

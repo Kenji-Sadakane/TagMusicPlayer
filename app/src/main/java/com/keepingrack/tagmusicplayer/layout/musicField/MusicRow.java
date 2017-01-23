@@ -54,7 +54,7 @@ public class MusicRow extends LinearLayout {
                     activity.musicLinearLayout.selectMusicAndDeselectOldMusic(getMusicKey());
                     showTagInfo();
                 } catch (Exception ex) {
-                    activity.musicField.msgField.outErrorMessage(ex);
+                    activity.msgView.outErrorMessage(ex);
                 }
             }
         };

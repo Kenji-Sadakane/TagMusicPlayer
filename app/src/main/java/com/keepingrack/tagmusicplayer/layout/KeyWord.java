@@ -87,7 +87,7 @@ public class KeyWord {
                         ObjectAnimator anm = activity.musicLinearLayout.getShowAnimation();
                         anm.start();
                     } catch (Exception ex) {
-                        activity.musicField.msgField.outErrorMessage(ex);
+                        activity.msgView.outErrorMessage(ex);
                     }
                 }
                 @Override
@@ -99,7 +99,7 @@ public class KeyWord {
             });
             anm.start();
         } catch (Exception ex) {
-            activity.musicField.msgField.outErrorMessage(ex);
+            activity.msgView.outErrorMessage(ex);
         }
     }
 

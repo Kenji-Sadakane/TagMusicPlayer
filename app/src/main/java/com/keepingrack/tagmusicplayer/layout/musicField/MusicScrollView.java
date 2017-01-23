@@ -56,7 +56,7 @@ public class MusicScrollView extends ScrollView {
                     activity.musicField.hideKeyBoard();
                     activity.musicSeekBar.invisible();
                 } catch (Exception ex) {
-                    activity.musicField.msgField.outErrorMessage(ex);
+                    activity.msgView.outErrorMessage(ex);
                 }
                 // イベントの伝搬を阻止しない
                 return false;

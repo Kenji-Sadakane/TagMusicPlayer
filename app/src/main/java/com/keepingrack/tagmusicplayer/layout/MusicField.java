@@ -4,18 +4,15 @@ import android.widget.TextView;
 
 import com.keepingrack.tagmusicplayer.MainActivity;
 import com.keepingrack.tagmusicplayer.R;
-import com.keepingrack.tagmusicplayer.layout.musicField.MsgField;
 import com.keepingrack.tagmusicplayer.layout.musicField.MusicTag;
 
 public class MusicField {
 
-    public MsgField msgField;
     public MusicTag musicTag;
     private MainActivity activity;
 
     public MusicField(MainActivity _activity) {
         this.activity = _activity;
-        msgField = new MsgField(activity);
         musicTag = new MusicTag(activity);
     }
 

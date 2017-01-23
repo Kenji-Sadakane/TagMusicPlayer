@@ -100,10 +100,10 @@
         android:layout_height="2dp"
         android:layout_below="@id/currentTrack" />
 
-    <TextView
+    <com.keepingrack.tagmusicplayer.layout.MsgView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/helloWorld"
+        android:id="@+id/msgView"
         android:textSize="10sp"
         android:visibility="gone"
         android:layout_below="@id/separator" />
@@ -112,7 +112,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/scrollView"
-        android:layout_below="@id/helloWorld" >
+        android:layout_below="@id/msgView" >
 
         <com.keepingrack.tagmusicplayer.layout.musicField.MusicLinearLayout
             android:orientation="vertical"
