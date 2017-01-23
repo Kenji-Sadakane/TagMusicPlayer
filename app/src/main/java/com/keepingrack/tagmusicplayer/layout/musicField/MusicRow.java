@@ -49,7 +49,7 @@ public class MusicRow extends LinearLayout {
             public void onClick(View v) {
                 try {
                     activity.grayPanel.screenLock(500);
-                    activity.musicField.hideKeyBoard();
+                    activity.hideKeyBoard();
                     activity.musicSeekBar.visible();
                     activity.musicLinearLayout.selectMusicAndDeselectOldMusic(getMusicKey());
                     showTagInfo();
@@ -65,7 +65,7 @@ public class MusicRow extends LinearLayout {
         return new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                activity.musicField.hideKeyBoard();
+                activity.hideKeyBoard();
                 activity.tagInfoDialog.showDialog(getMusicKey());
                 return false;
             }

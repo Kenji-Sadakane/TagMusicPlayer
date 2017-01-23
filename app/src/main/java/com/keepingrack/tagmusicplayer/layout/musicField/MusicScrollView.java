@@ -53,7 +53,7 @@ public class MusicScrollView extends ScrollView {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 try {
-                    activity.musicField.hideKeyBoard();
+                    activity.hideKeyBoard();
                     activity.musicSeekBar.invisible();
                 } catch (Exception ex) {
                     activity.msgView.outErrorMessage(ex);

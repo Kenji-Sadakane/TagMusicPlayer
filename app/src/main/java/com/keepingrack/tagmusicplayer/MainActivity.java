@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.keepingrack.tagmusicplayer.bean.MusicItem;
 import com.keepingrack.tagmusicplayer.bean.RelateTag;
@@ -26,7 +27,6 @@ import com.keepingrack.tagmusicplayer.external.db.logic.MusicTagsLogic;
 import com.keepingrack.tagmusicplayer.external.file.MusicFile;
 import com.keepingrack.tagmusicplayer.layout.GrayPanel;
 import com.keepingrack.tagmusicplayer.layout.KeyWord;
-import com.keepingrack.tagmusicplayer.layout.MusicField;
 import com.keepingrack.tagmusicplayer.layout.MusicPlayerButton;
 import com.keepingrack.tagmusicplayer.layout.MusicSeekBar;
 import com.keepingrack.tagmusicplayer.layout.RelateTagField;
@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     public KeyWord keyWord = new KeyWord(this);
     public GrayPanel grayPanel;
     public MsgView msgView;
-    public MusicField musicField = new MusicField(this);
     private MusicFile musicFile = new MusicFile(this);
     public MusicLinearLayout musicLinearLayout;
     public MusicPlayer musicPlayer = new MusicPlayer(this);
@@ -199,6 +198,10 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         } catch (Exception ex) {
             msgView.outErrorMessage(ex);
         }
+    }
+
+    public void hideKeyBoard() {
+        ((TextView) activity.findViewById(R.id.dummyText)).requestFocus();
     }
 
 //    private void displayContents(boolean doSearchMusic) throws Exception {

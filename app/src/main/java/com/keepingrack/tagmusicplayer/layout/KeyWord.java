@@ -76,7 +76,7 @@ public class KeyWord {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     try {
-                        activity.musicField.hideKeyBoard();
+                        activity.hideKeyBoard();
                         activity.relateTagField.removeRelateTagField();
                         activity.relateTagField.hideRelateTagField();
                         activity.musicLinearLayout.changeMusicList();
