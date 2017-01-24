@@ -1,16 +1,10 @@
 package com.keepingrack.tagmusicplayer.layout;
 
-import android.graphics.Color;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 
 import com.keepingrack.tagmusicplayer.MainActivity;
 import com.keepingrack.tagmusicplayer.R;
 import com.keepingrack.tagmusicplayer.bean.RelateTag;
-import com.keepingrack.tagmusicplayer.layout.topField.RelateTagTextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,14 +30,15 @@ public class RelateTagField {
 
     // 関連タグフィールド表示を最新化
     public void updateRelateTags() throws Exception {
-        removeRelateTagField();
+        activity.relateTagLayout.removeRelateTagField();
         if (canShowRelateTag()) {
             activity.findViewById(R.id.switchRelateTagText).setVisibility(View.VISIBLE);
-            addRelateTagField();
+            createRelateTagList();
+            activity.relateTagLayout.addRelateTags();
         } else {
             activity.findViewById(R.id.switchRelateTagText).setVisibility(View.GONE);
         }
-        setRelateTagFieldHeight();
+        activity.relateTagScrollView.setRelateTagFieldHeight();
     }
 
     // 関連タグ表示可否判定
@@ -60,45 +55,6 @@ public class RelateTagField {
                 break;
         }
         return result;
-    }
-
-    // 関連タグフィールドを画面から削除
-    public void removeRelateTagField() {
-        ((LinearLayout) activity.findViewById(R.id.relateTagList)).removeAllViews();
-        selectedTags.clear();
-        unselectedTags.clear();
-    }
-
-    // 関連タグフィールドを画面に追加
-    public void addRelateTagField() throws Exception {
-        createRelateTagList();
-        LinearLayout tagField = createTagField();
-        int tagLengthByField = 0;
-        for (RelateTag relateTag : relateTags) {
-            RelateTagTextView tagText = new RelateTagTextView(relateTag.getTag());
-            int tagLength = relateTag.getTag().getBytes("Shift_JIS").length;
-            if (tagField.getChildCount() > 0 && (tagLengthByField + tagLength) > 40) {
-                tagField = createTagField();
-                tagLengthByField = tagLength;
-            } else {
-                tagLengthByField += tagLength;
-            }
-            tagField.addView(tagText);
-        }
-    }
-
-    // 関連タグフィールドの表示幅を設定
-    public void setRelateTagFieldHeight() {
-        ((ScrollView) activity.findViewById(R.id.relateTagView)).getLayoutParams().height = calcRelateTagFieldHeight();
-    }
-    public void setRelateTagFieldHeight(int height) {
-        ((ScrollView) activity.findViewById(R.id.relateTagView)).getLayoutParams().height = height;
-    }
-
-    // 関連タグフィールドの表示幅を算出
-    public int calcRelateTagFieldHeight() {
-        int relateTagLineCount = ((LinearLayout) activity.findViewById(R.id.relateTagList)).getChildCount();
-        return relateTagLineCount > 4 ? 300 : relateTagLineCount * 75;
     }
 
     // 関連タグリスト生成
@@ -174,16 +130,6 @@ public class RelateTagField {
         return target;
     }
 
-    // タグ表示領域(1行分)生成
-    private LinearLayout createTagField() {
-        LinearLayout tagField = new LinearLayout(activity);
-        tagField.setOrientation(LinearLayout.HORIZONTAL);
-        LinearLayout.LayoutParams tagFieldParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        tagFieldParams.setMargins(15, 0, 15, 15); // 左, 上, 右, 下
-        ((LinearLayout) activity.findViewById(R.id.relateTagList)).addView(tagField, tagFieldParams);
-        return tagField;
-    }
-
     // 関連タグの状態を考慮し対象楽曲の表示可否を判定
     public boolean chkRelateTagState(String key) {
         // 表示タグ、非表示タグが存在しない
@@ -233,21 +179,19 @@ public class RelateTagField {
     }
 
     public void showRelateTagField() {
-        ScrollView relateTagField = (ScrollView) activity.findViewById(R.id.relateTagView);
-        setRelateTagFieldHeight();
-        relateTagField.setVisibility(View.VISIBLE);
+        activity.relateTagScrollView.setRelateTagFieldHeight();
+        activity.relateTagScrollView.setVisibility(View.VISIBLE);
         activity.relateTagLink.changeTextToClose();
     }
 
     public void hideRelateTagField() {
-        ScrollView relateTagField = (ScrollView) activity.findViewById(R.id.relateTagView);
-        setRelateTagFieldHeight(0);
-        relateTagField.setVisibility(View.GONE);
+        activity.relateTagScrollView.setRelateTagFieldHeight(0);
+        activity.relateTagScrollView.setVisibility(View.GONE);
         activity.relateTagLink.changeTextToOpen();
     }
 
     public void initializeTagField() {
-        removeRelateTagField();
+        activity.relateTagLayout.removeRelateTagField();
         hideRelateTagField();
         activity.findViewById(R.id.switchRelateTagText).setVisibility(View.GONE);
     }

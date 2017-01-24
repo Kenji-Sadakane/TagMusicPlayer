@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.keepingrack.tagmusicplayer.bean.MusicItem;
@@ -29,7 +30,9 @@ import com.keepingrack.tagmusicplayer.layout.topField.KeyWordEditText;
 import com.keepingrack.tagmusicplayer.layout.bottomField.LoopButton;
 import com.keepingrack.tagmusicplayer.layout.bottomField.MusicSeekBar;
 import com.keepingrack.tagmusicplayer.layout.RelateTagField;
+import com.keepingrack.tagmusicplayer.layout.topField.RelateTagLayout;
 import com.keepingrack.tagmusicplayer.layout.topField.RelateTagLink;
+import com.keepingrack.tagmusicplayer.layout.topField.RelateTagScrollView;
 import com.keepingrack.tagmusicplayer.layout.topField.SearchSwitch;
 import com.keepingrack.tagmusicplayer.layout.TagInfoDialog;
 import com.keepingrack.tagmusicplayer.layout.topField.MsgView;
@@ -77,7 +80,9 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     public ShuffleMusicList shuffleMusicList = new ShuffleMusicList(this);
     public MusicSeekBar musicSeekBar;
     public RelateTagField relateTagField = new RelateTagField(this);
+    public RelateTagLayout relateTagLayout;
     public RelateTagLink relateTagLink;
+    public RelateTagScrollView relateTagScrollView;
     public TagInfoDialog tagInfoDialog = new TagInfoDialog(this);
     public Handler handler = new Handler();
 
@@ -117,7 +122,9 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
             musicSeekBar = (MusicSeekBar) findViewById(R.id.seekBar);
             musicScrollView = (MusicScrollView) findViewById(R.id.scrollView);
             searchSwitch = (SearchSwitch) findViewById(R.id.searchSwitch);
+            relateTagLayout = (RelateTagLayout) findViewById(R.id.relateTagLayout);
             relateTagLink = (RelateTagLink) findViewById(R.id.switchRelateTagText);
+            relateTagScrollView = (RelateTagScrollView) findViewById(R.id.relateTagScrollView);
 
             new Thread(new Runnable() {
                 @Override

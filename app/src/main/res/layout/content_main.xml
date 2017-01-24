@@ -54,34 +54,36 @@
         android:layout_toRightOf="@id/searchSwitch"
         android:layout_toLeftOf="@id/clearButton" />
 
-    <ScrollView
+    <com.keepingrack.tagmusicplayer.layout.topField.RelateTagScrollView
         android:layout_width="match_parent"
         android:layout_height="0px"
         android:layout_below="@id/keyWordEditText"
         android:visibility="gone"
-        android:id="@+id/relateTagView" >
+        android:id="@+id/relateTagScrollView" >
 
-        <LinearLayout
-            android:orientation="vertical"
+        <com.keepingrack.tagmusicplayer.layout.topField.RelateTagLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/keyWordEditText"
+            android:layout_marginLeft="20px"
+            android:layout_marginTop="10px"
+            android:layout_marginRight="20px"
+            android:layout_marginBottom="10px"
             android:splitMotionEvents="false"
-            android:id="@+id/relateTagList">
-        </LinearLayout>
+            android:id="@+id/relateTagLayout">
+        </com.keepingrack.tagmusicplayer.layout.topField.RelateTagLayout>
 
-    </ScrollView>
+    </com.keepingrack.tagmusicplayer.layout.topField.RelateTagScrollView>
 
     <com.keepingrack.tagmusicplayer.layout.topField.RelateTagLink
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10px"
-        android:layout_below="@id/relateTagView"
+        android:layout_marginLeft="20px"
+        android:layout_below="@id/relateTagScrollView"
         android:id="@+id/switchRelateTagText"
         android:text="@string/show_relate_tag"
         android:textColor="#00AAFF"
         android:clickable="true"
-        android:onClick="onRelateTagChangeLinkClicked"
         android:visibility="gone" />
 
     <TextView
@@ -157,7 +159,8 @@
             <com.keepingrack.tagmusicplayer.layout.bottomField.MusicSeekBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="100px"
+                android:layout_marginRight="110px"
+                android:layout_marginLeft="10px"
                 android:layout_column="1"
                 android:layout_row="0"
                 android:layout_rowSpan="2"

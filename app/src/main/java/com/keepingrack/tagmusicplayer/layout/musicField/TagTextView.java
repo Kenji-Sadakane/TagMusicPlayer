@@ -2,7 +2,6 @@ package com.keepingrack.tagmusicplayer.layout.musicField;
 
 import android.text.Layout;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;

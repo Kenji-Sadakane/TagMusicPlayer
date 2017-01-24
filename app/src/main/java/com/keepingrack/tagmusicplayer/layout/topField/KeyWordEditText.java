@@ -125,7 +125,7 @@ public class KeyWordEditText extends AutoCompleteTextView {
                 public void onAnimationEnd(Animator animation) {
                     try {
                         activity.hideKeyBoard();
-                        activity.relateTagField.removeRelateTagField();
+                        activity.relateTagLayout.removeRelateTagField();
                         activity.relateTagField.hideRelateTagField();
                         activity.musicLinearLayout.changeMusicList();
                         activity.relateTagField.updateRelateTags();
