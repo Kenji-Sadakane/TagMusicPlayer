@@ -254,11 +254,6 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
 //        keyWord.afterTextChangedProcess();
 //    }
 
-    // 検索ボタン押下時
-    public void onSearchClicked(View v) {
-        keyWordEditText.execSearch();
-    }
-
 //    public static void verifyStoragePermissions(Activity activity) {
 //        // Check if we have write permission
 //        CURRENT_PERMISSION = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);

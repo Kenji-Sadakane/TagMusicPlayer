@@ -26,12 +26,11 @@
         android:checked="true"
         android:layout_marginTop="20px" />
 
-    <Button
+    <com.keepingrack.tagmusicplayer.layout.topField.SearchButton
         android:layout_width="90px"
         android:layout_height="90px"
         android:background="@drawable/search_button"
         android:id="@+id/searchButton"
-        android:onClick="onSearchClicked"
         android:layout_marginTop="20px"
         android:layout_marginRight="20px"
         android:layout_alignParentRight="true" />
