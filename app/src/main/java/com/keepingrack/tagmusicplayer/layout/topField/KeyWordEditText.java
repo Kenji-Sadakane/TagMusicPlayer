@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 
 import com.keepingrack.tagmusicplayer.R;
 
@@ -126,9 +125,9 @@ public class KeyWordEditText extends AutoCompleteTextView {
                     try {
                         activity.hideKeyBoard();
                         activity.relateTagLayout.removeRelateTagField();
-                        activity.relateTagField.hideRelateTagField();
+                        activity.relateTagLogic.hideRelateTagField();
                         activity.musicLinearLayout.changeMusicList();
-                        activity.relateTagField.updateRelateTags();
+                        activity.relateTagLogic.updateRelateTags();
                         if (!displayMusicNames.contains(SELECT_MUSIC)) {
                             activity.musicLinearLayout.deselectMusic(SELECT_MUSIC);
                         }

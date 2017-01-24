@@ -1,4 +1,4 @@
-package com.keepingrack.tagmusicplayer.layout;
+package com.keepingrack.tagmusicplayer;
 
 import android.view.View;
 
@@ -17,14 +17,14 @@ import static com.keepingrack.tagmusicplayer.MainActivity.relateTags;
 import static com.keepingrack.tagmusicplayer.MainActivity.tagKinds;
 import static com.keepingrack.tagmusicplayer.layout.topField.SearchSwitch.SEARCH_TYPE;
 
-public class RelateTagField {
+public class RelateTagLogic {
 
     public static List<String> selectedTags = new ArrayList<>();
     public static List<String> unselectedTags = new ArrayList<>();
 
     private MainActivity activity;
 
-    public RelateTagField(MainActivity _activity) {
+    public RelateTagLogic(MainActivity _activity) {
         this.activity = _activity;
     }
 

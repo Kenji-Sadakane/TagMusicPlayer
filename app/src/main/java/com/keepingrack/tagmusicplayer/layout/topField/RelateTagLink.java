@@ -27,9 +27,9 @@ public class RelateTagLink extends TextView {
                 // 関連タグ表示切り替え時
                 RelateTagLink link = (RelateTagLink) v;
                 if (isRelateTagShow) {
-                    activity.relateTagField.hideRelateTagField();
+                    activity.relateTagLogic.hideRelateTagField();
                 } else {
-                    activity.relateTagField.showRelateTagField();
+                    activity.relateTagLogic.showRelateTagField();
                 }
             }
         };

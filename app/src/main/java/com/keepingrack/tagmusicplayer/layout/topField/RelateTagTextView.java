@@ -61,7 +61,7 @@ public class RelateTagTextView extends TextView {
             public void onClick(View v) {
                 TextView textView = (TextView) v;
                 String tag = textView.getText().toString();
-                RelateTag relateTag = activity.relateTagField.findRelateTag(tag);
+                RelateTag relateTag = activity.relateTagLogic.findRelateTag(tag);
                 if (relateTag == null) {
                     return;
                 }
@@ -70,20 +70,20 @@ public class RelateTagTextView extends TextView {
                         relateTag.setState(RelateTag.STATE.SELECTED);
                         textView.setBackgroundResource(R.drawable.related_tag_selected);
                         textView.setTextColor(Color.parseColor("#FF4081"));
-                        activity.relateTagField.selectedTags.add(tag);
+                        activity.relateTagLogic.selectedTags.add(tag);
                         break;
                     case SELECTED:
                         relateTag.setState(RelateTag.STATE.UNSELECTED);
                         textView.setBackgroundResource(R.drawable.tag_item);
                         textView.setTextColor(Color.parseColor("#F0F0F0"));
-                        activity.relateTagField.selectedTags.remove(tag);
-                        activity.relateTagField.unselectedTags.add(tag);
+                        activity.relateTagLogic.selectedTags.remove(tag);
+                        activity.relateTagLogic.unselectedTags.add(tag);
                         break;
                     case UNSELECTED:
                         relateTag.setState(RelateTag.STATE.DEFAULT);
                         textView.setBackgroundResource(R.drawable.tag_item);
                         textView.setTextColor(Color.parseColor("#FF4081"));
-                        activity.relateTagField.unselectedTags.remove(tag);
+                        activity.relateTagLogic.unselectedTags.remove(tag);
                         break;
                 }
                 activity.musicLinearLayout.changeMusicList();

@@ -101,7 +101,7 @@ public class MusicLinearLayout extends LinearLayout {
         displayMusicNames.clear();
         for (String key : musicKeys) {
             MusicRow row = musicItems.get(key).getRow();
-            if (activity.keyWordEditText.checkKeyWordMatch(key) && activity.relateTagField.chkRelateTagState(key)) {
+            if (activity.keyWordEditText.checkKeyWordMatch(key) && activity.relateTagLogic.chkRelateTagState(key)) {
                 if (displayMusicNames.size() > 20) {
                     row.changeMusicVisibility(View.INVISIBLE);
                 } else {

@@ -11,8 +11,8 @@ import lombok.Setter;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.DISPLAY_WIDTH;
 import static com.keepingrack.tagmusicplayer.MainActivity.relateTags;
-import static com.keepingrack.tagmusicplayer.layout.RelateTagField.selectedTags;
-import static com.keepingrack.tagmusicplayer.layout.RelateTagField.unselectedTags;
+import static com.keepingrack.tagmusicplayer.RelateTagLogic.selectedTags;
+import static com.keepingrack.tagmusicplayer.RelateTagLogic.unselectedTags;
 
 @Getter
 @Setter

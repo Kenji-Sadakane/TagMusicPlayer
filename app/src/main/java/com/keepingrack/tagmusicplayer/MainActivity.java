@@ -18,7 +18,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.keepingrack.tagmusicplayer.bean.MusicItem;
@@ -29,7 +28,6 @@ import com.keepingrack.tagmusicplayer.layout.GrayPanel;
 import com.keepingrack.tagmusicplayer.layout.topField.KeyWordEditText;
 import com.keepingrack.tagmusicplayer.layout.bottomField.LoopButton;
 import com.keepingrack.tagmusicplayer.layout.bottomField.MusicSeekBar;
-import com.keepingrack.tagmusicplayer.layout.RelateTagField;
 import com.keepingrack.tagmusicplayer.layout.topField.RelateTagLayout;
 import com.keepingrack.tagmusicplayer.layout.topField.RelateTagLink;
 import com.keepingrack.tagmusicplayer.layout.topField.RelateTagScrollView;
@@ -79,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     public SearchSwitch searchSwitch;
     public ShuffleMusicList shuffleMusicList = new ShuffleMusicList(this);
     public MusicSeekBar musicSeekBar;
-    public RelateTagField relateTagField = new RelateTagField(this);
+    public RelateTagLogic relateTagLogic = new RelateTagLogic(this);
     public RelateTagLayout relateTagLayout;
     public RelateTagLink relateTagLink;
     public RelateTagScrollView relateTagScrollView;
@@ -185,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
             }
             final ProgressDialog progressDialog = startLoading();
             keyWordEditText.setText("");
-            relateTagField.initializeTagField();
+            relateTagLogic.initializeTagField();
             new Thread(new Runnable() {
                 @Override
                 public void run() {
