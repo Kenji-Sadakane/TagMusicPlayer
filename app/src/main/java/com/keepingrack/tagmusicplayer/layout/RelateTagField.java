@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.keepingrack.tagmusicplayer.MainActivity;
 import com.keepingrack.tagmusicplayer.R;
 import com.keepingrack.tagmusicplayer.bean.RelateTag;
+import com.keepingrack.tagmusicplayer.layout.topField.RelateTagTextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -74,7 +75,7 @@ public class RelateTagField {
         LinearLayout tagField = createTagField();
         int tagLengthByField = 0;
         for (RelateTag relateTag : relateTags) {
-            TextView tagText = createTagText(relateTag.getTag());
+            RelateTagTextView tagText = new RelateTagTextView(relateTag.getTag());
             int tagLength = relateTag.getTag().getBytes("Shift_JIS").length;
             if (tagField.getChildCount() > 0 && (tagLengthByField + tagLength) > 40) {
                 tagField = createTagField();
@@ -162,7 +163,7 @@ public class RelateTagField {
     }
 
     // 関連タグリストから抽出
-    private RelateTag findRelateTag(String tag) {
+    public RelateTag findRelateTag(String tag) {
         RelateTag target = null;
         for (RelateTag relateTag : relateTags) {
             if (tag.equals(relateTag.getTag())) {
@@ -171,53 +172,6 @@ public class RelateTagField {
             }
         }
         return target;
-    }
-
-    // タグテキスト(1つ分)作成
-    private TextView createTagText(String tag) {
-        TextView tagText = new TextView(activity);
-        tagText.setClickable(true);
-        tagText.setText(tag);
-        tagText.setPadding(5, 0, 5, 0); // 左, 上, 右, 下
-        tagText.setBackgroundResource(R.drawable.tag_item);
-        LinearLayout.LayoutParams tagTextParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        tagTextParams.setMargins(0, 0, 10, 0); // 左, 上, 右, 下
-        tagText.setLayoutParams(tagTextParams);
-        // タグクリック時
-        tagText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TextView textView = (TextView) v;
-                String tag = textView.getText().toString();
-                RelateTag relateTag = findRelateTag(tag);
-                if (relateTag == null) {
-                    return;
-                }
-                switch (relateTag.getState()) {
-                    case DEFAULT:
-                        relateTag.setState(RelateTag.STATE.SELECTED);
-                        textView.setBackgroundResource(R.drawable.related_tag_selected);
-                        textView.setTextColor(Color.parseColor("#FF4081"));
-                        selectedTags.add(tag);
-                        break;
-                    case SELECTED:
-                        relateTag.setState(RelateTag.STATE.UNSELECTED);
-                        textView.setBackgroundResource(R.drawable.tag_item);
-                        textView.setTextColor(Color.parseColor("#F0F0F0"));
-                        selectedTags.remove(tag);
-                        unselectedTags.add(tag);
-                        break;
-                    case UNSELECTED:
-                        relateTag.setState(RelateTag.STATE.DEFAULT);
-                        textView.setBackgroundResource(R.drawable.tag_item);
-                        textView.setTextColor(Color.parseColor("#FF4081"));
-                        unselectedTags.remove(tag);
-                        break;
-                }
-                activity.musicLinearLayout.changeMusicList();
-            }
-        });
-        return tagText;
     }
 
     // タグ表示領域(1行分)生成
