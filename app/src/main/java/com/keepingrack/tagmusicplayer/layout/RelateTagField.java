@@ -24,7 +24,6 @@ import static com.keepingrack.tagmusicplayer.layout.topField.SearchSwitch.SEARCH
 
 public class RelateTagField {
 
-    public static boolean isRelateTagShow = false;
     public static List<String> selectedTags = new ArrayList<>();
     public static List<String> unselectedTags = new ArrayList<>();
 
@@ -32,15 +31,6 @@ public class RelateTagField {
 
     public RelateTagField(MainActivity _activity) {
         this.activity = _activity;
-    }
-
-    // 関連タグ表示切り替え時
-    public void onRelateTagChangeLinkClicked() {
-        if (isRelateTagShow) {
-            hideRelateTagField();
-        } else {
-            showRelateTagField();
-        }
     }
 
     // 関連タグフィールド表示を最新化
@@ -292,16 +282,14 @@ public class RelateTagField {
         ScrollView relateTagField = (ScrollView) activity.findViewById(R.id.relateTagView);
         setRelateTagFieldHeight();
         relateTagField.setVisibility(View.VISIBLE);
-        ((TextView) activity.findViewById(R.id.switchRelateTagText)).setText(R.string.hide_relate_tag);
-        isRelateTagShow = true;
+        activity.relateTagLink.changeTextToClose();
     }
 
     public void hideRelateTagField() {
         ScrollView relateTagField = (ScrollView) activity.findViewById(R.id.relateTagView);
         setRelateTagFieldHeight(0);
         relateTagField.setVisibility(View.GONE);
-        ((TextView) activity.findViewById(R.id.switchRelateTagText)).setText(R.string.show_relate_tag);
-        isRelateTagShow = false;
+        activity.relateTagLink.changeTextToOpen();
     }
 
     public void initializeTagField() {

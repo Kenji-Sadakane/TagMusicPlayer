@@ -29,6 +29,7 @@ import com.keepingrack.tagmusicplayer.layout.topField.KeyWordEditText;
 import com.keepingrack.tagmusicplayer.layout.bottomField.LoopButton;
 import com.keepingrack.tagmusicplayer.layout.bottomField.MusicSeekBar;
 import com.keepingrack.tagmusicplayer.layout.RelateTagField;
+import com.keepingrack.tagmusicplayer.layout.topField.RelateTagLink;
 import com.keepingrack.tagmusicplayer.layout.topField.SearchSwitch;
 import com.keepingrack.tagmusicplayer.layout.TagInfoDialog;
 import com.keepingrack.tagmusicplayer.layout.topField.MsgView;
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     public ShuffleMusicList shuffleMusicList = new ShuffleMusicList(this);
     public MusicSeekBar musicSeekBar;
     public RelateTagField relateTagField = new RelateTagField(this);
+    public RelateTagLink relateTagLink;
     public TagInfoDialog tagInfoDialog = new TagInfoDialog(this);
     public Handler handler = new Handler();
 
@@ -115,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
             musicSeekBar = (MusicSeekBar) findViewById(R.id.seekBar);
             musicScrollView = (MusicScrollView) findViewById(R.id.scrollView);
             searchSwitch = (SearchSwitch) findViewById(R.id.searchSwitch);
+            relateTagLink = (RelateTagLink) findViewById(R.id.switchRelateTagText);
 
             new Thread(new Runnable() {
                 @Override
@@ -222,11 +225,6 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         } catch (InterruptedException ex) {
             //
         }
-    }
-
-    // 関連タグ表示切り替え時
-    public void onRelateTagChangeLinkClicked(View v) {
-        relateTagField.onRelateTagChangeLinkClicked();
     }
 
     public void playMusic(String key) throws Exception {
