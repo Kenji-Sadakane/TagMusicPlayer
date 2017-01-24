@@ -30,8 +30,8 @@ public class RelateTagLayout extends RelativeLayout {
     private int relateTagLineCount = 1;
     // 全関連タグの表示幅合計
     private float tagLengthByLine = 0;
-    // 前タグのID
-    private int prevTagId = -1;
+    // 最終タグのID
+    private int lastTagId = -1;
 
     public RelateTagLayout(Context context, AttributeSet attr) {
         super(context, attr);
@@ -49,7 +49,7 @@ public class RelateTagLayout extends RelativeLayout {
     private void initializeField() {
         relateTagLineCount = 1;
         tagLengthByLine = 0;
-        prevTagId = -1;
+        lastTagId = -1;
     }
 
     // 次のタグの配置場所を判定

@@ -43,11 +43,11 @@ public class RelateTagTextView extends TextView {
             case UPPER_LEFT:
                 break;
             case RIGHT_OF:
-                tagTextParams.addRule(RelativeLayout.ALIGN_TOP, activity.relateTagLayout.getPrevTagId());
-                tagTextParams.addRule(RelativeLayout.RIGHT_OF, activity.relateTagLayout.getPrevTagId());
+                tagTextParams.addRule(RelativeLayout.ALIGN_TOP, activity.relateTagLayout.getLastTagId());
+                tagTextParams.addRule(RelativeLayout.RIGHT_OF, activity.relateTagLayout.getLastTagId());
                 break;
             case NEXT_LINE:
-                tagTextParams.addRule(RelativeLayout.BELOW, activity.relateTagLayout.getPrevTagId());
+                tagTextParams.addRule(RelativeLayout.BELOW, activity.relateTagLayout.getLastTagId());
                 break;
             default:
                 break;
@@ -93,7 +93,7 @@ public class RelateTagTextView extends TextView {
 
     // 親レイアウトの情報更新
     private void updateRelateTagLayout() {
-        activity.relateTagLayout.setPrevTagId(getId());
+        activity.relateTagLayout.setLastTagId(getId());
         if (RELATE_TAG_LOCATION.NEXT_LINE.equals(location)) {
             activity.relateTagLayout.addRelateTagLineCount();
             activity.relateTagLayout.setTagLengthByLine(getDesiredWidth());

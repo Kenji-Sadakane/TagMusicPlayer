@@ -7,31 +7,35 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.keepingrack.tagmusicplayer.R;
+import com.keepingrack.tagmusicplayer.layout.musicField.TagFieldLayout.TAG_LOCATION;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.activity;
 
 public class TagTextView extends TextView {
 
-    /**
-     * タグTextViewの配置場所
-     * UPPER_LEFT:左上(1個目のタグ)
-     * RIGHT_OF:前のタグの右
-     * NEXT_LINE:次行
-     */
-    public enum TAG_LOCATION {UPPER_LEFT, RIGHT_OF, NEXT_LINE}
+    // 親レイアウト
+    private TagFieldLayout tagFieldLayout;
 
-    public TagTextView(String tag) {
+    // 親レイアウトへの配置場所
+    private TAG_LOCATION location;
+
+    public TagTextView(TagFieldLayout layout, String tag) {
         super(activity);
 
+        // 親レイアウト
+        tagFieldLayout = layout;
+        // コンテンツ
+        this.setId(View.generateViewId());
+        this.setText(tag);
         // レイアウト
         this.setPadding(10, 0, 10, 0); // 左, 上, 右, 下
         this.setBackgroundResource(R.drawable.tag_item);
         this.setClickable(true);
-        // コンテンツ
-        this.setId(View.generateViewId());
-        this.setText(tag);
+        this.setLayoutParams(createLayoutParams());
         // リスナー
         this.setOnClickListener(getOnClickListener());
+        // 親レイアウト情報更新
+        updateRelateTagLayout();
     }
 
     private View.OnClickListener getOnClickListener() {
@@ -46,23 +50,34 @@ public class TagTextView extends TextView {
         };
     }
 
-    public void setLayoutParams(TAG_LOCATION location, int prevTagId) {
+    public RelativeLayout.LayoutParams createLayoutParams() {
         RelativeLayout.LayoutParams tagTextParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         tagTextParams.setMargins(10, 0, 0, 15); // 左, 上, 右, 下
+        location = tagFieldLayout.judgeTagTextLocation(getDesiredWidth());
         switch (location) {
             case UPPER_LEFT:
                 break;
             case RIGHT_OF:
-                tagTextParams.addRule(RelativeLayout.ALIGN_TOP, prevTagId);
-                tagTextParams.addRule(RelativeLayout.RIGHT_OF, prevTagId);
+                tagTextParams.addRule(RelativeLayout.ALIGN_TOP, tagFieldLayout.getLastTagId());
+                tagTextParams.addRule(RelativeLayout.RIGHT_OF, tagFieldLayout.getLastTagId());
                 break;
             case NEXT_LINE:
-                tagTextParams.addRule(RelativeLayout.BELOW, prevTagId);
+                tagTextParams.addRule(RelativeLayout.BELOW, tagFieldLayout.getLastTagId());
                 break;
             default:
                 break;
         }
-        this.setLayoutParams(tagTextParams);
+        return tagTextParams;
+    }
+
+    // 親レイアウトの情報更新
+    private void updateRelateTagLayout() {
+        tagFieldLayout.setLastTagId(getId());
+        if (TAG_LOCATION.NEXT_LINE.equals(location)) {
+            tagFieldLayout.setTagLengthByLine(getDesiredWidth());
+        } else {
+            tagFieldLayout.updateTagLengthByLine(getDesiredWidth());
+        }
     }
 
     public float getDesiredWidth() {
