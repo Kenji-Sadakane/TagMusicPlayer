@@ -58,6 +58,7 @@
         android:layout_width="match_parent"
         android:layout_height="0px"
         android:layout_below="@id/keyWordEditText"
+        android:paddingBottom="10px"
         android:visibility="gone"
         android:id="@+id/relateTagScrollView" >
 
@@ -68,7 +69,8 @@
             android:layout_marginLeft="20px"
             android:layout_marginTop="10px"
             android:layout_marginRight="20px"
-            android:layout_marginBottom="10px"
+            android:layout_marginBottom="20px"
+            android:paddingBottom="20px"
             android:splitMotionEvents="false"
             android:id="@+id/relateTagLayout">
         </com.keepingrack.tagmusicplayer.layout.topField.RelateTagLayout>
