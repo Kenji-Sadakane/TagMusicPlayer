@@ -29,6 +29,7 @@ import com.keepingrack.tagmusicplayer.layout.bottomField.MusicSeekBar;
 import com.keepingrack.tagmusicplayer.layout.topField.RelateTagLayout;
 import com.keepingrack.tagmusicplayer.layout.topField.RelateTagLink;
 import com.keepingrack.tagmusicplayer.layout.topField.RelateTagScrollView;
+import com.keepingrack.tagmusicplayer.layout.topField.SearchButton;
 import com.keepingrack.tagmusicplayer.layout.topField.SearchSwitch;
 import com.keepingrack.tagmusicplayer.layout.TagInfoDialog;
 import com.keepingrack.tagmusicplayer.layout.topField.MsgView;
@@ -51,22 +52,23 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     public static int DISPLAY_WIDTH;
     public static String PLAYING_MUSIC;
 
-    public KeyWordEditText keyWordEditText;
     public GrayPanel grayPanel;
+    public KeyWordEditText keyWordEditText;
+    public LoopButton loopButton;
     public MsgView msgView;
     private MusicFile musicFile;
     public MusicLinearLayout musicLinearLayout;
     public MusicPlayer musicPlayer;
-    public LoopButton loopButton;
     public MusicScrollView musicScrollView;
     public MusicTagsLogic musicTagsLogic;
-    public SearchSwitch searchSwitch;
     public ShuffleMusicList shuffleMusicList;
     public MusicSeekBar musicSeekBar;
     public RelateTagLogic relateTagLogic;
     public RelateTagLayout relateTagLayout;
     public RelateTagLink relateTagLink;
     public RelateTagScrollView relateTagScrollView;
+    public SearchButton searchButton;
+    public SearchSwitch searchSwitch;
     public TagInfoDialog tagInfoDialog;
     public Handler handler = new Handler();
 
@@ -87,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         relateTagLayout = (RelateTagLayout) findViewById(R.id.relateTagLayout);
         relateTagLink = (RelateTagLink) findViewById(R.id.switchRelateTagText);
         relateTagScrollView = (RelateTagScrollView) findViewById(R.id.relateTagScrollView);
+        searchButton = (SearchButton) findViewById(R.id.searchButton);
 
         musicFile = new MusicFile(this);
         musicPlayer = new MusicPlayer(this);
@@ -126,7 +129,6 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
             initializeField();
             // タグ、楽曲表示
             final ProgressDialog progressDialog = startLoading();
-
             new Thread(new Runnable() {
                 @Override
                 public void run() {

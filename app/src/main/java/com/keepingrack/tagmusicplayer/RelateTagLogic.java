@@ -26,11 +26,11 @@ public class RelateTagLogic {
     public void updateRelateTags() throws Exception {
         activity.relateTagLayout.removeRelateTagField();
         if (canShowRelateTag()) {
-            activity.findViewById(R.id.switchRelateTagText).setVisibility(View.VISIBLE);
+            activity.relateTagLink.setVisibility(View.VISIBLE);
             createRelateTagList();
             activity.relateTagLayout.addRelateTags();
         } else {
-            activity.findViewById(R.id.switchRelateTagText).setVisibility(View.GONE);
+            activity.relateTagLink.setVisibility(View.GONE);
         }
         activity.relateTagScrollView.setRelateTagFieldHeight();
     }

@@ -45,7 +45,7 @@ public class TagTextView extends TextView {
             public void onClick(View v) {
                 activity.searchSwitch.setChecked(true);
                 activity.keyWordEditText.setText(tag);
-                activity.keyWordEditText.execSearch();
+                activity.searchButton.execSearch();
             }
         };
     }

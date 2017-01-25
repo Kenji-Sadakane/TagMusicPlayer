@@ -105,48 +105,13 @@ public class KeyWordEditText extends AutoCompleteTextView {
         return new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                execSearch();
+                activity.searchButton.execSearch();
             }
         };
     }
 
     // 検索処理実施
-    public void execSearch() {
-        try {
-            ObjectAnimator anm = activity.musicLinearLayout.getHideAnimation();
-            anm.addListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animation) {
-                }
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    try {
-                        activity.hideKeyBoard();
-                        activity.relateTagLayout.removeRelateTagField();
-                        activity.relateTagLogic.hideRelateTagField();
-                        activity.musicLinearLayout.changeMusicList();
-                        activity.relateTagLogic.updateRelateTags();
-                        if (!Variable.getDisplayMusicNames().contains(SELECT_MUSIC)) {
-                            activity.musicLinearLayout.deselectMusic(SELECT_MUSIC);
-                        }
-                        ObjectAnimator anm = activity.musicLinearLayout.getShowAnimation();
-                        anm.start();
-                    } catch (Exception ex) {
-                        activity.msgView.outErrorMessage(ex);
-                    }
-                }
-                @Override
-                public void onAnimationCancel(Animator animation) {
-                }
-                @Override
-                public void onAnimationRepeat(Animator animation) {
-                }
-            });
-            anm.start();
-        } catch (Exception ex) {
-            activity.msgView.outErrorMessage(ex);
-        }
-    }
+
 
     // 楽曲とキーワードを比較し表示是非を判定
     public boolean checkKeyWordMatch(String key) {
