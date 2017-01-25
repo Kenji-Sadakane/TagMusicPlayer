@@ -29,8 +29,10 @@ public class SearchButton extends Button {
         };
     }
 
+    // 検索処理
     public void execSearch() {
         try {
+            preSearch();
             ObjectAnimator anm = activity.musicLinearLayout.getHideAnimation();
             anm.addListener(new Animator.AnimatorListener() {
                 @Override
@@ -39,16 +41,13 @@ public class SearchButton extends Button {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     try {
-                        activity.hideKeyBoard();
-                        activity.relateTagLayout.removeRelateTagField();
-                        activity.relateTagLogic.hideRelateTagField();
+                        activity.musicScrollView.hideMusicRow();
                         activity.musicLinearLayout.changeMusicList();
                         activity.relateTagLogic.updateRelateTags();
                         if (!Variable.getDisplayMusicNames().contains(SELECT_MUSIC)) {
                             activity.musicLinearLayout.deselectMusic(SELECT_MUSIC);
                         }
-                        ObjectAnimator anm = activity.musicLinearLayout.getShowAnimation();
-                        anm.start();
+                        postSearch();
                     } catch (Exception ex) {
                         activity.msgView.outErrorMessage(ex);
                     }
@@ -64,5 +63,33 @@ public class SearchButton extends Button {
         } catch (Exception ex) {
             activity.msgView.outErrorMessage(ex);
         }
+    }
+
+    // 検索前処理
+    private void preSearch() {
+        activity.hideKeyBoard();
+        activity.relateTagLayout.removeRelateTagField();
+        activity.relateTagLogic.hideRelateTagField();
+        activity.musicScrollView.hideTooUnderMusicRow();
+    }
+
+    // 検索後処理
+    private void postSearch() {
+        ObjectAnimator anm = activity.musicLinearLayout.getShowAnimation();
+        anm.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                activity.musicScrollView.showMusicRow(20);
+            }
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                activity.musicScrollView.showMusicRow();
+            }
+            @Override
+            public void onAnimationCancel(Animator animation) {}
+            @Override
+            public void onAnimationRepeat(Animator animation) {}
+        });
+        anm.start();
     }
 }

@@ -100,7 +100,6 @@ public class MusicLinearLayout extends LinearLayout {
 //                } else {
 //                    row.changeMusicVisibility(View.VISIBLE);
 //                }
-                row.changeMusicVisibility(View.VISIBLE);
                 Variable.addDisplayMusicNames(key);
             } else {
                 row.changeMusicVisibility(View.GONE);
