@@ -12,14 +12,12 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
 import com.keepingrack.tagmusicplayer.R;
+import com.keepingrack.tagmusicplayer.Variable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.activity;
-import static com.keepingrack.tagmusicplayer.MainActivity.displayMusicNames;
-import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
-import static com.keepingrack.tagmusicplayer.MainActivity.tagKinds;
 import static com.keepingrack.tagmusicplayer.layout.topField.SearchSwitch.SEARCH_TYPE;
 import static com.keepingrack.tagmusicplayer.layout.musicField.MusicLinearLayout.SELECT_MUSIC;
 
@@ -81,7 +79,7 @@ public class KeyWordEditText extends AutoCompleteTextView {
     private List<String> createAutoCompleteList() {
         String keyWord = this.getText().toString();
         List<String> autoCompleteList = new ArrayList<>();
-        for (String tag : tagKinds) {
+        for (String tag : Variable.getTagKinds()) {
             if (tag.toLowerCase().startsWith(keyWord.toLowerCase())) {
                 autoCompleteList.add(tag);
             }
@@ -128,7 +126,7 @@ public class KeyWordEditText extends AutoCompleteTextView {
                         activity.relateTagLogic.hideRelateTagField();
                         activity.musicLinearLayout.changeMusicList();
                         activity.relateTagLogic.updateRelateTags();
-                        if (!displayMusicNames.contains(SELECT_MUSIC)) {
+                        if (!Variable.getDisplayMusicNames().contains(SELECT_MUSIC)) {
                             activity.musicLinearLayout.deselectMusic(SELECT_MUSIC);
                         }
                         ObjectAnimator anm = activity.musicLinearLayout.getShowAnimation();
@@ -159,25 +157,25 @@ public class KeyWordEditText extends AutoCompleteTextView {
         } else {
             switch (SEARCH_TYPE) {
                 case TITLE:
-                    String musicName = musicItems.get(key).getTitle();
+                    String musicName = Variable.getMusicTitle(key);
                     if (musicName.toLowerCase().contains(keyWord.toLowerCase())) {
                         // キーワードと楽曲名が部分一致
                         chkResult = true;
                     }
                     break;
                 case TAG:
-                    if (musicItems.get(key).getTags() == null || musicItems.get(key).getTags().isEmpty()) {
+                    if (Variable.getMusicTags(key) == null || Variable.getMusicTags(key).isEmpty()) {
                         if (NO_TAG_WORD.equals(keyWord)) {
                             // 楽曲に設定タグ無し、キーワードが「タグなし」
                             chkResult = true;
                             break;
                         }
                     } else {
-                        if (!tagKinds.contains(keyWord)) {
+                        if (!Variable.getTagKinds().contains(keyWord)) {
                             chkResult = false;
                             break;
                         } else {
-                            for (String tag : musicItems.get(key).getTags()) {
+                            for (String tag : Variable.getMusicTags(key)) {
                                 if (tag.equals(keyWord)) {
                                     // 楽曲に設定タグあり、キーワードと設定タグが完全一致
                                     chkResult = true;

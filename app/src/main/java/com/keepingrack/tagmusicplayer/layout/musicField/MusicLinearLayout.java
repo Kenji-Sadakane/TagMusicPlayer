@@ -8,17 +8,13 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.keepingrack.tagmusicplayer.bean.MusicItem;
+import com.keepingrack.tagmusicplayer.Variable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.PLAYING_MUSIC;
 import static com.keepingrack.tagmusicplayer.MainActivity.activity;
-import static com.keepingrack.tagmusicplayer.MainActivity.displayMusicNames;
-import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
-import static com.keepingrack.tagmusicplayer.MainActivity.musicKeys;
 
 public class MusicLinearLayout extends LinearLayout {
 
@@ -34,7 +30,7 @@ public class MusicLinearLayout extends LinearLayout {
     // スクロールビュー内コンテンツ作成
     public void createContents() throws Exception {
         clearContents();
-        for (String key : musicKeys) {
+        for (String key : Variable.getMusicKeys()) {
             createAndAddMusicRow(key);
         }
         // 余白追加
@@ -43,12 +39,12 @@ public class MusicLinearLayout extends LinearLayout {
     private void createAndAddMusicRow(String key) {
         MusicRow row = new MusicRow(key);
         LayoutParams rowParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT); // width, height
-        if (getChildCount() > 20) {
-            row.setVisibility(View.INVISIBLE);
-        }
+//        if (getChildCount() > 20) {
+//            row.setVisibility(View.INVISIBLE);
+//        }
         addMusicRow(row, rowParams);
-        if (!displayMusicNames.contains(key)) { displayMusicNames.add(key); }
-        musicItems.get(key).setRow(row);
+        Variable.addDisplayMusicNames(key);
+        Variable.setMusicRow(key, row);
     }
     private void addMusicRow(final MusicRow row, final LinearLayout.LayoutParams rowParams) {
         final MusicLinearLayout layout = this;
@@ -78,11 +74,8 @@ public class MusicLinearLayout extends LinearLayout {
     // スクロールビュー内コンテンツをクリア
     private void clearContents() {
         removeAllMusicRow();
-        displayMusicNames.clear();
-        for (Map.Entry<String, MusicItem> musicItemMap : musicItems.entrySet()) {
-            MusicItem musicItem = musicItemMap.getValue();
-            musicItem.setRow(null); // この処理いる？
-        }
+        Variable.clearDisplayMusicNames();
+        Variable.clearMusicRow();
     }
     public void removeAllMusicRow() {
         final LinearLayout layout = this;
@@ -98,16 +91,17 @@ public class MusicLinearLayout extends LinearLayout {
 
     // 表示楽曲リスト変更
     public void changeMusicList() {
-        displayMusicNames.clear();
-        for (String key : musicKeys) {
-            MusicRow row = musicItems.get(key).getRow();
+        Variable.clearDisplayMusicNames();
+        for (String key : Variable.getMusicKeys()) {
+            MusicRow row = Variable.getMusicRow(key);
             if (activity.keyWordEditText.checkKeyWordMatch(key) && activity.relateTagLogic.chkRelateTagState(key)) {
-                if (displayMusicNames.size() > 20) {
-                    row.changeMusicVisibility(View.INVISIBLE);
-                } else {
-                    row.changeMusicVisibility(View.VISIBLE);
-                }
-                displayMusicNames.add(key);
+//                if (Variable.getDisplayMusicNames().size() > 20) {
+//                    row.changeMusicVisibility(View.INVISIBLE);
+//                } else {
+//                    row.changeMusicVisibility(View.VISIBLE);
+//                }
+                row.changeMusicVisibility(View.VISIBLE);
+                Variable.addDisplayMusicNames(key);
             } else {
                 row.changeMusicVisibility(View.GONE);
             }
@@ -122,8 +116,8 @@ public class MusicLinearLayout extends LinearLayout {
         selectMusic(key);
     }
     public void selectMusic(String key) {
-        if (musicItems.get(key) != null && musicItems.get(key).getRow() != null) {
-            musicItems.get(key).getRow().showTagInfo();
+        if (Variable.getMusicItem(key) != null && Variable.getMusicRow(key) != null) {
+            Variable.getMusicRow(key).showTagInfo();
             SELECT_MUSIC = key;
         }
     }
@@ -135,16 +129,16 @@ public class MusicLinearLayout extends LinearLayout {
         }
     }
     public void deselectMusic(String key) {
-        if (musicItems.get(key) != null && musicItems.get(key).getRow() != null) {
-            musicItems.get(key).getRow().hideTagInfo();
+        if (Variable.getMusicItem(key) != null && Variable.getMusicRow(key) != null) {
+            Variable.getMusicRow(key).hideTagInfo();
             SELECT_MUSIC = "";
         }
     }
 
     // 再生楽曲の背景色を変える
     public void setMusicRowBackGround() {
-        if (!PLAYING_MUSIC.isEmpty() && musicItems.get(PLAYING_MUSIC) != null) {
-            final MusicRow row = musicItems.get(PLAYING_MUSIC).getRow();
+        if (!PLAYING_MUSIC.isEmpty() && Variable.getMusicItem(PLAYING_MUSIC) != null) {
+            final MusicRow row = Variable.getMusicRow(PLAYING_MUSIC);
             activity.handler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -157,8 +151,8 @@ public class MusicLinearLayout extends LinearLayout {
     }
     // 再生楽曲の背景色を戻す
     public void resetMusicRowBackGround() {
-        if (!PLAYING_MUSIC.isEmpty() && musicItems.get(PLAYING_MUSIC) != null) {
-            final MusicRow row = musicItems.get(PLAYING_MUSIC).getRow();
+        if (!PLAYING_MUSIC.isEmpty() && Variable.getMusicItem(PLAYING_MUSIC) != null) {
+            final MusicRow row = Variable.getMusicRow(PLAYING_MUSIC);
             activity.handler.post(new Runnable() {
                 @Override
                 public void run() {

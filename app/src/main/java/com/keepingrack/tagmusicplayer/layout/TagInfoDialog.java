@@ -11,12 +11,11 @@ import android.widget.ScrollView;
 
 import com.keepingrack.tagmusicplayer.MainActivity;
 import com.keepingrack.tagmusicplayer.R;
+import com.keepingrack.tagmusicplayer.Variable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
-import static com.keepingrack.tagmusicplayer.MainActivity.tagKinds;
 import static com.keepingrack.tagmusicplayer.external.file.MusicFile.TAG_NOTHING_LIST;
 
 public class TagInfoDialog {
@@ -30,7 +29,7 @@ public class TagInfoDialog {
     public void showDialog(final String key) {
         final View dialogBody = createDialogBody(key);
         final AlertDialog.Builder alertDlg = new AlertDialog.Builder(activity);
-        alertDlg.setTitle(musicItems.get(key).getTitle());
+        alertDlg.setTitle(Variable.getMusicTitle(key));
         alertDlg.setView(dialogBody);
         alertDlg.setPositiveButton(
                 "保存",
@@ -45,11 +44,11 @@ public class TagInfoDialog {
                                 String tag = ((EditText) row.getChildAt(1)).getText().toString();
                                 if (!tag.isEmpty() && !tags.contains(tag)) {
                                     tags.add(tag);
-                                    if (!tagKinds.contains(tag)) { tagKinds.add(tag); }
+                                    Variable.addTagKinds(tag);
                                 }
                             }
                             if (tags.isEmpty()) { tags = TAG_NOTHING_LIST; }
-                            musicItems.get(key).setTags(tags);
+                            Variable.setMusicTags(key, tags);
                             activity.musicTagsLogic.update(key);
                             activity.musicLinearLayout.selectMusic(key);
                         } catch (Exception ex) {
@@ -80,10 +79,10 @@ public class TagInfoDialog {
         ScrollView dialogBody = new ScrollView(activity);
         LinearLayout tagTexts = new LinearLayout(activity);
         tagTexts.setOrientation(LinearLayout.VERTICAL);
-        if (musicItems.get(key).getTags() == null || musicItems.get(key).getTags().isEmpty()) {
+        if (Variable.getMusicTags(key) == null || Variable.getMusicTags(key).isEmpty()) {
             tagTexts.addView(createDialogRow(""));
         } else {
-            for (String tag : musicItems.get(key).getTags()) {
+            for (String tag : Variable.getMusicTags(key)) {
                 tagTexts.addView(createDialogRow(tag));
             }
         }

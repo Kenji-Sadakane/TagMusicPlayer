@@ -5,8 +5,9 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 
+import com.keepingrack.tagmusicplayer.Variable;
+
 import static com.keepingrack.tagmusicplayer.MainActivity.activity;
-import static com.keepingrack.tagmusicplayer.MainActivity.displayMusicNames;
 
 public class NextButton extends Button {
     public NextButton(Context context, AttributeSet attr) {
@@ -29,7 +30,7 @@ public class NextButton extends Button {
                         case GO_NEXT:
                             Integer nextTrackNo = activity.musicPlayer.getNextTrackNo();
                             if (nextTrackNo == null) nextTrackNo = 0;
-                            activity.playMusic(displayMusicNames.get(nextTrackNo));
+                            activity.playMusic(Variable.getDisplayMusicNames().get(nextTrackNo));
                     }
                 } catch (Exception ex) {
                     activity.msgView.outErrorMessage(ex);

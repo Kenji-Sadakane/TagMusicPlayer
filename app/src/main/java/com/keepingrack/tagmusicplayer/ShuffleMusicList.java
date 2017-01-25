@@ -2,16 +2,10 @@ package com.keepingrack.tagmusicplayer;
 
 import android.widget.ToggleButton;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-import static com.keepingrack.tagmusicplayer.MainActivity.displayMusicNames;
 import static com.keepingrack.tagmusicplayer.MainActivity.PLAYING_MUSIC;
-import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
-import static com.keepingrack.tagmusicplayer.MainActivity.musicKeys;
 
 public class ShuffleMusicList {
 
@@ -31,21 +25,21 @@ public class ShuffleMusicList {
     }
 
     public void musicOrderShuffle() {
-        Collections.shuffle(displayMusicNames);
-        if (displayMusicNames.contains(PLAYING_MUSIC)) {
-            displayMusicNames.remove(PLAYING_MUSIC);
-            displayMusicNames.add(0, PLAYING_MUSIC);
+        Variable.shuffleDisplayMusicNames();
+        if (Variable.getDisplayMusicNames().contains(PLAYING_MUSIC)) {
+            Variable.removeDisplayMusicNames(PLAYING_MUSIC);
+            Variable.addDisplayMusicNames(0, PLAYING_MUSIC);
         }
     }
 
     public void musicOrderDefault() {
         List<String> tmpList = new ArrayList<>();
-        for (String key : musicKeys) {
-            if (displayMusicNames.contains(key)) {
+        for (String key : Variable.getMusicKeys()) {
+            if (Variable.getDisplayMusicNames().contains(key)) {
                 tmpList.add(key);
             }
         }
-        displayMusicNames = tmpList;
+        Variable.setDisplayMusicNames(tmpList);
     }
 
     public boolean isShuffleOn() {

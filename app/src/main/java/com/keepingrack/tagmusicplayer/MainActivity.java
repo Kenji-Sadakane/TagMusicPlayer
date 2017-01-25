@@ -20,8 +20,6 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.keepingrack.tagmusicplayer.bean.MusicItem;
-import com.keepingrack.tagmusicplayer.bean.RelateTag;
 import com.keepingrack.tagmusicplayer.external.db.logic.MusicTagsLogic;
 import com.keepingrack.tagmusicplayer.external.file.MusicFile;
 import com.keepingrack.tagmusicplayer.layout.GrayPanel;
@@ -37,13 +35,6 @@ import com.keepingrack.tagmusicplayer.layout.topField.MsgView;
 import com.keepingrack.tagmusicplayer.layout.musicField.MusicLinearLayout;
 import com.keepingrack.tagmusicplayer.layout.musicField.MusicScrollView;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.CopyOnWriteArraySet;
-
 public class MainActivity extends AppCompatActivity implements OnNavigationItemSelectedListener, Runnable {
 
 //    private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -55,34 +46,57 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
 
     public static final String BASE_DIR = "/storage/sdcard1/PRIVATE/SHARP/CM/MUSIC";
 
-    public static int DISPLAY_WIDTH;
-    public static Map<String, MusicItem> musicItems = new ConcurrentHashMap<>();
-    public static Set<String> tagKinds = new CopyOnWriteArraySet<>();
-    public static List<String> musicKeys = new CopyOnWriteArrayList<>();
-    public static List<String> displayMusicNames = new CopyOnWriteArrayList<>();
-    public static List<RelateTag> relateTags = new CopyOnWriteArrayList<>();
-    public static String PLAYING_MUSIC = "";
-    public static MediaPlayer mp = new MediaPlayer();
     public static MainActivity activity;
+    public static MediaPlayer mp;
+    public static int DISPLAY_WIDTH;
+    public static String PLAYING_MUSIC;
 
     public KeyWordEditText keyWordEditText;
     public GrayPanel grayPanel;
     public MsgView msgView;
-    private MusicFile musicFile = new MusicFile(this);
+    private MusicFile musicFile;
     public MusicLinearLayout musicLinearLayout;
-    public MusicPlayer musicPlayer = new MusicPlayer(this);
+    public MusicPlayer musicPlayer;
     public LoopButton loopButton;
     public MusicScrollView musicScrollView;
-    public MusicTagsLogic musicTagsLogic = new MusicTagsLogic(this);
+    public MusicTagsLogic musicTagsLogic;
     public SearchSwitch searchSwitch;
-    public ShuffleMusicList shuffleMusicList = new ShuffleMusicList(this);
+    public ShuffleMusicList shuffleMusicList;
     public MusicSeekBar musicSeekBar;
-    public RelateTagLogic relateTagLogic = new RelateTagLogic(this);
+    public RelateTagLogic relateTagLogic;
     public RelateTagLayout relateTagLayout;
     public RelateTagLink relateTagLink;
     public RelateTagScrollView relateTagScrollView;
-    public TagInfoDialog tagInfoDialog = new TagInfoDialog(this);
+    public TagInfoDialog tagInfoDialog;
     public Handler handler = new Handler();
+
+    private void initializeField() {
+        activity = this;
+        measureDisplayWidth();
+        mp = new MediaPlayer();
+        PLAYING_MUSIC = "";
+
+        keyWordEditText = (KeyWordEditText) findViewById(R.id.keyWordEditText);
+        grayPanel = (GrayPanel) findViewById(R.id.grayPanel);
+        loopButton = (LoopButton) findViewById(R.id.loopButton);
+        msgView = (MsgView) findViewById(R.id.msgView);
+        musicLinearLayout = (MusicLinearLayout) findViewById(R.id.linearLayout);
+        musicSeekBar = (MusicSeekBar) findViewById(R.id.seekBar);
+        musicScrollView = (MusicScrollView) findViewById(R.id.scrollView);
+        searchSwitch = (SearchSwitch) findViewById(R.id.searchSwitch);
+        relateTagLayout = (RelateTagLayout) findViewById(R.id.relateTagLayout);
+        relateTagLink = (RelateTagLink) findViewById(R.id.switchRelateTagText);
+        relateTagScrollView = (RelateTagScrollView) findViewById(R.id.relateTagScrollView);
+
+        musicFile = new MusicFile(this);
+        musicPlayer = new MusicPlayer(this);
+        musicTagsLogic = new MusicTagsLogic(this);
+        shuffleMusicList = new ShuffleMusicList(this);
+        relateTagLogic = new RelateTagLogic(this);
+        tagInfoDialog = new TagInfoDialog(this);
+        handler = new Handler();
+        Variable.initialize();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,20 +123,9 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
 //        }
 
         try {
+            initializeField();
             // タグ、楽曲表示
             final ProgressDialog progressDialog = startLoading();
-            activity = this;
-            keyWordEditText = (KeyWordEditText) findViewById(R.id.keyWordEditText);
-            grayPanel = (GrayPanel) findViewById(R.id.grayPanel);
-            loopButton = (LoopButton) findViewById(R.id.loopButton);
-            msgView = (MsgView) findViewById(R.id.msgView);
-            musicLinearLayout = (MusicLinearLayout) findViewById(R.id.linearLayout);
-            musicSeekBar = (MusicSeekBar) findViewById(R.id.seekBar);
-            musicScrollView = (MusicScrollView) findViewById(R.id.scrollView);
-            searchSwitch = (SearchSwitch) findViewById(R.id.searchSwitch);
-            relateTagLayout = (RelateTagLayout) findViewById(R.id.relateTagLayout);
-            relateTagLink = (RelateTagLink) findViewById(R.id.switchRelateTagText);
-            relateTagScrollView = (RelateTagScrollView) findViewById(R.id.relateTagScrollView);
 
             new Thread(new Runnable() {
                 @Override

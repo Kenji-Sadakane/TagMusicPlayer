@@ -4,8 +4,6 @@ import android.media.MediaPlayer;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import static com.keepingrack.tagmusicplayer.MainActivity.displayMusicNames;
-import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
 import static com.keepingrack.tagmusicplayer.MainActivity.PLAYING_MUSIC;
 import static com.keepingrack.tagmusicplayer.MainActivity.mp;
 import static com.keepingrack.tagmusicplayer.layout.musicField.MusicLinearLayout.SELECT_MUSIC;
@@ -62,7 +60,7 @@ public class MusicPlayer {
                 case GO_NEXT:
                     Integer nextTrackNo = getNextTrackNo();
                     if (nextTrackNo == null) nextTrackNo = 0;
-                    activity.playMusic(displayMusicNames.get(nextTrackNo));
+                    activity.playMusic(Variable.getDisplayMusicNames().get(nextTrackNo));
                     break;
                 case RESTART:
                     startMusicPlayer(PLAYING_MUSIC);
@@ -96,11 +94,11 @@ public class MusicPlayer {
     // 再生ボタン押下時の再生曲キー取得
     public String getPlayMusicKeyOnPlayClicked() {
         String key = "";
-        if (!displayMusicNames.isEmpty()) {
+        if (!Variable.getDisplayMusicNames().isEmpty()) {
             if (!SELECT_MUSIC.isEmpty()) {
                 key = SELECT_MUSIC;
             } else {
-                key = displayMusicNames.get(0);
+                key = Variable.getDisplayMusicNames().get(0);
             }
         }
         return key;
@@ -113,7 +111,7 @@ public class MusicPlayer {
         if (playButton.isChecked()) {
             if (mp.getCurrentPosition() > GO_PREV_TRACK_TIME) {
                 action = ACTION.RESTART;
-            } else if (!displayMusicNames.isEmpty()) {
+            } else if (!Variable.getDisplayMusicNames().isEmpty()) {
                 action = ACTION.GO_PREV;
             }
         }
@@ -124,7 +122,7 @@ public class MusicPlayer {
     public ACTION getActionOnNextClicked() {
         ACTION action = ACTION.STOP;
         ToggleButton playButton = (ToggleButton) activity.findViewById(R.id.playButton);
-        if (playButton.isChecked() && !displayMusicNames.isEmpty()) {
+        if (playButton.isChecked() && !Variable.getDisplayMusicNames().isEmpty()) {
             action = ACTION.GO_NEXT;
         }
         return action;
@@ -133,7 +131,7 @@ public class MusicPlayer {
     public void startMusicPlayer(String key) throws Exception {
         mp.setOnCompletionListener(null);
         mp.reset();
-        mp.setDataSource(musicItems.get(key).getAbsolutePath());
+        mp.setDataSource(Variable.getMusicAbsolutePath(key));
         mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
@@ -157,7 +155,7 @@ public class MusicPlayer {
         if (activity.loopButton.isLoopStatusONE()) {
             action = ACTION.RESTART;
         } else {
-            if (displayMusicNames.isEmpty()) {
+            if (Variable.getDisplayMusicNames().isEmpty()) {
                 action = ACTION.STOP;
             } else {
                 if (getNextTrackNo() == null && activity.loopButton.isLoopStatusOFF()) {
@@ -172,12 +170,12 @@ public class MusicPlayer {
 
     public Integer getPrevTrackNo() {
         Integer prevTrackNo = null;
-        if (!displayMusicNames.isEmpty()) {
-            if(!displayMusicNames.contains(PLAYING_MUSIC)) {
+        if (!Variable.getDisplayMusicNames().isEmpty()) {
+            if(!Variable.getDisplayMusicNames().contains(PLAYING_MUSIC)) {
                 prevTrackNo = 0;
             } else {
-                for (int i = 0; i < displayMusicNames.size(); i++) {
-                    if (displayMusicNames.get(i).equals(PLAYING_MUSIC)) {
+                for (int i = 0; i < Variable.getDisplayMusicNames().size(); i++) {
+                    if (Variable.getDisplayMusicNames().get(i).equals(PLAYING_MUSIC)) {
                         prevTrackNo = i - 1;
                         break;
                     }
@@ -192,18 +190,18 @@ public class MusicPlayer {
 
     public Integer getNextTrackNo() {
         Integer nextTrackNo = null;
-        if (!displayMusicNames.isEmpty()) {
-            if(!displayMusicNames.contains(PLAYING_MUSIC)) {
+        if (!Variable.getDisplayMusicNames().isEmpty()) {
+            if(!Variable.getDisplayMusicNames().contains(PLAYING_MUSIC)) {
                 nextTrackNo = 0;
             } else {
-                for (int i = 0; i < displayMusicNames.size(); i++) {
-                    if (displayMusicNames.get(i).equals(PLAYING_MUSIC)) {
+                for (int i = 0; i < Variable.getDisplayMusicNames().size(); i++) {
+                    if (Variable.getDisplayMusicNames().get(i).equals(PLAYING_MUSIC)) {
                         nextTrackNo = i + 1;
                         break;
                     }
                 }
             }
-            if (nextTrackNo > displayMusicNames.size() - 1) {
+            if (nextTrackNo > Variable.getDisplayMusicNames().size() - 1) {
                 nextTrackNo = null;
             }
         }
@@ -213,8 +211,8 @@ public class MusicPlayer {
     public void showTrackNo() {
         TextView currentTrackText = (TextView) activity.findViewById(R.id.currentTrack);
         int currentTrackNo = 0;
-        if (displayMusicNames != null && displayMusicNames.contains(PLAYING_MUSIC)) {
-            currentTrackNo = displayMusicNames.indexOf(PLAYING_MUSIC) + 1;
+        if (Variable.getDisplayMusicNames() != null && Variable.getDisplayMusicNames().contains(PLAYING_MUSIC)) {
+            currentTrackNo = Variable.getDisplayMusicNames().indexOf(PLAYING_MUSIC) + 1;
         }
         showTrackNo(currentTrackText, currentTrackNo);
     }
@@ -223,7 +221,7 @@ public class MusicPlayer {
         activity.handler.post(new Runnable() {
             @Override
             public void run() {
-                currentTrackText.setText(currentTrackNo + " / " + displayMusicNames.size());
+                currentTrackText.setText(currentTrackNo + " / " + Variable.getDisplayMusicNames().size());
             }
         });
     }

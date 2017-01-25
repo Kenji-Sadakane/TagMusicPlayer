@@ -4,13 +4,13 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+import com.keepingrack.tagmusicplayer.Variable;
 import com.keepingrack.tagmusicplayer.bean.RelateTag;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.DISPLAY_WIDTH;
-import static com.keepingrack.tagmusicplayer.MainActivity.relateTags;
 import static com.keepingrack.tagmusicplayer.RelateTagLogic.selectedTags;
 import static com.keepingrack.tagmusicplayer.RelateTagLogic.unselectedTags;
 
@@ -40,7 +40,7 @@ public class RelateTagLayout extends RelativeLayout {
     // 関連タグテキストViewを追加
     public void addRelateTags() {
         initializeField();
-        for (RelateTag relateTag : relateTags) {
+        for (RelateTag relateTag : Variable.getRelateTags()) {
             this.addView(new RelateTagTextView(relateTag.getTag()));
         }
     }

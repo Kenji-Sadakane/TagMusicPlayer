@@ -5,15 +5,12 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver.OnScrollChangedListener;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
-import com.keepingrack.tagmusicplayer.R;
+import com.keepingrack.tagmusicplayer.Variable;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.PLAYING_MUSIC;
 import static com.keepingrack.tagmusicplayer.MainActivity.activity;
-import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
-import static com.keepingrack.tagmusicplayer.MainActivity.musicKeys;
 
 public class MusicScrollView extends ScrollView {
     public MusicScrollView(Context context, AttributeSet attr) {
@@ -31,18 +28,18 @@ public class MusicScrollView extends ScrollView {
         return new OnScrollChangedListener() {
             @Override
             public void onScrollChanged() {
-                int scrollY = ((MusicScrollView) findViewById(R.id.scrollView)).getScrollY();
-                for (String key : musicKeys) {
-                    LinearLayout musicRow = musicItems.get(key).getRow();
-                    if (musicRow.getVisibility() != View.GONE) {
-                        int rowY = (int) musicRow.getY();
-                        if (scrollY - 2000 < rowY && rowY < scrollY + 2000) {
-                            musicRow.setVisibility(View.VISIBLE);
-                        } else {
-                            musicRow.setVisibility(View.INVISIBLE);
-                        }
-                    }
-                }
+//                int scrollY = ((MusicScrollView) findViewById(R.id.scrollView)).getScrollY();
+//                for (String key : Variable.getMusicKeys()) {
+//                    LinearLayout musicRow = Variable.getMusicRow(key);
+//                    if (musicRow.getVisibility() != View.GONE) {
+//                        int rowY = (int) musicRow.getY();
+//                        if (scrollY - 2000 < rowY && rowY < scrollY + 2000) {
+//                            musicRow.setVisibility(View.VISIBLE);
+//                        } else {
+//                            musicRow.setVisibility(View.INVISIBLE);
+//                        }
+//                    }
+//                }
             }
         };
     }
@@ -66,7 +63,10 @@ public class MusicScrollView extends ScrollView {
 
     // 再生中の楽曲にスクロールする
     public void scrollMusicView() {
-        int y = (int) musicItems.get(PLAYING_MUSIC).getRow().getY();
+        int y = 0;
+        if (Variable.getMusicRow(PLAYING_MUSIC) != null) {
+            y = (int) Variable.getMusicRow(PLAYING_MUSIC).getY();
+        }
         scrollMusicView(y);
     }
 

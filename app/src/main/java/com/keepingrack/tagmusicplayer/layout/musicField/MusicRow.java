@@ -5,9 +5,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.keepingrack.tagmusicplayer.R;
+import com.keepingrack.tagmusicplayer.Variable;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.activity;
-import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
 
 public class MusicRow extends LinearLayout {
     public MusicRow(String key) {
@@ -36,7 +36,7 @@ public class MusicRow extends LinearLayout {
     // 楽曲タイトル表示用TextView作成
     private TextView createMusicTitle(String key) {
         TextView musicText = new TextView(activity);
-        musicText.setText(musicItems.get(key) != null ? musicItems.get(key).getTitle() : "");
+        musicText.setText(Variable.getMusicItem(key) != null ? Variable.getMusicTitle(key) : "");
         musicText.setPadding(5, 5, 5, 15); // 左, 上, 右, 下
         return musicText;
     }
@@ -74,8 +74,6 @@ public class MusicRow extends LinearLayout {
     // タグ情報表示
     public void showTagInfo() {
         if (this.getChildCount() < 3) {
-//            TagField tagField = new TagField(activity);
-//            this.addView(tagField.createTagField(getMusicKey()), tagField.createTagFieldParams());
             this.addView(new TagFieldLayout(getMusicKey()));
         }
     }

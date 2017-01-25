@@ -3,6 +3,8 @@ package com.keepingrack.tagmusicplayer.layout.musicField;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.keepingrack.tagmusicplayer.Variable;
+
 import java.util.List;
 
 import lombok.Getter;
@@ -10,7 +12,6 @@ import lombok.Setter;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.DISPLAY_WIDTH;
 import static com.keepingrack.tagmusicplayer.MainActivity.activity;
-import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
 
 @Getter
 @Setter
@@ -46,7 +47,7 @@ public class TagFieldLayout extends RelativeLayout {
 
     private void addTagTextViews(String key) {
         initializeField();
-        List<String> tags = musicItems.get(key).getTags();
+        List<String> tags = Variable.getMusicTags(key);
         if (tags != null && !tags.isEmpty()) {
             for (String tag : tags) {
                 this.addView(new TagTextView(this, tag));

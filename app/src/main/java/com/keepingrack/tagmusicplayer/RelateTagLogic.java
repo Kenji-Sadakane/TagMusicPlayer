@@ -2,8 +2,6 @@ package com.keepingrack.tagmusicplayer;
 
 import android.view.View;
 
-import com.keepingrack.tagmusicplayer.MainActivity;
-import com.keepingrack.tagmusicplayer.R;
 import com.keepingrack.tagmusicplayer.bean.RelateTag;
 
 import java.util.ArrayList;
@@ -11,10 +9,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.keepingrack.tagmusicplayer.MainActivity.displayMusicNames;
-import static com.keepingrack.tagmusicplayer.MainActivity.musicItems;
-import static com.keepingrack.tagmusicplayer.MainActivity.relateTags;
-import static com.keepingrack.tagmusicplayer.MainActivity.tagKinds;
 import static com.keepingrack.tagmusicplayer.layout.topField.SearchSwitch.SEARCH_TYPE;
 
 public class RelateTagLogic {
@@ -49,7 +43,7 @@ public class RelateTagLogic {
                 break;
             case TAG:
                 String keyWord = activity.keyWordEditText.getText().toString();
-                if (keyWord != null && !keyWord.isEmpty() && tagKinds.contains(keyWord)) {
+                if (keyWord != null && !keyWord.isEmpty() && Variable.getTagKinds().contains(keyWord)) {
                     result = true;
                 }
                 break;
@@ -59,7 +53,7 @@ public class RelateTagLogic {
 
     // 関連タグリスト生成
     private void createRelateTagList() {
-        relateTags.clear();
+        Variable.clearRelateTags();
         addRelateTagByDisplayMusic();
         choiceShowRelateTags();
     }
@@ -67,8 +61,8 @@ public class RelateTagLogic {
     // 表示楽曲から関連タグを取得しリストに追加
     private void addRelateTagByDisplayMusic() {
         String keyWord = activity.keyWordEditText.getText().toString();
-        for (String key : displayMusicNames) {
-            for (String tag : musicItems.get(key).getTags()) {
+        for (String key : Variable.getDisplayMusicNames()) {
+            for (String tag : Variable.getMusicTags(key)) {
                 if (tag.equals(keyWord)) {
                     continue;
                 }
@@ -76,7 +70,7 @@ public class RelateTagLogic {
                 if (relateTag != null) {
                     relateTag.setCount(relateTag.getCount() + 1);
                 } else {
-                    relateTags.add(new RelateTag(tag, 1, RelateTag.STATE.DEFAULT));
+                    Variable.addRelateTags(new RelateTag(tag, 1, RelateTag.STATE.DEFAULT));
                 }
             }
         }
@@ -86,21 +80,21 @@ public class RelateTagLogic {
     private void choiceShowRelateTags() {
         List<RelateTag> tmpRelateTags = new ArrayList<>();
         sortRelateTags();
-        for (RelateTag tag : relateTags) {
+        for (RelateTag tag : Variable.getRelateTags()) {
             if (tag.getCount() > 1) {
                 tmpRelateTags.add(tag);
             } else {
                 break;
             }
         }
-        relateTags = tmpRelateTags;
+        Variable.setRelateTags(tmpRelateTags);
     }
 
     // 関連タグリストをソート
     private void sortRelateTags() {
-        if (relateTags.isEmpty()) { return; }
+        if (Variable.getRelateTags().isEmpty()) { return; }
         List<RelateTag> tmpList = new ArrayList<>();
-        tmpList.addAll(relateTags);
+        tmpList.addAll(Variable.getRelateTags());
         Collections.sort(tmpList, new Comparator<RelateTag>() {
             @Override
             public int compare(RelateTag a, RelateTag b) {
@@ -114,14 +108,14 @@ public class RelateTagLogic {
                 }
             }
         });
-        relateTags.clear();
-        relateTags.addAll(tmpList);
+        Variable.clearRelateTags();
+        Variable.addRelateTags(tmpList);
     }
 
     // 関連タグリストから抽出
     public RelateTag findRelateTag(String tag) {
         RelateTag target = null;
-        for (RelateTag relateTag : relateTags) {
+        for (RelateTag relateTag : Variable.getRelateTags()) {
             if (tag.equals(relateTag.getTag())) {
                 target = relateTag;
                 break;
@@ -158,7 +152,7 @@ public class RelateTagLogic {
 
     // 選択済み関連タグを対象楽曲が一つでも持っているか判定
     public boolean hasSelectedTag(String key) {
-        List<String> musicTags = musicItems.get(key).getTags();
+        List<String> musicTags = Variable.getMusicTags(key);
         for (String selectedTag : selectedTags) {
             if (musicTags.contains(selectedTag)) {
                 return true;
@@ -169,7 +163,7 @@ public class RelateTagLogic {
 
     // 非選択関連タグを対象楽曲が一つでも持っているか判定
     public boolean hasUnselectedTag(String key) {
-        List<String> musicTags = musicItems.get(key).getTags();
+        List<String> musicTags = Variable.getMusicTags(key);
         for (String unselectedTag : unselectedTags) {
             if (musicTags.contains(unselectedTag)) {
                 return true;
