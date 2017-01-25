@@ -50,6 +50,7 @@ public class TagInfoDialog {
                             if (tags.isEmpty()) { tags = TAG_NOTHING_LIST; }
                             Variable.setMusicTags(key, tags);
                             activity.musicTagsLogic.update(key);
+                            activity.musicLinearLayout.deselectMusic(key);
                             activity.musicLinearLayout.selectMusic(key);
                         } catch (Exception ex) {
                             activity.msgView.outErrorMessage(ex);

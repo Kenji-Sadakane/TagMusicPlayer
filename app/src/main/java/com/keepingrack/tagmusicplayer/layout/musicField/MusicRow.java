@@ -8,6 +8,7 @@ import com.keepingrack.tagmusicplayer.R;
 import com.keepingrack.tagmusicplayer.Variable;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.activity;
+import static com.keepingrack.tagmusicplayer.layout.musicField.MusicLinearLayout.SELECT_MUSIC;
 
 public class MusicRow extends LinearLayout {
     public MusicRow(String key) {
@@ -47,6 +48,7 @@ public class MusicRow extends LinearLayout {
             @Override
             public void onClick(View v) {
                 try {
+                    if (getMusicKey().equals(SELECT_MUSIC)) { return; }
                     activity.grayPanel.screenLock(500);
                     activity.hideKeyBoard();
                     activity.musicSeekBar.visible();
