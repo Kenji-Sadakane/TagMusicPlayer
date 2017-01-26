@@ -100,6 +100,7 @@ public class MusicLinearLayout extends LinearLayout {
 //                } else {
 //                    row.changeMusicVisibility(View.VISIBLE);
 //                }
+                row.changeMusicVisibility(View.VISIBLE);
                 Variable.addDisplayMusicNames(key);
             } else {
                 row.changeMusicVisibility(View.GONE);
@@ -165,18 +166,19 @@ public class MusicLinearLayout extends LinearLayout {
 
     // 楽曲フィールド非表示アニメーション
     public ObjectAnimator getHideAnimation() {
-        List<Animator> anmList= new ArrayList<Animator>();
         ObjectAnimator anm = ObjectAnimator.ofFloat(this, "translationY", 0f, -4000f);
         anm.setDuration(1000);
-        anmList.add(anm);
         return anm;
     }
     // 楽曲フィールド表示アニメーション
     public ObjectAnimator getShowAnimation() {
-        List<Animator> anmList= new ArrayList<Animator>();
         ObjectAnimator anm = ObjectAnimator.ofFloat(this, "translationY", -4000f, 0f);
         anm.setDuration(1000);
-        anmList.add(anm);
         return anm;
+    }
+
+    // 楽曲リストをX軸方向に移動
+    public void addX(int distant) {
+        this.setX(this.getX() + distant);
     }
 }

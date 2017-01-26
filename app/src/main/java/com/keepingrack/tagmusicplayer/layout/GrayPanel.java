@@ -38,4 +38,12 @@ public class GrayPanel extends View {
             }
         }, millisecond);
     }
+
+    public void screenLock() {
+        this.setVisibility(View.VISIBLE);
+    }
+
+    public void screenLockRelease() {
+        this.setVisibility(View.GONE);
+    }
 }
