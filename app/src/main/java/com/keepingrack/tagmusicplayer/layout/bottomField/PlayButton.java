@@ -21,6 +21,7 @@ public class PlayButton extends ToggleButton {
             @Override
             public void onClick(View v) {
                 try {
+                    activity.grayPanel.screenLock();
                     switch (activity.musicPlayer.getActionOnPlayClicked()) {
                         case PAUSE:
                             mp.pause();
@@ -38,6 +39,8 @@ public class PlayButton extends ToggleButton {
                     }
                 } catch (Exception ex) {
                     activity.msgView.outErrorMessage(ex);
+                } finally {
+                    activity.grayPanel.screenLockRelease();
                 }
             }
         };

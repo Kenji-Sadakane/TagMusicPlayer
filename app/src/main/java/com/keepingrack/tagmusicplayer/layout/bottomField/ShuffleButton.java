@@ -19,7 +19,9 @@ public class ShuffleButton extends ToggleButton {
         return new OnClickListener() {
             @Override
             public void onClick(View v) {
+                activity.grayPanel.screenLock();
                 activity.shuffleMusicList.exec();
+                activity.grayPanel.screenLockRelease();
             }
         };
     }

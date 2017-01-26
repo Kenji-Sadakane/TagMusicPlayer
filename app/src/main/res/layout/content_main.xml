@@ -233,6 +233,6 @@
         android:layout_height="match_parent"
         android:id="@+id/grayPanel"
         android:background="#005050"
-        android:alpha="0.3"/>
+        android:alpha="0.0"/>
 
 </RelativeLayout>

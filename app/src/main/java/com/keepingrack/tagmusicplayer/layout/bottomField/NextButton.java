@@ -23,6 +23,7 @@ public class NextButton extends Button {
             public void onClick(View v) {
                 // 次ボタン押下時
                 try {
+                    activity.grayPanel.screenLock();
                     switch (activity.musicPlayer.getActionOnNextClicked()) {
                         case STOP:
                             activity.stopMusic();
@@ -34,6 +35,8 @@ public class NextButton extends Button {
                     }
                 } catch (Exception ex) {
                     activity.msgView.outErrorMessage(ex);
+                } finally {
+                    activity.grayPanel.screenLockRelease();
                 }
             }
         };

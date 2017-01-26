@@ -23,6 +23,7 @@ public class PrevButton extends Button {
             @Override
             public void onClick(View v) {
                 try {
+                    activity.grayPanel.screenLock();
                     switch (activity.musicPlayer.getActionOnPrevClicked()) {
                         case RESTART:
                             mp.seekTo(0);
@@ -40,6 +41,8 @@ public class PrevButton extends Button {
                     }
                 } catch (Exception ex) {
                     activity.msgView.outErrorMessage(ex);
+                } finally {
+                    activity.grayPanel.screenLockRelease();
                 }
             }
         };

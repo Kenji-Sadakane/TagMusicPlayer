@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ToggleButton;
 
-import com.keepingrack.tagmusicplayer.MainActivity;
 import com.keepingrack.tagmusicplayer.R;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.activity;
@@ -34,6 +33,7 @@ public class LoopButton extends Button {
         return new OnClickListener() {
             @Override
             public void onClick(View v) {
+                activity.grayPanel.screenLock();
                 LoopButton loopButton = (LoopButton) v;
                 switch (currentLoopStatus) {
                     case ON:
@@ -48,6 +48,7 @@ public class LoopButton extends Button {
                         currentLoopStatus = LOOP_STATUS.ON;
                         loopButton.setBackgroundResource(R.drawable.av_loop_on);
                 }
+                activity.grayPanel.screenLockRelease();
             }
         };
     }
