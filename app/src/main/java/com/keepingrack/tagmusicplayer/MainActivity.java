@@ -21,8 +21,6 @@ import android.widget.TextView;
 import com.keepingrack.tagmusicplayer.external.db.logic.MusicTagsLogic;
 import com.keepingrack.tagmusicplayer.external.file.MusicFile;
 import com.keepingrack.tagmusicplayer.layout.GrayPanel;
-import com.keepingrack.tagmusicplayer.layout.progressDialog.InitProgressDialog;
-import com.keepingrack.tagmusicplayer.layout.progressDialog.UpdateProgressDialog;
 import com.keepingrack.tagmusicplayer.layout.topField.KeyWordEditText;
 import com.keepingrack.tagmusicplayer.layout.bottomField.LoopButton;
 import com.keepingrack.tagmusicplayer.layout.bottomField.MusicSeekBar;
@@ -36,7 +34,9 @@ import com.keepingrack.tagmusicplayer.layout.topField.MsgView;
 import com.keepingrack.tagmusicplayer.layout.musicField.MusicLinearLayout;
 import com.keepingrack.tagmusicplayer.layout.musicField.MusicScrollView;
 
-public class MainActivity extends AppCompatActivity implements OnNavigationItemSelectedListener, Runnable {
+import static com.keepingrack.tagmusicplayer.MainActivityLogic.*;
+
+public class MainActivity extends AppCompatActivity implements OnNavigationItemSelectedListener {
 
 //    private static final int REQUEST_EXTERNAL_STORAGE = 1;
 //    private static String[] PERMISSIONS_STORAGE = {
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     public KeyWordEditText keyWordEditText;
     public LoopButton loopButton;
     public MsgView msgView;
-    private MusicFile musicFile;
+    public MusicFile musicFile;
     public MusicLinearLayout musicLinearLayout;
     public MusicPlayer musicPlayer;
     public MusicScrollView musicScrollView;
@@ -125,91 +125,14 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
 //            return;
 //        }
 
-        try {
-            initializeField();
-            // タグ、楽曲表示
-            final InitProgressDialog progressDialog = new InitProgressDialog();
-            progressDialog.showWithScreenLock();
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        musicTagsLogic.selectAndReflectTags();
-                        musicLinearLayout.createContents();
-                        musicLinearLayout.changeMusicList();
-                    } catch (Exception ex) {
-                        msgView.outErrorMessage(ex);
-                    } finally {
-                        progressDialog.endLoading();
-                    }
-                }
-            }).start();
-            //
-            Thread currentThread = new Thread(this);
-            currentThread.start();
-        } catch (Exception ex) {
-            msgView.outErrorMessage(ex);
-        }
-    }
-
-    private void update() {
-        try {
-            if (!PLAYING_MUSIC.isEmpty()) {
-                stopMusic();
-            }
-            final UpdateProgressDialog progressDialog = new UpdateProgressDialog();
-            progressDialog.showWithScreenLock();
-            keyWordEditText.setText("");
-            relateTagLogic.initializeTagField();
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        // 楽曲ファイル捜索
-                        progressDialog.setMessageAsync(UpdateProgressDialog.MESSAGES[0]);
-                        musicFile.readMusicFilesAndDatabase();
-                        // DB更新
-                        progressDialog.setMessageAsync(UpdateProgressDialog.MESSAGES[1]);
-                        musicTagsLogic.deleteAll();
-                        musicTagsLogic.insertAll();
-                        // 楽曲リスト(画面部品)作成
-                        progressDialog.setMessageAsync(UpdateProgressDialog.MESSAGES[2]);
-                        musicLinearLayout.createContents();
-                        musicPlayer.showTrackNo();
-                    } catch (Exception ex) {
-                        msgView.outErrorMessage(ex);
-                    } finally {
-                        progressDialog.endLoading();
-                    }
-                }
-            }).start();
-        } catch (Exception ex) {
-            msgView.outErrorMessage(ex);
-        }
+        // 各種変数初期化
+        initializeField();
+        // タグ、楽曲表示
+        initProcess();
     }
 
     public void hideKeyBoard() {
         ((TextView) activity.findViewById(R.id.dummyText)).requestFocus();
-    }
-
-    @Override
-    public void run() {
-        try {
-            while (true) {
-                // 再生時間更新
-                if (!PLAYING_MUSIC.isEmpty()) { musicSeekBar.setPlayTime(); }
-                // シークバー＆ボタン表示
-                if (!musicSeekBar.visible && !keyWordEditText.focusOn) {
-                    musicSeekBar.hiddenTime++;
-                    if (musicSeekBar.hiddenTime > 2) {
-                         musicSeekBar.visible();
-                    }
-                }
-                Thread.sleep(1000);
-            }
-        } catch (InterruptedException ex) {
-            //
-        }
     }
 
     public void playMusic(String key) throws Exception {
@@ -311,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                 return true;
             } else if (id == R.id.action_update) {
                 // 更新ボタン押下
-                update();
+                updateProcess();
                 return true;
             } else if (id == R.id.action_exit) {
                 // 終了ボタン押下
