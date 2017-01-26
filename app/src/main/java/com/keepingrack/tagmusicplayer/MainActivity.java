@@ -198,6 +198,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         if (!PLAYING_MUSIC.isEmpty()) {
             stopMusic();
         }
+        finishThread();
         super.onBackPressed();
         super.finish();
     }

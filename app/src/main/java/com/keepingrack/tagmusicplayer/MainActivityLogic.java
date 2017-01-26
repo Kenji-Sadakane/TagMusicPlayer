@@ -8,8 +8,15 @@ import static com.keepingrack.tagmusicplayer.MainActivity.activity;
 
 public class MainActivityLogic {
 
+    // アプリが実行中か否か
+    public static boolean isRunning = false;
+
+    public static Thread playTimeUpdateThread;
+    public static Thread bottomFieldShowThread;
+
     // 初期表示時処理
     public static void initProcess() {
+        isRunning = true;
         final InitProgressDialog progressDialog = new InitProgressDialog();
         progressDialog.showWithScreenLock();
         startInitProcessThread(progressDialog);
@@ -33,10 +40,10 @@ public class MainActivityLogic {
         }).start();
     }
     private static void startPlayTimeUpdateThread() {
-        new Thread(new Runnable() {
+        playTimeUpdateThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (true) {
+                while (isRunning) {
                     // 再生時間更新
                     if (!PLAYING_MUSIC.isEmpty()) {
                         activity.musicSeekBar.setPlayTime();
@@ -44,13 +51,14 @@ public class MainActivityLogic {
                     sleep(500);
                 }
             }
-        }).start();
+        });
+        playTimeUpdateThread.start();
     }
     private static void startBottomFieldShowThread() {
-        new Thread(new Runnable() {
+        bottomFieldShowThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (true) {
+                while (isRunning) {
                     // シークバー＆ボタン表示
                     if (!activity.musicSeekBar.visible && !activity.keyWordEditText.focusOn) {
                         activity.musicSeekBar.hiddenTime++;
@@ -61,7 +69,8 @@ public class MainActivityLogic {
                     sleep(1000);
                 }
             }
-        }).start();
+        });
+        bottomFieldShowThread.start();
     }
 
     // 更新押下時処理
@@ -102,6 +111,16 @@ public class MainActivityLogic {
                 }
             }
         }).start();
+    }
+
+    public static void finishThread() {
+        isRunning = false;
+        for (int i = 0; i < 10; i++) {
+            if (!playTimeUpdateThread.isAlive() && !bottomFieldShowThread.isAlive()) {
+                break;
+            }
+            sleep(1000);
+        }
     }
 
     private static void sleep(int millisecond) {
