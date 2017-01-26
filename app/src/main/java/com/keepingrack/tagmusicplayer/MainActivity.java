@@ -1,13 +1,11 @@
 package com.keepingrack.tagmusicplayer;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.view.GravityCompat;
@@ -23,6 +21,8 @@ import android.widget.TextView;
 import com.keepingrack.tagmusicplayer.external.db.logic.MusicTagsLogic;
 import com.keepingrack.tagmusicplayer.external.file.MusicFile;
 import com.keepingrack.tagmusicplayer.layout.GrayPanel;
+import com.keepingrack.tagmusicplayer.layout.progressDialog.InitProgressDialog;
+import com.keepingrack.tagmusicplayer.layout.progressDialog.UpdateProgressDialog;
 import com.keepingrack.tagmusicplayer.layout.topField.KeyWordEditText;
 import com.keepingrack.tagmusicplayer.layout.bottomField.LoopButton;
 import com.keepingrack.tagmusicplayer.layout.bottomField.MusicSeekBar;
@@ -128,7 +128,8 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         try {
             initializeField();
             // タグ、楽曲表示
-            final ProgressDialog progressDialog = startLoading();
+            final InitProgressDialog progressDialog = new InitProgressDialog();
+            progressDialog.showWithScreenLock();
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -139,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                     } catch (Exception ex) {
                         msgView.outErrorMessage(ex);
                     } finally {
-                        endLoading(progressDialog);
+                        progressDialog.endLoading();
                     }
                 }
             }).start();
@@ -151,42 +152,13 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         }
     }
 
-    private ProgressDialog startLoading() {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                ((View) findViewById(R.id.grayPanel)).setVisibility(View.VISIBLE);
-            }
-        });
-        ProgressDialog progressDialog = showProgressDialog();
-        return progressDialog;
-    }
-
-    private ProgressDialog showProgressDialog() {
-        ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Loading...");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-        return progressDialog;
-    }
-
-    private void endLoading(final ProgressDialog progressDialog) {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                ((View) findViewById(R.id.grayPanel)).setVisibility(View.GONE);
-                progressDialog.dismiss();
-            }
-        });
-    }
-
     private void update() {
         try {
             if (!PLAYING_MUSIC.isEmpty()) {
                 stopMusic();
             }
-            final ProgressDialog progressDialog = startLoading();
+            final UpdateProgressDialog progressDialog = new UpdateProgressDialog();
+            progressDialog.showWithScreenLock();
             keyWordEditText.setText("");
             relateTagLogic.initializeTagField();
             new Thread(new Runnable() {
@@ -194,17 +166,20 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
                 public void run() {
                     try {
                         // 楽曲ファイル捜索
+                        progressDialog.setMessageAsync(UpdateProgressDialog.MESSAGES[0]);
                         musicFile.readMusicFilesAndDatabase();
                         // DB更新
+                        progressDialog.setMessageAsync(UpdateProgressDialog.MESSAGES[1]);
                         musicTagsLogic.deleteAll();
                         musicTagsLogic.insertAll();
                         // 楽曲リスト(画面部品)作成
+                        progressDialog.setMessageAsync(UpdateProgressDialog.MESSAGES[2]);
                         musicLinearLayout.createContents();
                         musicPlayer.showTrackNo();
                     } catch (Exception ex) {
                         msgView.outErrorMessage(ex);
                     } finally {
-                        endLoading(progressDialog);
+                        progressDialog.endLoading();
                     }
                 }
             }).start();
