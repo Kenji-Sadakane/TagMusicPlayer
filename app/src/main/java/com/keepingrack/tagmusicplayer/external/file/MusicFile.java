@@ -48,6 +48,7 @@ public class MusicFile {
                 } else {
                     if (file.getName().endsWith(MUSIC_FILE_EXTENSION)) {
                         String key = getFileKey(file);
+                        if (Variable.getMusicKeys().contains(key)) { continue; }
                         MusicTagsRecord musicTagsRecord = musicTagsRecordMap.get(key);
                         List<String> tags = musicTagsRecord != null ? stringToList(musicTagsRecord.getTags(), SEPARATE) : TAG_NOTHING_LIST;
                         Variable.addTagKinds(tags);
