@@ -45,7 +45,8 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
 //    };
 //    private static int CURRENT_PERMISSION;
 
-    public static final String BASE_DIR = "/storage/sdcard1/PRIVATE/SHARP/CM/MUSIC";
+//    public static final String BASE_DIR = "/storage/sdcard1/PRIVATE/SHARP/CM/MUSIC";
+    public static final String BASE_DIR = "/storage/6231-3131/PRIVATE/SHARP/CM/MUSIC";
 
     public static MainActivity activity;
     public static MediaPlayer mp;

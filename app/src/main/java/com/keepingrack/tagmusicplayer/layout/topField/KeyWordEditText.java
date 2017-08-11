@@ -122,8 +122,8 @@ public class KeyWordEditText extends AutoCompleteTextView {
         } else {
             switch (SEARCH_TYPE) {
                 case TITLE:
-                    String musicName = Variable.getMusicTitle(key);
-                    if (musicName.toLowerCase().contains(keyWord.toLowerCase())) {
+                    String musicPath = Variable.getMusicAbsolutePath(key);
+                    if (musicPath.toLowerCase().contains(keyWord.toLowerCase())) {
                         // キーワードと楽曲名が部分一致
                         chkResult = true;
                     }
