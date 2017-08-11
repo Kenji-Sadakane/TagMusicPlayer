@@ -6,6 +6,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver.OnScrollChangedListener;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
 import com.keepingrack.tagmusicplayer.Variable;
@@ -54,7 +55,7 @@ public class MusicScrollView extends ScrollView {
     public void hideTooUnderMusicRow() {
         int scrollY = this.getScrollY();
         for (String key : Variable.getMusicKeys()) {
-            LinearLayout musicRow = Variable.getMusicRow(key);
+            RelativeLayout musicRow = Variable.getMusicRow(key);
             if (musicRow.getVisibility() != View.GONE) {
                 int rowY = (int) musicRow.getY();
                 if (scrollY - 3000 < rowY && rowY < scrollY + 3000) {
@@ -69,7 +70,7 @@ public class MusicScrollView extends ScrollView {
     // 全楽曲を非表示
     public void hideMusicRow() {
         for (String key : Variable.getMusicKeys()) {
-            LinearLayout musicRow = Variable.getMusicRow(key);
+            RelativeLayout musicRow = Variable.getMusicRow(key);
             if (musicRow.getVisibility() != View.GONE) {
                 musicRow.setVisibility(INVISIBLE);
             }
@@ -91,7 +92,7 @@ public class MusicScrollView extends ScrollView {
     // 全楽曲を表示
     public void showMusicRow() {
         for (String key : Variable.getMusicKeys()) {
-            LinearLayout musicRow = Variable.getMusicRow(key);
+            RelativeLayout musicRow = Variable.getMusicRow(key);
             if (musicRow.getVisibility() != View.GONE) {
                 musicRow.setVisibility(VISIBLE);
             }

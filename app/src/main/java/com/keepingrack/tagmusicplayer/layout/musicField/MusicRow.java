@@ -1,7 +1,7 @@
 package com.keepingrack.tagmusicplayer.layout.musicField;
 
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.keepingrack.tagmusicplayer.R;
@@ -10,17 +10,25 @@ import com.keepingrack.tagmusicplayer.Variable;
 import static com.keepingrack.tagmusicplayer.MainActivity.activity;
 import static com.keepingrack.tagmusicplayer.layout.musicField.MusicLinearLayout.SELECT_MUSIC;
 
-public class MusicRow extends LinearLayout {
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class MusicRow extends RelativeLayout {
+
+    private TextView musicTitle;
+
     public MusicRow(String key) {
         super(activity);
 
         // レイアウト
-        this.setOrientation(LinearLayout.VERTICAL);
         this.setBackgroundResource(R.drawable.normal_row);
         this.setMinimumHeight(150);
         // コンテンツ
         this.addView(createKeyText(key));
-        this.addView(createMusicTitle(key));
+        createMusicTitle(key);
+        this.addView(getMusicTitle());
         // リスナー
         this.setOnClickListener(getOnClickListener());
         this.setOnLongClickListener(getOnLongClickListener());
@@ -35,14 +43,15 @@ public class MusicRow extends LinearLayout {
     }
 
     // 楽曲タイトル表示用TextView作成
-    private TextView createMusicTitle(String key) {
+    private void createMusicTitle(String key) {
         TextView musicText = new TextView(activity);
+        musicText.setId(View.generateViewId());
         LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         params.setMargins(20, 5, 20, 15); // 左, 上, 右, 下
         musicText.setLayoutParams(params);
         musicText.setText(Variable.getMusicItem(key) != null ? Variable.getMusicTitle(key) : "");
 //        musicText.setPadding(5, 5, 5, 15); // 左, 上, 右, 下
-        return musicText;
+        setMusicTitle(musicText);
     }
 
     // 楽曲クリック時
@@ -79,7 +88,10 @@ public class MusicRow extends LinearLayout {
     // タグ情報表示
     public void showTagInfo() {
         if (this.getChildCount() < 3) {
-            this.addView(new TagFieldLayout(getMusicKey()));
+            TagFieldLayout tagFieldLayout = new TagFieldLayout(getMusicKey());
+            LayoutParams params = (RelativeLayout.LayoutParams) tagFieldLayout.getLayoutParams();
+            params.addRule(RelativeLayout.BELOW, getMusicTitle().getId());
+            this.addView(tagFieldLayout);
         }
     }
 
@@ -107,7 +119,7 @@ public class MusicRow extends LinearLayout {
 
     // 楽曲の表示切り替え
     public void changeMusicVisibility(final int visibility) {
-        final LinearLayout layout = this;
+        final RelativeLayout layout = this;
         activity.handler.post(new Runnable() {
             @Override
             public void run() {

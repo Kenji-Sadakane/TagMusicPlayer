@@ -39,8 +39,8 @@ public class TagFieldLayout extends RelativeLayout {
         addTagTextViews(key);
     }
 
-    private LinearLayout.LayoutParams createLayoutParams() {
-        LinearLayout.LayoutParams tagFieldParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+    private LayoutParams createLayoutParams() {
+        LayoutParams tagFieldParams = new LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         tagFieldParams.setMargins(20, 0, 20, 20); // 左, 上, 右, 下
         return tagFieldParams;
     }
