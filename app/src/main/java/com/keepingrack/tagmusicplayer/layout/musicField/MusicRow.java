@@ -37,8 +37,11 @@ public class MusicRow extends LinearLayout {
     // 楽曲タイトル表示用TextView作成
     private TextView createMusicTitle(String key) {
         TextView musicText = new TextView(activity);
+        LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        params.setMargins(20, 5, 20, 15); // 左, 上, 右, 下
+        musicText.setLayoutParams(params);
         musicText.setText(Variable.getMusicItem(key) != null ? Variable.getMusicTitle(key) : "");
-        musicText.setPadding(5, 5, 5, 15); // 左, 上, 右, 下
+//        musicText.setPadding(5, 5, 5, 15); // 左, 上, 右, 下
         return musicText;
     }
 
