@@ -233,7 +233,19 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         //noinspection SimplifiableIfStatement
         try {
             if (id == R.id.action_settings) {
+                // 設定押下
                 return true;
+            } else if (id == R.id.action_select) {
+                // 全て選択押下
+                for (String key : Variable.getDisplayMusicNames()) {
+                    Variable.getMusicRow(key).getCheckBox().checkManually(true);
+                }
+                return true;
+            } else if (id == R.id.action_deselect) {
+                // 選択解除押下
+                for (String key : Variable.getDisplayMusicNames()) {
+                    Variable.getMusicRow(key).getCheckBox().checkManually(false);
+                }
             } else if (id == R.id.action_update) {
                 // 更新ボタン押下
                 updateProcess();

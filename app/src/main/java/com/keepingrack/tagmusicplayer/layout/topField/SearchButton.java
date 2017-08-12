@@ -57,9 +57,6 @@ public class SearchButton extends Button {
                         activity.musicLinearLayout.addX(DISPLAY_WIDTH);
                         activity.musicLinearLayout.changeMusicList();
                         activity.relateTagLogic.updateRelateTags();
-                        if (!Variable.getDisplayMusicNames().contains(SELECT_MUSIC)) {
-                            activity.musicLinearLayout.deselectMusic(SELECT_MUSIC);
-                        }
                         postSearch();
                     } catch (Exception ex) {
                         activity.msgView.outErrorMessage(ex);

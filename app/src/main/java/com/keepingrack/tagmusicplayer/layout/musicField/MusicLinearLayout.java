@@ -19,6 +19,7 @@ import static com.keepingrack.tagmusicplayer.MainActivity.activity;
 public class MusicLinearLayout extends LinearLayout {
 
     public static String SELECT_MUSIC = "";
+    public static List<String> checkedMusicKeyList = new ArrayList<>();
 
     public MusicLinearLayout(Context context) {
         super(context);
@@ -103,6 +104,8 @@ public class MusicLinearLayout extends LinearLayout {
                 row.changeMusicVisibility(View.VISIBLE);
                 Variable.addDisplayMusicNames(key);
             } else {
+                deselectMusic(key);
+                row.getCheckBox().checkManually(false);
                 row.changeMusicVisibility(View.GONE);
             }
         }
@@ -111,9 +114,11 @@ public class MusicLinearLayout extends LinearLayout {
     }
 
     // 楽曲を選択、現在楽曲を非選択
-    public void selectMusicAndDeselectOldMusic(String key) {
-        deselectOldMusic(key);
-        selectMusic(key);
+    public void selectMusicAndDeselectOldMusic(String newKey) {
+        if (!SELECT_MUSIC.isEmpty() && !SELECT_MUSIC.equals(newKey)) {
+            deselectMusic(SELECT_MUSIC);
+        }
+        selectMusic(newKey);
     }
     public void selectMusic(String key) {
         if (Variable.getMusicItem(key) != null && Variable.getMusicRow(key) != null) {
@@ -123,16 +128,20 @@ public class MusicLinearLayout extends LinearLayout {
     }
 
     // 楽曲非選択
-    private void deselectOldMusic(String key) {
-        if (!SELECT_MUSIC.isEmpty() && !SELECT_MUSIC.equals(key)) {
-            deselectMusic(SELECT_MUSIC);
-        }
-    }
     public void deselectMusic(String key) {
-        if (Variable.getMusicItem(key) != null && Variable.getMusicRow(key) != null) {
+        if (key.equals(SELECT_MUSIC) && Variable.getMusicItem(key) != null && Variable.getMusicRow(key) != null) {
             Variable.getMusicRow(key).hideTagInfo();
             SELECT_MUSIC = "";
         }
+    }
+
+    public void addCheckedMusicKeyList(String key) {
+        if (!checkedMusicKeyList.contains(key)) {
+            checkedMusicKeyList.add(key);
+        }
+    }
+    public void removeCheckedMusicKeyList(String key) {
+        checkedMusicKeyList.remove(key);
     }
 
     // 再生楽曲の背景色を変える

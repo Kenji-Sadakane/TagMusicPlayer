@@ -17,7 +17,10 @@ import lombok.Setter;
 @Setter
 public class MusicRow extends RelativeLayout {
 
+    private MusicCheckBox checkBox;
+    private TextView keyText;
     private TextView musicTitle;
+    private TagFieldLayout tagField;
 
     public MusicRow(String key) {
         super(activity);
@@ -26,20 +29,29 @@ public class MusicRow extends RelativeLayout {
         this.setBackgroundResource(R.drawable.normal_row);
         this.setMinimumHeight(150);
         // コンテンツ
-        this.addView(createKeyText(key));
+        createCheckBox();
+        createKeyText(key);
         createMusicTitle(key);
+        this.addView(getCheckBox());
+        this.addView(getKeyText());
         this.addView(getMusicTitle());
         // リスナー
         this.setOnClickListener(getOnClickListener());
         this.setOnLongClickListener(getOnLongClickListener());
     }
 
+    // チェックボックス作成
+    private void createCheckBox() {
+        MusicCheckBox checkBox = new MusicCheckBox(this);
+        setCheckBox(checkBox);
+    }
+
     // キー表示用TextView(非表示)作成
-    private TextView createKeyText(String key) {
+    private void createKeyText(String key) {
         TextView keyText = new TextView(activity);
         keyText.setText(key);
         keyText.setVisibility(View.GONE);
-        return keyText;
+        setKeyText(keyText);
     }
 
     // 楽曲タイトル表示用TextView作成
@@ -47,6 +59,7 @@ public class MusicRow extends RelativeLayout {
         TextView musicText = new TextView(activity);
         musicText.setId(View.generateViewId());
         LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.RIGHT_OF, getCheckBox().getId());
         params.setMargins(20, 5, 20, 15); // 左, 上, 右, 下
         musicText.setLayoutParams(params);
         musicText.setText(Variable.getMusicItem(key) != null ? Variable.getMusicTitle(key) : "");
@@ -78,8 +91,13 @@ public class MusicRow extends RelativeLayout {
         return new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                activity.hideKeyBoard();
-                activity.tagInfoDialog.showDialog(getMusicKey());
+                try {
+                    activity.hideKeyBoard();
+                    checkBox.checkManually(true);
+                    activity.tagInfoDialog.showDialog();
+                } catch (Exception ex) {
+                    activity.msgView.outErrorMessage(ex);
+                }
                 return false;
             }
         };
@@ -87,24 +105,26 @@ public class MusicRow extends RelativeLayout {
 
     // タグ情報表示
     public void showTagInfo() {
-        if (this.getChildCount() < 3) {
+        if (getTagField() == null) {
             TagFieldLayout tagFieldLayout = new TagFieldLayout(getMusicKey());
             LayoutParams params = (RelativeLayout.LayoutParams) tagFieldLayout.getLayoutParams();
             params.addRule(RelativeLayout.BELOW, getMusicTitle().getId());
+            params.addRule(RelativeLayout.RIGHT_OF, getCheckBox().getId());
             this.addView(tagFieldLayout);
+            setTagField(tagFieldLayout);
         }
     }
 
     // タグ情報非表示化
     public void hideTagInfo() {
-        if (this.getChildCount() > 2) {
-            // 楽曲キー、タイトル以外を削除
-            this.removeViewAt(2);
+        if (getTagField() != null) {
+            this.removeView(getTagField());
+            setTagField(null);
         }
     }
 
-    private String getMusicKey() {
-        return ((TextView) this.getChildAt(0)).getText().toString();
+    public String getMusicKey() {
+        return getKeyText().getText().toString();
     }
 
     // 再生楽曲の背景色を戻す

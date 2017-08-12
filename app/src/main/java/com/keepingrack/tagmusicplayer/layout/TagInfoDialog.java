@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.keepingrack.tagmusicplayer.external.file.MusicFile.TAG_NOTHING_LIST;
+import static com.keepingrack.tagmusicplayer.layout.musicField.MusicLinearLayout.checkedMusicKeyList;
 
 public class TagInfoDialog {
 
@@ -26,10 +27,10 @@ public class TagInfoDialog {
         this.activity = _activity;
     }
 
-    public void showDialog(final String key) {
-        final View dialogBody = createDialogBody(key);
+    public void showDialog() {
+        final View dialogBody = createDialogBody();
         final AlertDialog.Builder alertDlg = new AlertDialog.Builder(activity);
-        alertDlg.setTitle(Variable.getMusicTitle(key));
+        alertDlg.setTitle(createDialogTitle());
         alertDlg.setView(dialogBody);
         alertDlg.setPositiveButton(
                 "保存",
@@ -48,10 +49,14 @@ public class TagInfoDialog {
                                 }
                             }
                             if (tags.isEmpty()) { tags = TAG_NOTHING_LIST; }
-                            Variable.setMusicTags(key, tags);
-                            activity.musicTagsLogic.update(key);
-                            activity.musicLinearLayout.deselectMusic(key);
-                            activity.musicLinearLayout.selectMusic(key);
+                            for (int i = 0; i < checkedMusicKeyList.size(); i++) {
+                                String key = checkedMusicKeyList.get(i);
+                                Variable.setMusicTags(key, tags);
+                                activity.musicTagsLogic.update(key);
+                                if (i == checkedMusicKeyList.size() - 1) {
+                                    activity.musicLinearLayout.selectMusicAndDeselectOldMusic(key);
+                                }
+                            }
                         } catch (Exception ex) {
                             activity.msgView.outErrorMessage(ex);
                         }
@@ -76,10 +81,19 @@ public class TagInfoDialog {
         activity.findViewById(R.id.bottomField).setVisibility(View.GONE);
     }
 
-    private View createDialogBody(String key) {
+    private String createDialogTitle() {
+        String title = "タグ編集(複数曲)";
+        if (checkedMusicKeyList.size() == 1) {
+            title = Variable.getMusicTitle(checkedMusicKeyList.get(0));
+        }
+        return title;
+    }
+
+    private View createDialogBody() {
         ScrollView dialogBody = new ScrollView(activity);
         LinearLayout tagTexts = new LinearLayout(activity);
         tagTexts.setOrientation(LinearLayout.VERTICAL);
+        String key = checkedMusicKeyList.get(checkedMusicKeyList.size() - 1);
         if (Variable.getMusicTags(key) == null || Variable.getMusicTags(key).isEmpty()) {
             tagTexts.addView(createDialogRow(""));
         } else {
