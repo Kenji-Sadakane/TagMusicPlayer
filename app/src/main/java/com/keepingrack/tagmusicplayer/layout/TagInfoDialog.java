@@ -53,6 +53,7 @@ public class TagInfoDialog {
                                 String key = checkedMusicKeyList.get(i);
                                 Variable.setMusicTags(key, tags);
                                 activity.musicTagsLogic.update(key);
+                                activity.musicLinearLayout.deselectMusic(key);
                                 if (i == checkedMusicKeyList.size() - 1) {
                                     activity.musicLinearLayout.selectMusicAndDeselectOldMusic(key);
                                 }
@@ -82,11 +83,11 @@ public class TagInfoDialog {
     }
 
     private String createDialogTitle() {
-        String title = "タグ編集(複数曲)";
         if (checkedMusicKeyList.size() == 1) {
-            title = Variable.getMusicTitle(checkedMusicKeyList.get(0));
+            return Variable.getMusicTitle(checkedMusicKeyList.get(0));
+        } else {
+            return "タグ編集(" + checkedMusicKeyList.size() + "曲)";
         }
-        return title;
     }
 
     private View createDialogBody() {
