@@ -1,6 +1,5 @@
 package com.keepingrack.tagmusicplayer.layout.musicField;
 
-import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
@@ -40,9 +39,11 @@ public class MusicLinearLayout extends LinearLayout {
     private void createAndAddMusicRow(String key) {
         MusicRow row = new MusicRow(key);
         LayoutParams rowParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT); // width, height
-//        if (getChildCount() > 20) {
-//            row.setVisibility(View.INVISIBLE);
-//        }
+        if (getChildCount() < 50) {
+            row.changeMusicVisibility(View.VISIBLE);
+        } else {
+            row.changeMusicVisibility(View.GONE);
+        }
         addMusicRow(row, rowParams);
         Variable.addDisplayMusicNames(key);
         Variable.setMusicRow(key, row);
@@ -96,12 +97,11 @@ public class MusicLinearLayout extends LinearLayout {
         for (String key : Variable.getMusicKeys()) {
             MusicRow row = Variable.getMusicRow(key);
             if (activity.keyWordEditText.checkKeyWordMatch(key) && activity.relateTagLogic.chkRelateTagState(key)) {
-//                if (Variable.getDisplayMusicNames().size() > 20) {
-//                    row.changeMusicVisibility(View.INVISIBLE);
-//                } else {
-//                    row.changeMusicVisibility(View.VISIBLE);
-//                }
-                row.changeMusicVisibility(View.VISIBLE);
+                if (Variable.getDisplayMusicNames().size() <= 50) {
+                    row.changeMusicVisibility(View.VISIBLE);
+                } else {
+                    row.changeMusicVisibility(View.GONE);
+                }
                 Variable.addDisplayMusicNames(key);
             } else {
                 deselectMusic(key);

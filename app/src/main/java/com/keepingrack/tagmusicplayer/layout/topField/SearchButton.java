@@ -39,7 +39,6 @@ public class SearchButton extends Button {
      * 5.新楽曲リストの上位数曲のみ表示
      * 6.全楽曲のX位置を戻す
      * 7.アニメーションで全楽曲をY方向に移動しユーザから見えるようにする
-     * 8.新楽曲リストを全て表示化
      *
      * (用語 表示:VISIBLE、非表示:INVISIBLE、削除:GONE)
      */
@@ -81,7 +80,8 @@ public class SearchButton extends Button {
         activity.hideKeyBoard();
         activity.relateTagLayout.removeRelateTagField();
         activity.relateTagLogic.hideRelateTagField();
-        activity.musicScrollView.hideTooUnderMusicRow();
+        activity.musicScrollView.setExecScrollChangeEvent(false);
+        activity.musicScrollView.hideFarMusicRow();
     }
 
     // 検索後処理
@@ -90,12 +90,11 @@ public class SearchButton extends Button {
         anm.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-                activity.musicScrollView.showMusicRow(20);
                 activity.musicLinearLayout.addX(-DISPLAY_WIDTH);
             }
             @Override
             public void onAnimationEnd(Animator animation) {
-                activity.musicScrollView.showMusicRow();
+                activity.musicScrollView.setExecScrollChangeEvent(true);
                 activity.grayPanel.screenLockRelease();
             }
             @Override

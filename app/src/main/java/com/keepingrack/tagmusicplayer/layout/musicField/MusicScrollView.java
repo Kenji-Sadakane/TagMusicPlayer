@@ -4,21 +4,28 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver.OnScrollChangedListener;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
 import com.keepingrack.tagmusicplayer.Variable;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import static com.keepingrack.tagmusicplayer.MainActivity.PLAYING_MUSIC;
 import static com.keepingrack.tagmusicplayer.MainActivity.activity;
 
+@Getter
+@Setter
 public class MusicScrollView extends ScrollView {
+
+    private boolean execScrollChangeEvent = true;
+    private int scrollValueOnEvent = 0;
+
     public MusicScrollView(Context context, AttributeSet attr) {
         super(context, attr);
 
         this.setOnTouchListener(getOnTouchListener());
+        this.setOnScrollChangeListener(getOnScrollChanged());
     }
 
     // スクロールビュータッチ時処理
@@ -38,6 +45,20 @@ public class MusicScrollView extends ScrollView {
         };
     }
 
+    protected ScrollView.OnScrollChangeListener getOnScrollChanged() {
+        return new ScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View view, int x, int y, int oldX, int oldY) {
+                if (execScrollChangeEvent) {
+                    if (Math.abs(y - scrollValueOnEvent) > 3000) {
+                        setScrollValueOnEvent(y);
+                        showNearMusicRow();
+                    }
+                }
+            }
+        };
+    }
+
     // 再生中の楽曲にスクロールする
     public void scrollMusicView() {
         int y = 0;
@@ -52,17 +73,35 @@ public class MusicScrollView extends ScrollView {
     }
 
     // 現スクロール位置より一定距離以上の楽曲を非表示
-    public void hideTooUnderMusicRow() {
+    public void hideFarMusicRow() {
         int scrollY = this.getScrollY();
-        for (String key : Variable.getMusicKeys()) {
-            RelativeLayout musicRow = Variable.getMusicRow(key);
-            if (musicRow.getVisibility() != View.GONE) {
-                int rowY = (int) musicRow.getY();
-                if (scrollY - 3000 < rowY && rowY < scrollY + 3000) {
-                    musicRow.setVisibility(VISIBLE);
-                } else {
-                    musicRow.setVisibility(INVISIBLE);
-                }
+        int target = scrollY / 150;
+        int minTarget = (target - 10 > 0) ? (target - 10) : 0;
+        int maxTarget = minTarget + 20;
+        for (int i = 0; i < Variable.getDisplayMusicNames().size(); i++) {
+            String key = Variable.getDisplayMusicNames().get(i);
+            MusicRow row = Variable.getMusicRow(key);
+            if (i < minTarget || maxTarget < i) {
+                row.changeMusicVisibility(INVISIBLE);
+            } else {
+                continue;
+            }
+        }
+    }
+
+    // 現スクロール位置より一定距離以内の楽曲を表示
+    public void showNearMusicRow() {
+        int scrollY = this.getScrollY();
+        int target = scrollY / 150;
+        int minTarget = (target - 30 > 0) ? (target - 30) : 0;
+        int maxTarget = target + 60;
+        for (int i = 0; i < Variable.getDisplayMusicNames().size(); i++) {
+            String key = Variable.getDisplayMusicNames().get(i);
+            MusicRow row = Variable.getMusicRow(key);
+            if (i < minTarget || maxTarget < i) {
+                continue;
+            } else {
+                row.changeMusicVisibility(VISIBLE);
             }
         }
     }
@@ -70,9 +109,9 @@ public class MusicScrollView extends ScrollView {
     // 全楽曲を非表示
     public void hideMusicRow() {
         for (String key : Variable.getMusicKeys()) {
-            RelativeLayout musicRow = Variable.getMusicRow(key);
+            MusicRow musicRow = Variable.getMusicRow(key);
             if (musicRow.getVisibility() != View.GONE) {
-                musicRow.setVisibility(INVISIBLE);
+                musicRow.changeMusicVisibility(INVISIBLE);
             }
         }
     }
@@ -82,20 +121,17 @@ public class MusicScrollView extends ScrollView {
         for (int i = 0; i < Variable.getDisplayMusicNames().size(); i++) {
             String key = Variable.getDisplayMusicNames().get(i);
             if (i < showCount) {
-                Variable.getMusicRow(key).setVisibility(VISIBLE);
+                Variable.getMusicRow(key).changeMusicVisibility(VISIBLE);
             } else {
-                Variable.getMusicRow(key).setVisibility(INVISIBLE);
+                break;
             }
         }
     }
 
     // 全楽曲を表示
     public void showMusicRow() {
-        for (String key : Variable.getMusicKeys()) {
-            RelativeLayout musicRow = Variable.getMusicRow(key);
-            if (musicRow.getVisibility() != View.GONE) {
-                musicRow.setVisibility(VISIBLE);
-            }
+        for (String key : Variable.getDisplayMusicNames()) {
+            Variable.getMusicRow(key).changeMusicVisibility(VISIBLE);
         }
     }
 }
