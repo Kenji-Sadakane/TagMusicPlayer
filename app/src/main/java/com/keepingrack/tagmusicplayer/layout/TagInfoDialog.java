@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ScrollView;
 
 import com.keepingrack.tagmusicplayer.MainActivity;
@@ -109,10 +110,19 @@ public class TagInfoDialog {
     private View createDialogRow(String tag) {
         LinearLayout row = new LinearLayout(activity);
         row.setHorizontalGravity(LinearLayout.HORIZONTAL);
+        LayoutParams rowParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        rowParams.setMargins(10,0,50,0); // 左, 上, 右, 下
+        row.setLayoutParams(rowParams);
         // ＋ボタン
         Button bt = new Button(activity);
         bt.setText("＋");
         bt.setBackgroundColor(Color.rgb(255, 255, 255));
+        bt.setPadding(0,0,0,0);
+//        bt.setHeight(50);
+//        bt.setWidth(50);
+        LayoutParams buttonParams = new LayoutParams(120, 120);
+        buttonParams.setMargins(0,0,0,0); // 左, 上, 右, 下
+        bt.setLayoutParams(buttonParams);
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,8 +134,10 @@ public class TagInfoDialog {
         EditText editText = new EditText(activity);
         editText.setText(tag);
         editText.setMinWidth(activity.getWindowManager().getDefaultDisplay().getWidth()); // 大きめに設定して問題なし？
-        // 左, 上, 右, 下
-        editText.setPadding(10, 10, 10, 10);
+        LayoutParams textParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        textParams.setMargins(0,0,0,0); // 左, 上, 右, 下
+        editText.setLayoutParams(textParams);
+        editText.setPadding(20,0,0,0);
         row.addView(editText);
         return row;
     }
