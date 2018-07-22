@@ -1,6 +1,7 @@
 package com.keepingrack.tagmusicplayer.util;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +27,23 @@ public class Utility {
     }
 
     public static List<String> stringToList(String str, String separate) {
-        return Arrays.asList(str.split(separate));
+        List<String> result = Arrays.asList(str.split(separate));
+        result = removeEmptyItem(result);
+        return result;
+    }
+
+    public static <E> List<E> removeEmptyItem(List<E> list) {
+        List<E> result = new ArrayList<>();
+        for (E item : list) {
+            if (item instanceof String && ((String)item).isEmpty()) {
+                continue;
+            }
+            result.add(item);
+        }
+        return result;
+    }
+
+    public static <E> E last(List<E> list) {
+        return list.get(list.size() - 1);
     }
 }

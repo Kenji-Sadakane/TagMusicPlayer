@@ -10,6 +10,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import static com.keepingrack.tagmusicplayer.util.Utility.*;
 public class MusicFile {
 
     public static final String MUSIC_FILE_EXTENSION = ".mp3";
+    public static final String TAG_NOTHING = "タグなし";
     public static final List<String> TAG_NOTHING_LIST = Arrays.asList("タグなし");
     private Map<String, MusicTagsRecord> musicTagsRecordMap;
 
@@ -48,9 +50,8 @@ public class MusicFile {
                 } else {
                     if (file.getName().endsWith(MUSIC_FILE_EXTENSION)) {
                         String key = getFileKey(file);
-                        if (Variable.getMusicKeys().contains(key)) { continue; }
-                        MusicTagsRecord musicTagsRecord = musicTagsRecordMap.get(key);
-                        List<String> tags = musicTagsRecord != null ? stringToList(musicTagsRecord.getTags(), SEPARATE) : TAG_NOTHING_LIST;
+                        if (Variable.getMusicKeys().contains(key)) { continue; } // 同一楽曲はスルー
+                        List<String> tags = getTagsForFile(file, key);
                         Variable.addTagKinds(tags);
                         Variable.addMusicKeys(key);
                         Variable.putMusicItems(key, new MusicItem(file.getAbsolutePath(), file.getName(), tags, null));
@@ -95,5 +96,47 @@ public class MusicFile {
 //
 //        }
         return musicTitle;
+    }
+
+    private List<String> getTagsForFile(File file, String key) {
+        List<String> tags = getTagsFromRecord(key);
+        if (tags.isEmpty() || isTagNothingList(tags)) {
+            tags = getTagsFromFilePath(file.getAbsolutePath());
+        }
+        if (tags.isEmpty()) {
+            tags = TAG_NOTHING_LIST;
+        }
+        return tags;
+    }
+
+    private List<String> getTagsFromRecord(String key) {
+        List<String> tags = new ArrayList<>();
+        MusicTagsRecord musicTagsRecord = musicTagsRecordMap.get(key);
+        if (musicTagsRecord != null) {
+            tags = stringToList(musicTagsRecord.getTags(), SEPARATE);
+        }
+        return tags;
+    }
+
+    private boolean isTagNothingList(List<String> tags) {
+        boolean result = false;
+        for (String tag : tags) {
+            if (TAG_NOTHING.equals(tag)) {
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    private List<String> getTagsFromFilePath(String filePath) {
+        List<String> tags = new ArrayList<>();
+        String relativePath = filePath.split(BASE_DIR)[1];
+        List<String> dirNames = Arrays.asList(relativePath.split("/"));
+        for (String dirName : dirNames) {
+            if (!dirName.isEmpty() && !dirName.equals(last(dirNames))) {
+                tags.add(dirName);
+            }
+        }
+        return tags;
     }
 }
