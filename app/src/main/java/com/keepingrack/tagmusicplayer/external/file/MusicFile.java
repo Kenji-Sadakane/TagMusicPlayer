@@ -23,9 +23,9 @@ public class MusicFile {
 
     public static final String MUSIC_FILE_EXTENSION = ".mp3";
     public static final String TAG_NOTHING = "タグなし";
-    public static final List<String> TAG_NOTHING_LIST = Arrays.asList("タグなし");
-    private Map<String, MusicTagsRecord> musicTagsRecordMap;
+    public static final List<String> TAG_NOTHING_LIST = Arrays.asList(TAG_NOTHING);
 
+    private Map<String, MusicTagsRecord> musicTagsRecordMap;
     private MainActivity activity;
 
     public MusicFile (MainActivity _activity) {

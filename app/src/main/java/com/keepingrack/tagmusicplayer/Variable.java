@@ -27,14 +27,6 @@ public class Variable {
     @Getter
     private static List<RelateTag> relateTags = new ArrayList<>();
 
-    // initialize
-    static {
-        musicKeys = new ArrayList<>();
-        musicItems = new ConcurrentHashMap<>();
-        tagKinds = new HashSet<>();
-        displayMusicNames = new ArrayList<>();
-        relateTags = new ArrayList<>();
-    }
     public static void initialize() {
         musicKeys = new ArrayList<>();
         musicItems = new ConcurrentHashMap<>();
