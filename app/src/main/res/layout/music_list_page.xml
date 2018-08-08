@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:splitMotionEvents="false"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.keepingrack.tagmusicplayer.MainActivity"
-    tools:showIn="@layout/app_bar_main">
+    android:splitMotionEvents="false">
 
     <TextView
         android:layout_width="wrap_content"
@@ -41,7 +36,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/keyWordEditText"
         android:layout_toRightOf="@id/searchSwitch"
-        android:layout_toLeftOf="@id/searchButton" />
+        android:layout_toLeftOf="@id/searchButton"
+        android:layout_marginTop="20px"/>
 
     <com.keepingrack.tagmusicplayer.layout.topField.RelateTagScrollView
         android:layout_width="match_parent"
@@ -114,108 +110,6 @@
         </com.keepingrack.tagmusicplayer.layout.musicField.MusicLinearLayout>
 
     </com.keepingrack.tagmusicplayer.layout.musicField.MusicScrollView>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/bottomField"
-        android:layout_alignParentBottom="true"
-        android:background="#77FFFFFF" >
-
-        <GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20px"
-            android:layout_marginLeft="20px"
-            android:columnCount="2"
-            android:rowCount="2">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_row="0"
-                android:text="00:00"
-                android:id="@+id/playTime" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_row="1"
-                android:text="00:00"
-                android:id="@+id/totalTime" />
-
-            <com.keepingrack.tagmusicplayer.layout.bottomField.MusicSeekBar
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="110px"
-                android:layout_marginLeft="10px"
-                android:layout_column="1"
-                android:layout_row="0"
-                android:layout_rowSpan="2"
-                android:layout_gravity="center"
-                android:id="@+id/seekBar" />
-
-        </GridLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:splitMotionEvents="false"
-            android:layout_marginTop="10px" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/whiteSpace1"
-                android:layout_weight="1" />
-
-            <com.keepingrack.tagmusicplayer.layout.bottomField.ShuffleButton
-                android:layout_width="200px"
-                android:layout_height="200px"
-                android:id="@+id/shuffleButton"
-                android:textOff=""
-                android:textOn=""
-                android:background="@drawable/shuffle_button" />
-
-            <com.keepingrack.tagmusicplayer.layout.bottomField.PrevButton
-                android:layout_width="200px"
-                android:layout_height="200px"
-                android:id="@+id/prevButton"
-                android:background="@drawable/av_previous" />
-
-            <com.keepingrack.tagmusicplayer.layout.bottomField.PlayButton
-                android:layout_width="200px"
-                android:layout_height="200px"
-                android:id="@+id/playButton"
-                android:textOff=""
-                android:textOn=""
-                android:background="@drawable/play_button" />
-
-            <com.keepingrack.tagmusicplayer.layout.bottomField.NextButton
-                android:layout_width="200px"
-                android:layout_height="200px"
-                android:id="@+id/nextButton"
-                android:background="@drawable/av_next" />
-
-            <com.keepingrack.tagmusicplayer.layout.bottomField.LoopButton
-                android:layout_width="200px"
-                android:layout_height="200px"
-                android:id="@+id/loopButton"
-                android:background="@drawable/av_loop_on" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/whiteSpace2"
-                android:layout_weight="1" />
-
-        </LinearLayout>
-
-    </LinearLayout>
 
     <com.keepingrack.tagmusicplayer.layout.GrayPanel
         android:layout_width="match_parent"

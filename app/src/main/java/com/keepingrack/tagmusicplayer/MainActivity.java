@@ -8,7 +8,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +23,7 @@ import android.widget.TextView;
 
 import com.keepingrack.tagmusicplayer.external.db.logic.MusicTagsLogic;
 import com.keepingrack.tagmusicplayer.external.file.MusicFile;
+import com.keepingrack.tagmusicplayer.fragment.CenterPagerAdapter;
 import com.keepingrack.tagmusicplayer.layout.GrayPanel;
 import com.keepingrack.tagmusicplayer.layout.topField.KeyWordEditText;
 import com.keepingrack.tagmusicplayer.layout.bottomField.LoopButton;
@@ -75,23 +79,23 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     public Handler handler = new Handler();
 
     private void initializeField() {
-        activity = this;
         measureDisplayWidth();
         mp = new MediaPlayer();
         PLAYING_MUSIC = "";
 
-        keyWordEditText = (KeyWordEditText) findViewById(R.id.keyWordEditText);
-        grayPanel = (GrayPanel) findViewById(R.id.grayPanel);
+//        keyWordEditText = (KeyWordEditText) musicListPage.findViewById(R.id.keyWordEditText);
+//        grayPanel = (GrayPanel) musicListPage.findViewById(R.id.grayPanel);
+//        msgView = (MsgView) musicListPage.findViewById(R.id.msgView);
+//        musicLinearLayout = (MusicLinearLayout) musicListPage.findViewById(R.id.linearLayout);
+//        musicScrollView = (MusicScrollView) musicListPage.findViewById(R.id.scrollView);
+//        searchSwitch = (SearchSwitch) musicListPage.findViewById(R.id.searchSwitch);
+//        relateTagLayout = (RelateTagLayout) musicListPage.findViewById(R.id.relateTagLayout);
+//        relateTagLink = (RelateTagLink) musicListPage.findViewById(R.id.switchRelateTagText);
+//        relateTagScrollView = (RelateTagScrollView) musicListPage.findViewById(R.id.relateTagScrollView);
+//        searchButton = (SearchButton) musicListPage.findViewById(R.id.searchButton);
+
         loopButton = (LoopButton) findViewById(R.id.loopButton);
-        msgView = (MsgView) findViewById(R.id.msgView);
-        musicLinearLayout = (MusicLinearLayout) findViewById(R.id.linearLayout);
         musicSeekBar = (MusicSeekBar) findViewById(R.id.seekBar);
-        musicScrollView = (MusicScrollView) findViewById(R.id.scrollView);
-        searchSwitch = (SearchSwitch) findViewById(R.id.searchSwitch);
-        relateTagLayout = (RelateTagLayout) findViewById(R.id.relateTagLayout);
-        relateTagLink = (RelateTagLink) findViewById(R.id.switchRelateTagText);
-        relateTagScrollView = (RelateTagScrollView) findViewById(R.id.relateTagScrollView);
-        searchButton = (SearchButton) findViewById(R.id.searchButton);
 
         musicFile = new MusicFile(this);
         musicPlayer = new MusicPlayer(this);
@@ -105,20 +109,27 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        activity = this;
         //// デフォルトコード開始
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        ViewPager centerPager = (ViewPager) findViewById(R.id.centerPager);
+        FragmentPagerAdapter adapter = new CenterPagerAdapter(getSupportFragmentManager());
+        centerPager.setAdapter(adapter);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(centerPager);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//        drawer.setDrawerListener(toggle);
+//        toggle.syncState();
+//
+//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+//        navigationView.setNavigationItemSelectedListener(this);
         //// デフォルトコード終了
 
         // 権限確認
@@ -130,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         // 各種変数初期化
         initializeField();
         // タグ、楽曲表示
-        initProcess();
+//        initProcess();
     }
 
     public void hideKeyBoard() {
