@@ -1,12 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "23.0.0"
+    compileSdkVersion 26
     defaultConfig {
         applicationId "com.keepingrack.tagmusicplayer"
-        minSdkVersion 23
-        targetSdkVersion 24
+        minSdkVersion 19
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         javaCompileOptions {
@@ -23,14 +22,15 @@ android {
     }
     productFlavors {
     }
+    sourceSets { main { res.srcDirs = ['src/main/res', 'src/main/res/menu'] } }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:design:23.4.0'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    testImplementation 'junit:junit:4.12'
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:design:23.4.0'
 //    provided 'org.projectlombok:lombok:1.16.10'
-    compile files('libs/lombok.jar')
-    compile files('libs/commons-codec-1.10/commons-codec-1.10.jar')
+    implementation files('libs/lombok.jar')
+    implementation files('libs/commons-codec-1.10/commons-codec-1.10.jar')
 }
