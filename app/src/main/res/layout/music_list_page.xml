@@ -36,8 +36,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/keyWordEditText"
         android:layout_toRightOf="@id/searchSwitch"
-        android:layout_toLeftOf="@id/searchButton"
-        android:layout_marginTop="20px"/>
+        android:layout_toLeftOf="@id/searchButton" />
 
     <com.keepingrack.tagmusicplayer.layout.topField.RelateTagScrollView
         android:layout_width="match_parent"
