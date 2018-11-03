@@ -7,9 +7,19 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_select"
+        android:orderInCategory="100"
+        android:title="全て選択"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_deselect"
+        android:orderInCategory="100"
+        android:title="選択解除"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_update"
         android:orderInCategory="100"
-        android:title="更新"
+        android:title="楽曲リスト更新"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_exit"
