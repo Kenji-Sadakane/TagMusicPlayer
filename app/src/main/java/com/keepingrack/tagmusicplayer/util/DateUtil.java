@@ -8,6 +8,11 @@ public class DateUtil {
         return new SimpleDateFormat(dateFormat).format(date);
     }
 
+    public static String getNowDateStr() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        return sdf.format(new Date());
+    }
+
     public static String getNowDateStr(String dateFormat) {
         return new SimpleDateFormat(dateFormat).format(new Date());
     }

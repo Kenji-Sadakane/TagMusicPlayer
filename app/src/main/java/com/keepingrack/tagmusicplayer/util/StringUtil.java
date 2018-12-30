@@ -1,5 +1,7 @@
 package com.keepingrack.tagmusicplayer.util;
 
+import java.util.List;
+
 public class StringUtil {
     // String型に変換
     public static String castString(double str) { return String.valueOf(str); }
@@ -49,12 +51,15 @@ public class StringUtil {
         return result;
     }
 
-    public static String listToStr(short[] list) {
+    public static String listToString(List<String> list, String separate) {
+        if (list == null || list.isEmpty()) {
+            return "";
+        }
         StringBuffer sb = new StringBuffer();
-        if (list != null || list.length > 0) {
-            for (short elm : list) {
-                sb.append(castString(elm));
-                sb.append(" ");
+        for (int i = 0; i < list.size(); i++) {
+            sb.append(list.get(i));
+            if (!separate.isEmpty() && i < list.size() - 1) {
+                sb.append(separate);
             }
         }
         return sb.toString();

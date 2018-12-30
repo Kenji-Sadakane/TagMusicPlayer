@@ -1,6 +1,7 @@
 package com.keepingrack.tagmusicplayer.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ListUtil {
@@ -40,6 +41,12 @@ public class ListUtil {
     // リストの最後の要素のみ保持するリストを返却
     public static <E> List<E> lastOnly(List<E> list) {
         return subList(list, list.size() - 1, list.size());
+    }
+
+    public static List<String> stringToList(String str, String separate) {
+        List<String> result = Arrays.asList(str.split(separate));
+        result = removeEmptyItem(result);
+        return result;
     }
 
     public static List<String> removeEmptyItem(List<String> list) {

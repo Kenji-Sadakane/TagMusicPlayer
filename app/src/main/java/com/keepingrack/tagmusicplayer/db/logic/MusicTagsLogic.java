@@ -16,7 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.keepingrack.tagmusicplayer.util.Utility.*;
+import static com.keepingrack.tagmusicplayer.util.ListUtil.*;
+import static com.keepingrack.tagmusicplayer.util.StringUtil.*;
 import static com.keepingrack.tagmusicplayer.db.helper.MusicTagsHelper.SEPARATE;
 
 public class MusicTagsLogic {

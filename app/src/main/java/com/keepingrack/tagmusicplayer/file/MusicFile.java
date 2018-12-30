@@ -17,7 +17,7 @@ import java.util.Map;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.BASE_DIR;
 import static com.keepingrack.tagmusicplayer.db.helper.MusicTagsHelper.SEPARATE;
-import static com.keepingrack.tagmusicplayer.util.Utility.*;
+import static com.keepingrack.tagmusicplayer.util.ListUtil.*;
 
 public class MusicFile {
 
