@@ -1,4 +1,4 @@
-package com.keepingrack.tagmusicplayer.external.db.entity;
+package com.keepingrack.tagmusicplayer.db.entity;
 
 public class MusicTagsRecord {
     private String key;

@@ -1,16 +1,22 @@
 package com.keepingrack.tagmusicplayer;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -18,8 +24,9 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.keepingrack.tagmusicplayer.external.db.logic.MusicTagsLogic;
-import com.keepingrack.tagmusicplayer.external.file.MusicFile;
+import com.keepingrack.tagmusicplayer.db.logic.MusicTagsLogic;
+import com.keepingrack.tagmusicplayer.file.ApplicationLog;
+import com.keepingrack.tagmusicplayer.file.MusicFile;
 import com.keepingrack.tagmusicplayer.layout.GrayPanel;
 import com.keepingrack.tagmusicplayer.layout.topField.KeyWordEditText;
 import com.keepingrack.tagmusicplayer.layout.bottomField.LoopButton;
@@ -35,15 +42,14 @@ import com.keepingrack.tagmusicplayer.layout.musicField.MusicLinearLayout;
 import com.keepingrack.tagmusicplayer.layout.musicField.MusicScrollView;
 
 import static com.keepingrack.tagmusicplayer.MainActivityLogic.*;
+import static com.keepingrack.tagmusicplayer.util.StringUtil.concat;
 
 public class MainActivity extends AppCompatActivity implements OnNavigationItemSelectedListener {
 
-//    private static final int REQUEST_EXTERNAL_STORAGE = 1;
-//    private static String[] PERMISSIONS_STORAGE = {
-//            Manifest.permission.READ_EXTERNAL_STORAGE,
-//            Manifest.permission.WRITE_EXTERNAL_STORAGE
-//    };
-//    private static int CURRENT_PERMISSION;
+    private static String[] mPermissions = {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+    private static final int REQUEST_PERMISSION_CODE = 1;
 
 //    public static final String BASE_DIR = "/storage/sdcard1/PRIVATE/SHARP/CM/MUSIC";
 //    public static final String BASE_DIR = "/storage/6231-3131/PRIVATE/SHARP/CM/MUSIC";
@@ -72,36 +78,9 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     public SearchButton searchButton;
     public SearchSwitch searchSwitch;
     public TagInfoDialog tagInfoDialog;
+
     public Handler handler = new Handler();
-
-    private void initializeField() {
-        activity = this;
-        measureDisplayWidth();
-        mp = new MediaPlayer();
-        PLAYING_MUSIC = "";
-
-        keyWordEditText = (KeyWordEditText) findViewById(R.id.keyWordEditText);
-        grayPanel = (GrayPanel) findViewById(R.id.grayPanel);
-        loopButton = (LoopButton) findViewById(R.id.loopButton);
-        msgView = (MsgView) findViewById(R.id.msgView);
-        musicLinearLayout = (MusicLinearLayout) findViewById(R.id.linearLayout);
-        musicSeekBar = (MusicSeekBar) findViewById(R.id.seekBar);
-        musicScrollView = (MusicScrollView) findViewById(R.id.scrollView);
-        searchSwitch = (SearchSwitch) findViewById(R.id.searchSwitch);
-        relateTagLayout = (RelateTagLayout) findViewById(R.id.relateTagLayout);
-        relateTagLink = (RelateTagLink) findViewById(R.id.switchRelateTagText);
-        relateTagScrollView = (RelateTagScrollView) findViewById(R.id.relateTagScrollView);
-        searchButton = (SearchButton) findViewById(R.id.searchButton);
-
-        musicFile = new MusicFile(this);
-        musicPlayer = new MusicPlayer(this);
-        musicTagsLogic = new MusicTagsLogic(this);
-        shuffleMusicList = new ShuffleMusicList(this);
-        relateTagLogic = new RelateTagLogic(this);
-        tagInfoDialog = new TagInfoDialog(this);
-        handler = new Handler();
-        Variable.initialize();
-    }
+    public String baseDirPath = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,16 +100,107 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
         navigationView.setNavigationItemSelectedListener(this);
         //// デフォルトコード終了
 
-        // 権限確認
-//        verifyStoragePermissions(this);
-//        if (CURRENT_PERMISSION != PackageManager.PERMISSION_GRANTED) {
-//            return;
-//        }
+        activity = this;
+        measureDisplayWidth();
+        keyWordEditText = (KeyWordEditText) findViewById(R.id.keyWordEditText);
+        grayPanel = (GrayPanel) findViewById(R.id.grayPanel);
+        loopButton = (LoopButton) findViewById(R.id.loopButton);
+        msgView = (MsgView) findViewById(R.id.msgView);
+        musicLinearLayout = (MusicLinearLayout) findViewById(R.id.linearLayout);
+        musicSeekBar = (MusicSeekBar) findViewById(R.id.seekBar);
+        musicScrollView = (MusicScrollView) findViewById(R.id.scrollView);
+        searchSwitch = (SearchSwitch) findViewById(R.id.searchSwitch);
+        relateTagLayout = (RelateTagLayout) findViewById(R.id.relateTagLayout);
+        relateTagLink = (RelateTagLink) findViewById(R.id.switchRelateTagText);
+        relateTagScrollView = (RelateTagScrollView) findViewById(R.id.relateTagScrollView);
+        searchButton = (SearchButton) findViewById(R.id.searchButton);
 
-        // 各種変数初期化
-        initializeField();
-        // タグ、楽曲表示
-        initProcess();
+        try {
+            // 権限確認
+            if (grantedPermission()) {
+                afterGranted();
+            } else {
+                requestPermission();
+            }
+        } catch (Exception e) {
+            ApplicationLog.error(e);
+            alertErrorDialog();
+        }
+    }
+
+    // 必要権限が付与されているかチェック
+    private boolean grantedPermission() {
+        boolean granted = true;
+        for (String mPermission : mPermissions) {
+            if (ContextCompat.checkSelfPermission(this, mPermission) != PackageManager.PERMISSION_GRANTED) {
+                granted = false;
+            }
+        }
+        return granted;
+    }
+
+    // 権限付与リクエスト
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this, mPermissions, REQUEST_PERMISSION_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == REQUEST_PERMISSION_CODE) {
+            boolean allGranted = true;
+            for (int i=0; i<permissions.length; i++) {
+                String permission = permissions[i];
+                int grantResult = grantResults[i];
+                if (Manifest.permission.WRITE_EXTERNAL_STORAGE.equals(permission)) {
+                    if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                        allGranted = false;
+                    }
+                }
+            }
+            if (allGranted) {
+                afterGranted();
+            } else {
+                alertFinishDialog();
+            }
+        }
+    }
+
+    private void afterGranted() {
+        try {
+            setBaseDirPath();
+            // 各種変数初期化
+            initializeField();
+            // タグ、楽曲表示
+            initProcess();
+        } catch (Exception e) {
+            ApplicationLog.error(e);
+            alertErrorDialog();
+        }
+    }
+
+    // 基底ディレクトリ設定
+    private void setBaseDirPath() throws Exception {
+        baseDirPath = ApplicationDirectory.getAbsolutePath(this, false);
+        if (baseDirPath.isEmpty()) {
+            // アプリケーションパスが取得できなければアプリ終了
+            ApplicationLog.error("アプリケーションパス取得失敗");
+            alertErrorDialog();
+        }
+        ApplicationLog.info(concat("baseDirPath=", baseDirPath));
+    }
+
+    private void initializeField() {
+        mp = new MediaPlayer();
+        PLAYING_MUSIC = "";
+
+        musicFile = new MusicFile(this);
+        musicPlayer = new MusicPlayer(this);
+        musicTagsLogic = new MusicTagsLogic(this);
+        shuffleMusicList = new ShuffleMusicList(this);
+        relateTagLogic = new RelateTagLogic(this);
+        tagInfoDialog = new TagInfoDialog(this);
+        Variable.initialize();
     }
 
     public void hideKeyBoard() {
@@ -196,13 +266,48 @@ public class MainActivity extends AppCompatActivity implements OnNavigationItemS
     }
 
     // アプリ終了
-    private void finishApp() throws Exception {
-        if (!PLAYING_MUSIC.isEmpty()) {
-            stopMusic();
+    private void finishApp() {
+        try {
+            if (!PLAYING_MUSIC.isEmpty()) {
+                stopMusic();
+            }
+            finishThread();
+            super.onBackPressed();
+            super.finish();
+        } catch (Exception e) {
+            ApplicationLog.error(e);
+            super.finish();
         }
-        finishThread();
-        super.onBackPressed();
-        super.finish();
+    }
+
+    // アプリ終了通知ダイアログ表示
+    private AlertDialog alertFinishDialog() {
+        return new AlertDialog.Builder(this)
+                .setCancelable(false)
+                .setTitle("アプリ終了")
+                .setMessage("本アプリ実行に必要な権限が付与されていないため、アプリを終了します。")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finishApp();
+                    }
+                })
+                .show();
+    }
+
+    // アプリエラー終了通知ダイアログ表示
+    public AlertDialog alertErrorDialog() {
+        return new AlertDialog.Builder(this)
+                .setCancelable(false)
+                .setTitle("アプリ終了")
+                .setMessage("システムエラーが発生しました。アプリを終了します。")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finishApp();
+                    }
+                })
+                .show();
     }
 
     @Override
