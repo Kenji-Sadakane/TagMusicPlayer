@@ -4,6 +4,8 @@ import android.media.MediaPlayer;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.keepingrack.tagmusicplayer.file.ApplicationLog;
+
 import static com.keepingrack.tagmusicplayer.MainActivity.PLAYING_MUSIC;
 import static com.keepingrack.tagmusicplayer.MainActivity.mp;
 import static com.keepingrack.tagmusicplayer.layout.musicField.MusicLinearLayout.SELECT_MUSIC;
@@ -36,6 +38,7 @@ public class MusicPlayer {
         mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
+                ApplicationLog.info("play complete");
                 onCompletionProcess();
             }
         });
