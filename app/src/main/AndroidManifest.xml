@@ -2,10 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.keepingrack.tagmusicplayer">
 
-    <uses-sdk
-        android:minSdkVersion="23"
-        android:targetSdkVersion="24">
-    </uses-sdk>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <application
         android:allowBackup="true"

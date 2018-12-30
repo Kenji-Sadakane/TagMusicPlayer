@@ -8,18 +8,16 @@ import android.widget.ScrollView;
 
 import com.keepingrack.tagmusicplayer.Variable;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import static com.keepingrack.tagmusicplayer.MainActivity.PLAYING_MUSIC;
 import static com.keepingrack.tagmusicplayer.MainActivity.activity;
 
-@Getter
-@Setter
 public class MusicScrollView extends ScrollView {
 
     private boolean execScrollChangeEvent = true;
     private int scrollValueOnEvent = 0;
+
+    public void setExecScrollChangeEvent(boolean execScrollChangeEvent) { this.execScrollChangeEvent = execScrollChangeEvent; }
+    public void setScrollValueOnEvent(int scrollValueOnEvent) { this.scrollValueOnEvent = scrollValueOnEvent; }
 
     public MusicScrollView(Context context, AttributeSet attr) {
         super(context, attr);

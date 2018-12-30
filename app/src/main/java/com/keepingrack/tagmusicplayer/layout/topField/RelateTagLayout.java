@@ -7,15 +7,10 @@ import android.widget.RelativeLayout;
 import com.keepingrack.tagmusicplayer.Variable;
 import com.keepingrack.tagmusicplayer.bean.RelateTag;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import static com.keepingrack.tagmusicplayer.MainActivity.DISPLAY_WIDTH;
 import static com.keepingrack.tagmusicplayer.RelateTagLogic.selectedTags;
 import static com.keepingrack.tagmusicplayer.RelateTagLogic.unselectedTags;
 
-@Getter
-@Setter
 public class RelateTagLayout extends RelativeLayout {
 
     /**
@@ -32,6 +27,11 @@ public class RelateTagLayout extends RelativeLayout {
     private float tagLengthByLine = 0;
     // 最終タグのID
     private int lastTagId = -1;
+
+    public float getTagLengthByLine() { return tagLengthByLine; }
+    public void setTagLengthByLine(float tagLengthByLine) { this.tagLengthByLine = tagLengthByLine; }
+    public int getLastTagId() { return lastTagId; }
+    public void setLastTagId(int lastTagId) { this.lastTagId = lastTagId; }
 
     public RelateTagLayout(Context context, AttributeSet attr) {
         super(context, attr);

@@ -12,20 +12,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import lombok.Getter;
-
 public class Variable {
 
-    @Getter
     private static List<String> musicKeys = new ArrayList<>();
-    @Getter
     private static Map<String, MusicItem> musicItems = new ConcurrentHashMap<>();
-    @Getter
     private static Set<String> tagKinds = new HashSet<>();
-    @Getter
     private static List<String> displayMusicNames = new ArrayList<>();
-    @Getter
     private static List<RelateTag> relateTags = new ArrayList<>();
+
+    public static List<String> getMusicKeys() { return musicKeys; }
+    public static Set<String> getTagKinds() { return tagKinds; }
+    public static List<String> getDisplayMusicNames() { return displayMusicNames; }
+    public static List<RelateTag> getRelateTags() { return relateTags; }
 
     public static void initialize() {
         musicKeys = new ArrayList<>();
@@ -36,7 +34,6 @@ public class Variable {
     }
 
 
-    // setter
     public static void addMusicKeys(String key) {
         synchronized (musicKeys) {
             musicKeys.add(key);
@@ -145,7 +142,6 @@ public class Variable {
         }
     }
 
-    // getter
     public static MusicItem getMusicItem(String key) {
         synchronized (musicItems) {
             return musicItems.get(key);

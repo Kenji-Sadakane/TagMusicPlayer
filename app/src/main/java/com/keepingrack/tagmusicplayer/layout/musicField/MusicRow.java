@@ -10,17 +10,21 @@ import com.keepingrack.tagmusicplayer.Variable;
 import static com.keepingrack.tagmusicplayer.MainActivity.activity;
 import static com.keepingrack.tagmusicplayer.layout.musicField.MusicLinearLayout.SELECT_MUSIC;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
 public class MusicRow extends RelativeLayout {
 
     private MusicCheckBox checkBox;
     private TextView keyText;
     private TextView musicTitle;
     private TagFieldLayout tagField;
+
+    public MusicCheckBox getCheckBox() { return checkBox; }
+    public void setCheckBox(MusicCheckBox checkBox) { this.checkBox = checkBox; }
+    public TextView getKeyText() { return keyText; }
+    public void setKeyText(TextView keyText) { this.keyText = keyText; }
+    public TextView getMusicTitle() { return musicTitle; }
+    public void setMusicTitle(TextView musicTitle) { this.musicTitle = musicTitle; }
+    public TagFieldLayout getTagField() { return tagField; }
+    public void setTagField(TagFieldLayout tagField) { this.tagField = tagField; }
 
     public MusicRow(String key) {
         super(activity);

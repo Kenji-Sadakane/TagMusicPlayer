@@ -7,14 +7,9 @@ import com.keepingrack.tagmusicplayer.Variable;
 
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import static com.keepingrack.tagmusicplayer.MainActivity.DISPLAY_WIDTH;
 import static com.keepingrack.tagmusicplayer.MainActivity.activity;
 
-@Getter
-@Setter
 public class TagFieldLayout extends RelativeLayout {
 
     /**
@@ -29,6 +24,11 @@ public class TagFieldLayout extends RelativeLayout {
     private float tagLengthByLine = 0;
     // 最終タグのID
     private int lastTagId = -1;
+
+    public float getTagLengthByLine() { return tagLengthByLine; }
+    public void setTagLengthByLine(float tagLengthByLine) { this.tagLengthByLine = tagLengthByLine; }
+    public int getLastTagId() { return lastTagId; }
+    public void setLastTagId(int lastTagId) { this.lastTagId = lastTagId; }
 
     public TagFieldLayout(String key) {
         super(activity);
