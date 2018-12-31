@@ -4,22 +4,35 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Arrays;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.activity;
 import static com.keepingrack.tagmusicplayer.util.DateUtil.*;
 import static com.keepingrack.tagmusicplayer.util.StringUtil.*;
 
 public class ApplicationLog {
-    private static String INFO = "INFO";
-    private static String WARNING = "WARN";
     private static String ERROR = "ERROR";
+    private static String WARN = "WARN";
+    private static String INFO = "INFO";
+    private static String DEBUG = "DEBUG";
+
+    private static final String[] LOG_LEVEL = {
+            ERROR
+            ,WARN
+            ,INFO
+//            ,DEBUG
+    };
+
+    public static void debug(String msg) {
+        appendLog(DEBUG, msg);
+    }
 
     public static void info(String msg) {
         appendLog(INFO, msg);
     }
 
     public static void warn(String msg) {
-        appendLog(WARNING, msg);
+        appendLog(WARN, msg);
     }
 
     public static void error(String msg) {
@@ -35,7 +48,9 @@ public class ApplicationLog {
     }
 
     private static void appendLog(String type, String msg) {
-        appendLog(concat(getNowDateStr("yyyy/MM/dd HH:mm:ss.SSS"), " ", "[", type, "]", " ", getCalledFromInfo(), " ", msg));
+        if (Arrays.asList(LOG_LEVEL).contains(type)) {
+            appendLog(concat(getNowDateStr("yyyy/MM/dd HH:mm:ss.SSS"), " ", "[", type, "]", " ", getCalledFromInfo(), " ", msg));
+        }
     }
 
     // 呼出元情報取得

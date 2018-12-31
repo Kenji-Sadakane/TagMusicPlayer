@@ -7,6 +7,7 @@ import android.widget.TextView;
 import com.keepingrack.tagmusicplayer.R;
 import com.keepingrack.tagmusicplayer.Variable;
 
+import static com.keepingrack.tagmusicplayer.MainActivity.DISPLAY_WIDTH;
 import static com.keepingrack.tagmusicplayer.MainActivity.activity;
 import static com.keepingrack.tagmusicplayer.layout.musicField.MusicLinearLayout.SELECT_MUSIC;
 
@@ -28,7 +29,6 @@ public class MusicRow extends RelativeLayout {
 
     public MusicRow(String key) {
         super(activity);
-
         // レイアウト
         this.setBackgroundResource(R.drawable.normal_row);
         this.setMinimumHeight(150);
@@ -71,6 +71,24 @@ public class MusicRow extends RelativeLayout {
         setMusicTitle(musicText);
     }
 
+    // タグ表示レイアウト作成
+    private void createTagFieldLayout() {
+        TagFieldLayout tagFieldLayout = new TagFieldLayout();
+        setTagField(tagFieldLayout);
+        // パラメータ設定
+        LayoutParams params = (LayoutParams) tagFieldLayout.getLayoutParams();
+        params.addRule(RelativeLayout.BELOW, getMusicTitle().getId());
+        params.addRule(RelativeLayout.RIGHT_OF, getCheckBox().getId());
+        // width設定
+        tagFieldLayout.setMaxWidth(getTagFieldLayoutWidth());
+        // タグテキスト設定
+        tagFieldLayout.addTagTextViews(getMusicKey());
+    }
+
+    private int getTagFieldLayoutWidth() {
+        return DISPLAY_WIDTH - getCheckBox().getWidth();
+    }
+
     // 楽曲クリック時
     private View.OnClickListener getOnClickListener() {
         return new View.OnClickListener() {
@@ -110,12 +128,8 @@ public class MusicRow extends RelativeLayout {
     // タグ情報表示
     public void showTagInfo() {
         if (getTagField() == null) {
-            TagFieldLayout tagFieldLayout = new TagFieldLayout(getMusicKey());
-            LayoutParams params = (RelativeLayout.LayoutParams) tagFieldLayout.getLayoutParams();
-            params.addRule(RelativeLayout.BELOW, getMusicTitle().getId());
-            params.addRule(RelativeLayout.RIGHT_OF, getCheckBox().getId());
-            this.addView(tagFieldLayout);
-            setTagField(tagFieldLayout);
+            createTagFieldLayout();
+            this.addView(getTagField());
         }
     }
 
