@@ -1,12 +1,13 @@
 package com.keepingrack.tagmusicplayer.layout.musicField;
 
+import android.support.v7.widget.AppCompatCheckBox;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout.LayoutParams;
 
 import static com.keepingrack.tagmusicplayer.MainActivity.activity;
 
-public class MusicCheckBox extends CheckBox {
+public class MusicCheckBox extends AppCompatCheckBox {
 
     private MusicRow row;
 
