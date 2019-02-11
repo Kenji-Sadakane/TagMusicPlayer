@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +44,7 @@ public class MusicFile {
     // ストレージから楽曲ファイルを取得
     private void getMusicFiles(String dirPath) throws Exception {
         File[] files = new File(dirPath).listFiles();
+        Arrays.sort(files, sortListFilesRule());
         if(files != null) {
             for (File file : files) {
                 if (file.isDirectory()) {
@@ -59,6 +61,25 @@ public class MusicFile {
                 }
             }
         }
+    }
+
+    // ファイルリストのソートルール設定
+    // ファイル種別はディレクトリ > ファイルの順。種別が同じ場合はファイル名の昇順
+    private Comparator<File> sortListFilesRule() {
+        return new Comparator<File>() {
+            @Override
+            public int compare(File o1, File o2) {
+                int sortResult = 0;
+                if (o1.isDirectory() && o2.isFile()) {
+                    sortResult = 1;
+                } else if (o1.isFile() && o2.isDirectory()) {
+                    sortResult = -1;
+                } else if ((o1.isDirectory() && o2.isDirectory()) || (o1.isFile() && o2.isFile())) {
+                    sortResult = o1.getAbsolutePath().compareTo(o2.getAbsolutePath());
+                }
+                return sortResult;
+            }
+        };
     }
 
     // 楽曲ファイルの末尾1000byte(ID3v1タグ128byteは除く)をハッシュ化し返却
